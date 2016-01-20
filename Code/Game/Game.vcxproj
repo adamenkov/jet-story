@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C67A3613-80AB-4F6E-AA33-60CFF5DF138F}</ProjectGuid>
+    <RootNamespace>Game</RootNamespace>
+    <ProjectName>Jet-Story</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(WindowsSdkDir)include;$(VCInstallDir)include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>$(SolutionDir)\..\..\Lib\;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(WindowsSdkDir)lib;$(VCInstallDir)lib</LibraryPath>
+    <OutDir>$(SolutionDir)\..\..\Game\</OutDir>
+    <IntDir>$(SolutionDir)\..\..\Temp\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)\..\..\Game\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>$(SolutionDir)\..\..\Temp\</IntDir>
+    <LibraryPath>$(SolutionDir)\..\..\Lib\;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(WindowsSdkDir)lib;$(VCInstallDir)lib</LibraryPath>
+    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(WindowsSdkDir)include;$(VCInstallDir)include</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <BrowseInformation>true</BrowseInformation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(SolutionDir)\..\..\Lib\Engine.lib;d3d9.lib;d3dx9.lib;dinput8.lib;dxguid.lib;winmm.lib;fmodex_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>$(SolutionDir)\..\..\Lib\Engine.lib;d3d9.lib;d3dx9.lib;dinput8.lib;dxguid.lib;winmm.lib;fmodex_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Accomplished.cpp" />
+    <ClCompile Include="Collectibles.cpp" />
+    <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Enemies.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="GameStates.cpp" />
+    <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="Intro.cpp" />
+    <ClCompile Include="Maze.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Projectiles.cpp" />
+    <ClCompile Include="Room.cpp" />
+    <ClCompile Include="Score.cpp" />
+    <ClCompile Include="Session.cpp" />
+    <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="Sounds.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.vcxproj">
+      <Project>{374a59dc-269e-497b-940e-21ed4a325b01}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Accomplished.h" />
+    <ClInclude Include="Collectibles.h" />
+    <ClInclude Include="Debug.h" />
+    <ClInclude Include="Enemies.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="GameOver.h" />
+    <ClInclude Include="GameStates.h" />
+    <ClInclude Include="HUD.h" />
+    <ClInclude Include="Intro.h" />
+    <ClInclude Include="Maze.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Projectiles.h" />
+    <ClInclude Include="Room.h" />
+    <ClInclude Include="Score.h" />
+    <ClInclude Include="Session.h" />
+    <ClInclude Include="Settings.h" />
+    <ClInclude Include="Sounds.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Jet-Story.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Jet-Story.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
