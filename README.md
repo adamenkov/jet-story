@@ -1,2 +1,2 @@
-# jet-story
-Remake of ZX Spectrum game "Jet-Story"
+# Jet-story
+Remake of ZX Spectrum game "Jet-Story".
