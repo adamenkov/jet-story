@@ -2,6 +2,10 @@
 Temp/*
 Code/Temp/*
 
+# Unnecessary solution helper files
+*.sdf
+*.opensdf
+
 # Compiled Object files
 #*.slo
 #*.lo
