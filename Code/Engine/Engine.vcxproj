@@ -46,11 +46,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(WindowsSdkDir)lib;$(VCInstallDir)lib</LibraryPath>
     <OutDir>$(SolutionDir)\..\Temp\Engine\Output\</OutDir>
+    <IntDir>$(SolutionDir)\..\Temp\Engine\Intermediate\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\..\Temp\Engine\Output\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>$(SolutionDir)\..\Temp\Engine\Intermediate\</IntDir>
     <IncludePath>C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(WindowsSdkDir)include;$(VCInstallDir)include</IncludePath>
     <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(WindowsSdkDir)lib;$(VCInstallDir)lib</LibraryPath>
   </PropertyGroup>

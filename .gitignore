@@ -1,36 +1,11 @@
-# Temporary files
-Temp/*
 Code/Temp/*
+Code/Solution/Temp/*
 
-# Unnecessary solution helper files
-*.sdf
 *.opensdf
+*.sdf
+*.suo
 
-# Compiled Object files
-#*.slo
-#*.lo
-#*.o
-*.obj
-
-# Precompiled Headers
-#*.gch
-*.pch
-
-# Compiled Dynamic libraries
-#*.so
-#*.dylib
-#*.dll
-
-# Fortran module files
-#*.mod
-
-# Compiled Static libraries
-#*.lai
-#*.la
-#*.a
-#*.lib
-
-# Executables
-#*.exe
-#*.out
-#*.app
+*.bsc
+*.exe
+*.ilk
+*.pdb
