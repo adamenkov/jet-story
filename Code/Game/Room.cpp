@@ -1,6 +1,7 @@
 #include "Room.h"
 #include <algorithm>
 #include <cassert>
+#include <functional>
 #include <sstream>
 #include <vector>
 #include <Windows.h>
