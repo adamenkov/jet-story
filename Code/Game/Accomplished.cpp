@@ -105,7 +105,7 @@ void Accomplished::Render() const
 }
 
 
-void Accomplished::KeyPressed(char key)
+void Accomplished::KeyPressed(char UNUSED_PARAM(key))
 {
 	if (m_eState == eS_Explosions_PressAnyKey)
 	{

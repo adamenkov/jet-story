@@ -71,7 +71,7 @@ void GameOver::Render() const
 			Audio::ResumeAll();
 		}
 
-		maze.SetBrightness(255 - (m_nFrameID - 128));
+		maze.SetBrightness(static_cast<unsigned char>(255 - (m_nFrameID - 128)));
 	}
 
 	maze.Render();

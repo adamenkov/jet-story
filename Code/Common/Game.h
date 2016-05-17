@@ -3,6 +3,8 @@
 
 #pragma once
 
+#define _USING_V110_SDK71_ 1
+
 
 namespace Game
 {
@@ -17,6 +19,8 @@ namespace Game
 	extern void KeyPressed(char key);
 
 }	// namespace Game
+
+#define UNUSED_PARAM(x)
 
 
 #endif	// #ifndef __GAME_H

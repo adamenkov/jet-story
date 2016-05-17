@@ -3,6 +3,8 @@
 
 #pragma once
 
+#define _USING_V110_SDK71_ 1
+
 #include <vector>
 #include <d3d9.h>
 #include <D3dx9tex.h>

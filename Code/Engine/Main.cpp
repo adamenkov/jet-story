@@ -264,7 +264,11 @@ bool HasFocus()
 }
 
 
-int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int CALLBACK WinMain(
+	HINSTANCE hInstance,
+	HINSTANCE UNUSED_PARAM(hPrevInstance),
+	LPSTR UNUSED_PARAM(lpCmdLine),
+	int nCmdShow)
 {
 	srand(static_cast<unsigned int>(time(NULL)));
 

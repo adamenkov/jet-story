@@ -3,6 +3,8 @@
 
 #pragma once
 
+#define _USING_V110_SDK71_ 1
+
 #include <vector>
 #include "../Common/Engine.h"
 
@@ -58,14 +60,14 @@ public:
 	void		SetPlatform(Entity* pPlatform) { m_pPlatform = pPlatform; }
 
 	//////////////////////////////////////////////////////////////////////////
-	virtual void OnCollision(bool bHorizontal, bool bVertical) {}
+	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) {}
 
 	virtual	bool IsEnemy() const { return false; }
 	virtual bool CollidesWithEnemy() const { return false; }
-	virtual void OnCollision(Enemy& enemy) {}
+	virtual void OnCollision(Enemy& UNUSED_PARAM(enemy)) {}
 
 	virtual bool CollidesWithPlayer() const { return false; }
-	virtual void OnCollision(Player& player) {}
+	virtual void OnCollision(Player& UNUSED_PARAM(player)) {}
 
 	virtual int GetScore() const { return 0; }
 

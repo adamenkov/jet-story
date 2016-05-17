@@ -269,8 +269,8 @@ void Cannon::Update()
 {
 	Enemy::Update();
 
-	Player& player = Player::GetPlayer();
-	bool bLeft = player.GetPos().x < m_pos.x;
+	//Player& player = Player::GetPlayer();
+	//bool bLeft = player.GetPos().x < m_pos.x;
 
 	if (!m_bBusy && ((rand() % 200) == 0))
 	{
@@ -573,8 +573,8 @@ void Radar::Update()
 {
 	Enemy::Update();
 
-	Player& player = Player::GetPlayer();
-	bool bLeft = player.GetPos().x < m_pos.x;
+	//Player& player = Player::GetPlayer();
+	//bool bLeft = player.GetPos().x < m_pos.x;
 
 	if (!m_bBusy && ((rand() % 32) == 0))
 	{

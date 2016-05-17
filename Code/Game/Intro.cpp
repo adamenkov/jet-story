@@ -33,7 +33,7 @@ void Intro::Render() const
 }
 
 
-void Intro::KeyPressed(char key)
+void Intro::KeyPressed(char UNUSED_PARAM(key))
 {
 	switch (m_eIntroState)
 	{

@@ -3,13 +3,15 @@
 
 #pragma once
 
+#include "../Common/Game.h"
+
 
 struct GameState
 {
 	virtual void OnEnter() {}
 	virtual void Update() {}
 	virtual void Render() const = 0;
-	virtual void KeyPressed(char key) {}
+	virtual void KeyPressed(char UNUSED_PARAM(key)) {}
 };
 
 

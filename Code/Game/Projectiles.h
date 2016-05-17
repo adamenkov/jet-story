@@ -116,7 +116,7 @@ public:
 	virtual void Render() const { Engine::DrawText(m_pos + Vec2(0.f, -3.f), Engine::eC_White, "`"); }
 	virtual void SetGarbage() { Entity::SetGarbage(); Player::GetPlayer().OnNoPlayerBullet(); }
 	virtual bool IsMovable() const { return true; }
-	virtual void OnCollision(bool bHorizontal, bool bVertical) { SetGarbage(); }
+	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) { SetGarbage(); }
 	virtual bool CollidesWithEnemy() const { return true; }
 	virtual void OnCollision(Enemy& enemy);
 };
@@ -152,7 +152,7 @@ class PlayerVerticalBomb : public PlayerBomb
 public:
 	virtual void Render() const { Engine::DrawText(m_pos, Engine::eC_LightCyan, "c"); }
 	virtual void Update();
-	virtual void OnCollision(bool bHorizontal, bool bVertical) { SetGarbage(); }
+	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) { SetGarbage(); }
 	virtual void OnCollision(Enemy& enemy);
 	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vec2(12.f, 8.f)); }
 };
@@ -165,7 +165,7 @@ public:
 
 	virtual void Render() const { Engine::DrawText(m_pos, Engine::eC_LightCyan, m_bLeft ? "b" : "a"); }
 	virtual void Update();
-	virtual void OnCollision(bool bHorizontal, bool bVertical) { SetGarbage(); }
+	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) { SetGarbage(); }
 	virtual void OnCollision(Enemy& enemy);
 	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vec2(12.f, 8.f)); }
 

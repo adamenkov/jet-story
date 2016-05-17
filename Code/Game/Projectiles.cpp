@@ -97,7 +97,7 @@ void HorizontalWave::OnCollision(Player& player)
 }
 
 
-void HorizontalWave::OnCollision(bool bHorizontal, bool bVertical)
+void HorizontalWave::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical))
 {
 	SetGarbage();
 }
@@ -134,7 +134,7 @@ void Wave::OnCollision(Player& player)
 }
 
 
-void Wave::OnCollision(bool bHorizontal, bool bVertical)
+void Wave::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical))
 {
 	SetGarbage();
 }
@@ -157,7 +157,7 @@ void Radiation::OnCollision(Player& player)
 }
 
 
-void Radiation::OnCollision(bool bHorizontal, bool bVertical)
+void Radiation::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical))
 {
 	SetGarbage();
 }
@@ -180,7 +180,7 @@ void VerticalRocket::OnCollision(Player& player)
 }
 
 
-void VerticalRocket::OnCollision(bool bHorizontal, bool bVertical)
+void VerticalRocket::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical))
 {
 	Maze::GetMaze().AddEntity(new Explosion(m_pos));
 	SetGarbage();
@@ -203,7 +203,7 @@ void Bomb::OnCollision(Player& player)
 }
 
 
-void Bomb::OnCollision(bool bHorizontal, bool bVertical)
+void Bomb::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical))
 {
 	Maze::GetMaze().AddEntity(new Explosion(m_pos));
 	SetGarbage();
