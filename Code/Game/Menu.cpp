@@ -9,11 +9,13 @@
 
 
 Menu::Menu() :
-	m_eState(eMS_MainMenu),
-	m_sRunningLine(
-		std::istreambuf_iterator<char>(std::ifstream("Assets/RunningLine.txt")),
-		std::istreambuf_iterator<char>())
+	m_eState(eMS_MainMenu)
 {
+	std::ifstream fileRunningLine("Assets/RunningLine.txt");
+	m_sRunningLine.assign(
+		std::istreambuf_iterator<char>(fileRunningLine),
+		std::istreambuf_iterator<char>()
+	);
 }
 
 

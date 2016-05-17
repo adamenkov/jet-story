@@ -263,6 +263,8 @@ public:
 	virtual int GetScore() const { return 50; }
 
 private:
+	Radiator& operator=(const Radiator&);
+
 	const bool m_bLeft;
 };
 

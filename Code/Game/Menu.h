@@ -36,7 +36,7 @@ private:
 	};
 	EState m_eState;
 
-	const std::string m_sRunningLine;
+	std::string m_sRunningLine;
 	int m_nFPSCounter;
 
 	int m_waitFrames;
