@@ -7,7 +7,7 @@ Year of release: 1992
 
 Publisher: Ultrasoft (Slovakia)
 
-Authors: Cybexlab Software (Miroslav Fidler), Fuxoft (Frantisek Fuka)
+Authors: Cybexlab Software (Miroslav Fídler), Fuxoft (František Fuka)
 
 Publication: Public domain
 
