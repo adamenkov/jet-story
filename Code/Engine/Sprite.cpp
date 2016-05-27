@@ -4,7 +4,7 @@
 
 Sprite::Sprite() :
 	m_pos(ZERO),
-	m_pTexture(NULL),
+	m_pTexture(nullptr),
 	m_nWidth(0),
 	m_nHeight(0),
 	m_nFrameIDStart(0),
@@ -56,10 +56,10 @@ void Sprite::Render() const
 	// To avoid brightness artifacts, draw only at integer coordinates
 	D3DXVECTOR2 trans(FLOAT(int(m_pos.x)), FLOAT(int(m_pos.y)));
 
-	D3DXMatrixTransformation2D(&matrix, NULL, 0, &scale, &center, 0.f, &trans);
-	g_pSprites->SetTransform(&matrix);
+	D3DXMatrixTransformation2D(&matrix, nullptr, 0, &scale, &center, 0.f, &trans);
+	g_pD3DXSprite->SetTransform(&matrix);
 
-	g_pSprites->Draw(m_pTexture->GetD3DTexture(), &srcRect, NULL, NULL, m_color);
+	g_pD3DXSprite->Draw(m_pTexture->GetD3DTexture(), &srcRect, nullptr, nullptr, m_color);
 }
 
 

@@ -48,7 +48,7 @@ void Debris::Render() const
 HorizontalWave::HorizontalWave(Cannon* pCannon, const Vector2& vInitialPos, bool bLeft) :
 	Entity(vInitialPos),
 	m_pCannon(pCannon),
-	m_pRadar(NULL)
+	m_pRadar(nullptr)
 {
 	m_vel.x = bLeft ? (-.5f - (rand() / 2.f / (RAND_MAX + 1))) : (.5f + (rand() / 2.f / (RAND_MAX + 1)));
 
@@ -59,7 +59,7 @@ HorizontalWave::HorizontalWave(Cannon* pCannon, const Vector2& vInitialPos, bool
 
 HorizontalWave::HorizontalWave(Radar* pRadar, const Vector2& vInitialPos, bool bLeft) :
 	Entity(vInitialPos),
-	m_pCannon(NULL),
+	m_pCannon(nullptr),
 	m_pRadar(pRadar)
 {
 	m_vel.x = bLeft ? (-.5f - (rand() / 2.f / (RAND_MAX + 1))) : (.5f + (rand() / 2.f / (RAND_MAX + 1)));

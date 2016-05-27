@@ -29,7 +29,7 @@ Player::Player() :
 	m_frameIDBulletSpawned(0),
 	m_frameIDBombSpawned(0),
 
-	m_pPlayerBomb(NULL),
+	m_pPlayerBomb(nullptr),
 	m_nPlayerBullets(0)
 {
 	SetTexture(&m_texture, 32);
@@ -80,7 +80,7 @@ void Player::Reset()
 	m_frameIDBulletSpawned = 0;
 	m_frameIDBombSpawned  = 0;
 
-	m_pPlayerBomb = NULL;
+	m_pPlayerBomb = nullptr;
 	m_nPlayerBullets = 0;
 }
 

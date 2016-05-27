@@ -3,23 +3,18 @@
 
 #pragma once
 
-#define _USING_V110_SDK71_ 1
-
-#include <cstdlib>
 #include "fmod.hpp"
 
+
 // This is not exposed to Game
-
-
 namespace Audio
 {
-	extern FMOD_SYSTEM* pFMOD_system;
+	extern FMOD_SYSTEM* g_pFMOD_system;
 
 	bool Init();
 	void ShutDown();
 
 	void Update();
-
 }	// namespace Audio
 
 
@@ -29,7 +24,7 @@ public:
 	Sound(const char* szFileName);
 	~Sound();
 
-	bool IsOK() const { return m_pFMOD_sound != NULL; }
+	bool IsOK() const { return m_pFMOD_sound != nullptr; }
 
 	bool IsPlaying() const;
 	bool Play(int nLoopCount);

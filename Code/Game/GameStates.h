@@ -17,7 +17,7 @@ struct GameState
 
 namespace GameStates
 {
-	void Init();
+	bool Init();
 	void ShutDown();
 
 	void Update();

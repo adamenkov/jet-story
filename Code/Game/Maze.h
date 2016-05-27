@@ -19,7 +19,7 @@ class Maze
 public:
 	static Maze& GetMaze();
 
-	void Init();
+	bool Init();
 	void ShutDown();
 
 	void Reset();

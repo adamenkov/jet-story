@@ -20,7 +20,7 @@ namespace Sounds
 	const char* REDEFINE_KEYS;
 	const char* SHHH;
 
-	void Init() {}
+	bool Init() { return true; }
 
 	bool IsPlaying(...) { return false; }
 	void Play(...) {}

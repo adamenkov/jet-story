@@ -8,7 +8,7 @@
 
 
 LPDIRECT3DDEVICE9	g_pD3DDevice;
-LPD3DXSPRITE		g_pSprites;
+LPD3DXSPRITE		g_pD3DXSprite;
 
 Font* g_pFont;
 
@@ -32,7 +32,7 @@ namespace
 	
 	void ClearScene()
 	{
-		g_pD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.f, 0);
+		g_pD3DDevice->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.f, 0);
 	}
 
 
@@ -61,12 +61,13 @@ namespace
 		d3dpp.PresentationInterval		= D3DPRESENT_INTERVAL_IMMEDIATE;
 
 		if ((pD3D->CreateDevice(
-			D3DADAPTER_DEFAULT,
-			D3DDEVTYPE_HAL,
-			g_hWnd,
-			D3DCREATE_HARDWARE_VERTEXPROCESSING,
-			&d3dpp,
-			&g_pD3DDevice) != D3D_OK) || !g_pD3DDevice)
+				D3DADAPTER_DEFAULT,
+				D3DDEVTYPE_HAL,
+				g_hWnd,
+				D3DCREATE_HARDWARE_VERTEXPROCESSING,
+				&d3dpp,
+				&g_pD3DDevice) != D3D_OK)
+			|| !g_pD3DDevice)
 		{
 			return false;
 		}
@@ -75,18 +76,25 @@ namespace
 
 		g_pD3DDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer);
 
-		g_pD3DDevice->SetRenderState(D3DRS_ZENABLE,	TRUE);
-		g_pD3DDevice->SetRenderState(D3DRS_FILLMODE,	D3DFILL_SOLID);
-		g_pD3DDevice->SetRenderState(D3DRS_LIGHTING,	TRUE);
-		g_pD3DDevice->SetRenderState(D3DRS_AMBIENT,	D3DCOLOR_XRGB(0, 0, 0));
+		g_pD3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+		g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+		g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+		g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(0, 0, 0));
 
-		if (D3DXCreateSprite(g_pD3DDevice, &g_pSprites) != D3D_OK)
+		if (D3DXCreateSprite(g_pD3DDevice, &g_pD3DXSprite) != D3D_OK)
+		{
 			return false;
+		}
 
 		if (!Audio::Init())
+		{
 			return false;
+		}
 
-		Game::Init();
+		if (!Game::Init())
+		{
+			return false;
+		}
 
 		D3DMATERIAL9 material;
 		ZeroMemory(&material, sizeof material);
@@ -103,7 +111,9 @@ namespace
 
 		g_pFont = new Font("Font.bmp", 8, 8, 16);
 		if (!g_pFont->IsOK())
+		{
 			return false;
+		}
 
 		return true;
 	}
@@ -120,13 +130,13 @@ namespace
 		g_pD3DDevice->SetTransform(D3DTS_WORLD, &matrixWorld);
 
 		{
-			g_pSprites->Begin(D3DXSPRITE_ALPHABLEND);
+			g_pD3DXSprite->Begin(D3DXSPRITE_ALPHABLEND);
 			Game::Render();
-			g_pSprites->End();
+			g_pD3DXSprite->End();
 		}
 
 		g_pD3DDevice->EndScene();
-		g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
+		g_pD3DDevice->Present(nullptr, nullptr, NULL, nullptr);
 	}
 
 
@@ -155,9 +165,20 @@ namespace
 
 		Audio::ShutDown();
 
-		g_pSprites->Release();
-		g_pD3DDevice->Release();
-		pD3D->Release();
+		if (g_pD3DXSprite != nullptr)
+		{
+			g_pD3DXSprite->Release();
+		}
+
+		if (g_pD3DDevice != nullptr)
+		{
+			g_pD3DDevice->Release();
+		}
+
+		if (pD3D != nullptr)
+		{
+			pD3D->Release();
+		}
 	}
 
 }	// namespace
@@ -168,7 +189,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 	case WM_KEYDOWN:
-		Game::KeyPressed(char(wParam));
+		Game::KeyPressed(static_cast<char>(wParam));
 		break;
 
 	case WM_SIZING:
@@ -180,63 +201,63 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		int nNewClientWidth  = nNewWindowWidth  - nClientToWindowWidthDelta;
 		int nNewClientHeight = nNewWindowHeight - nClientToWindowHeightDelta;
 
-		int nNewCorrectedClientWidth  = nNewClientHeight * Engine::eScreenWidthInCharacters  / Engine::eScreenHeightInCharacters;
-		int nNewCorrectedClientHeight = nNewClientWidth  * Engine::eScreenHeightInCharacters / Engine::eScreenWidthInCharacters;
+		int nPossibleCorrectedClientWidth  = nNewClientHeight * Engine::eScreenWidthInCharacters  / Engine::eScreenHeightInCharacters;
+		int nPossibleCorrectedClientHeight = nNewClientWidth  * Engine::eScreenHeightInCharacters / Engine::eScreenWidthInCharacters;
 
 		// Keep ZX Spectrum display aspect ratio
 		switch (wParam)
 		{
 		case WMSZ_TOP:
 		case WMSZ_BOTTOM:
-			pRect->right = pRect->left + (nNewCorrectedClientWidth + nClientToWindowWidthDelta);
+			pRect->right = pRect->left + (nPossibleCorrectedClientWidth + nClientToWindowWidthDelta);
 			break;
 
 		case WMSZ_LEFT:
 		case WMSZ_RIGHT:
-			pRect->bottom = pRect->top + (nNewCorrectedClientHeight + nClientToWindowHeightDelta);
+			pRect->bottom = pRect->top + (nPossibleCorrectedClientHeight + nClientToWindowHeightDelta);
 			break;
 
 		case WMSZ_BOTTOMLEFT:
-			if (nNewCorrectedClientWidth < nNewClientWidth)
+			if (nPossibleCorrectedClientWidth < nNewClientWidth)
 			{
-				pRect->left = pRect->right - (nNewCorrectedClientWidth + nClientToWindowWidthDelta);
+				pRect->left = pRect->right - (nPossibleCorrectedClientWidth + nClientToWindowWidthDelta);
 			}
 			else
 			{
-				pRect->bottom = pRect->top + (nNewCorrectedClientHeight + nClientToWindowHeightDelta);
+				pRect->bottom = pRect->top + (nPossibleCorrectedClientHeight + nClientToWindowHeightDelta);
 			}
 			break;
 
 		case WMSZ_BOTTOMRIGHT:
-			if (nNewCorrectedClientWidth < nNewClientWidth)
+			if (nPossibleCorrectedClientWidth < nNewClientWidth)
 			{
-				pRect->right = pRect->left + (nNewCorrectedClientWidth + nClientToWindowWidthDelta);
+				pRect->right = pRect->left + (nPossibleCorrectedClientWidth + nClientToWindowWidthDelta);
 			}
 			else
 			{
-				pRect->bottom = pRect->top + (nNewCorrectedClientHeight + nClientToWindowHeightDelta);
+				pRect->bottom = pRect->top + (nPossibleCorrectedClientHeight + nClientToWindowHeightDelta);
 			}
 			break;
 
 		case WMSZ_TOPLEFT:
-			if (nNewCorrectedClientWidth < nNewClientWidth)
+			if (nPossibleCorrectedClientWidth < nNewClientWidth)
 			{
-				pRect->left = pRect->right - (nNewCorrectedClientWidth + nClientToWindowWidthDelta);
+				pRect->left = pRect->right - (nPossibleCorrectedClientWidth + nClientToWindowWidthDelta);
 			}
 			else
 			{
-				pRect->top = pRect->bottom - (nNewCorrectedClientHeight - nClientToWindowHeightDelta);
+				pRect->top = pRect->bottom - (nPossibleCorrectedClientHeight - nClientToWindowHeightDelta);
 			}
 			break;
 
 		case WMSZ_TOPRIGHT:
-			if (nNewCorrectedClientWidth < nNewClientWidth)
+			if (nPossibleCorrectedClientWidth < nNewClientWidth)
 			{
-				pRect->right = pRect->left + (nNewCorrectedClientWidth + nClientToWindowWidthDelta);
+				pRect->right = pRect->left + (nPossibleCorrectedClientWidth + nClientToWindowWidthDelta);
 			}
 			else
 			{
-				pRect->top = pRect->bottom - (nNewCorrectedClientHeight + nClientToWindowHeightDelta);
+				pRect->top = pRect->bottom - (nPossibleCorrectedClientHeight + nClientToWindowHeightDelta);
 			}
 			break;
 		}
@@ -269,7 +290,7 @@ int CALLBACK WinMain(
 	LPSTR UNUSED_PARAM(lpCmdLine),
 	int nCmdShow)
 {
-	srand(static_cast<unsigned int>(time(NULL)));
+	srand(static_cast<unsigned int>(time(nullptr)));
 
 	const char* szWindowCaption = Game::GetName();
 
@@ -283,9 +304,9 @@ int CALLBACK WinMain(
 	wc.hIcon         = LoadIcon(hInstance, "IDI_JET_STORY");
 	wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = NULL;
-	wc.lpszMenuName  = NULL;
+	wc.lpszMenuName  = nullptr;
 	wc.lpszClassName = szWindowCaption;
-	wc.hIconSm       = LoadIcon(hInstance, "IDI_JET_STORY");
+	wc.hIconSm       = wc.hIcon;
 	
 	if (!RegisterClassEx(&wc))
 	{
@@ -319,7 +340,7 @@ int CALLBACK WinMain(
 		NULL,					// parent window
 		NULL,					// menu
 		hInstance,
-		NULL					// window parameters
+		nullptr					// window parameters
 	);
 
 	if (!hWnd)
@@ -333,6 +354,7 @@ int CALLBACK WinMain(
 	if (!InitEngine())
 	{
 		Engine::LogError("Error initializing Engine.");
+		ShutDownEngine();
 		return 0;
 	}
 

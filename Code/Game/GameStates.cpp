@@ -23,7 +23,7 @@ namespace
 
 namespace GameStates
 {
-	void Init()
+	bool Init()
 	{
 		states["intro"]        = new Intro;
 		states["menu"]         = new Menu;
@@ -34,6 +34,8 @@ namespace GameStates
 
 		pCurrentState = states["session"];
 		pCurrentState->OnEnter();
+
+		return true;
 	}
 
 

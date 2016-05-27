@@ -13,7 +13,7 @@
 class Texture
 {
 public:
-	Texture(const char* szFileName = NULL, D3DCOLOR colorTransparent = D3DCOLOR_XRGB(0, 0, 0));
+	Texture(const char* szFileName = nullptr, D3DCOLOR colorTransparent = D3DCOLOR_XRGB(0, 0, 0));
 	~Texture();
 
 	LPDIRECT3DTEXTURE9 GetD3DTexture() const { return m_pTexture; }

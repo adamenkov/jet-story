@@ -10,7 +10,7 @@ namespace Game
 {
 	extern const char* GetName();
 
-	extern void Init();
+	extern bool Init();
 	extern void ShutDown();
 
 	extern void Render();

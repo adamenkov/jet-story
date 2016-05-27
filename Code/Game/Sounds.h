@@ -23,7 +23,7 @@ namespace Sounds
 	extern const char* REDEFINE_KEYS;
 	extern const char* SHHH;
 
-	void Init();
+	bool Init();
 
 	bool IsPlaying(...);
 	void Play(...);

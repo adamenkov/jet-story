@@ -21,11 +21,9 @@ namespace Game
 	}
 
 	
-	void Init()
+	bool Init()
 	{
-		Sounds::Init();
-		Maze::GetMaze().Init();
-		GameStates::Init();
+		return Sounds::Init() && Maze::GetMaze().Init() && GameStates::Init();
 	}
 
 

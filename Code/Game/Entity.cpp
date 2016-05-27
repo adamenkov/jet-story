@@ -10,7 +10,7 @@ Entity::Entity(const Vector2& vInitialPos) :
 	m_vel(ZERO),
 	m_bEnabled(true),
 	m_timer(0),
-	m_pPlatform(NULL)
+	m_pPlatform(nullptr)
 {
 	SetPos(m_vInitialPos);
 }

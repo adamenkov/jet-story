@@ -91,7 +91,7 @@ void Room::Init(const unsigned char* pRoomInitSequence, const unsigned char* pEn
 	assert(row == ROWS);
 	assert(column == 0);
 
-	Entity* pPlatform = NULL;
+	Entity* pPlatform = nullptr;
 
 	m_entities.reserve(eMaxEntitiesPerRoom);
 
@@ -118,7 +118,7 @@ void Room::Init(const unsigned char* pRoomInitSequence, const unsigned char* pEn
 				{
 					// Platform entity is followed by its user entity
 					pEntity->SetPlatform(pPlatform);
-					pPlatform = NULL;
+					pPlatform = nullptr;
 				}
 				else
 				{
@@ -179,7 +179,7 @@ bool Room::OverlapsObstacles(const Entity* pEntity, float x, float y) const
 
 Entity* Room::CreateEntity(int type, const Vector2& vInitialPos, const Textures& textures)
 {
-	Entity* pEntity = NULL;
+	Entity* pEntity = nullptr;
 
 	switch (type)
 	{

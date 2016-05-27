@@ -53,7 +53,7 @@ public:
 	int		GetBombs() const	{ return m_nBombs; }
 	void	SetBombs(int nBombs) { m_nBombs = nBombs; }
 
-	void	OnNoPlayerBomb()	{ m_pPlayerBomb = NULL; }
+	void	OnNoPlayerBomb()	{ m_pPlayerBomb = nullptr; }
 	void	OnNoPlayerBullet()	{ --m_nPlayerBullets; }
 
 	void	OnRoomChanged();

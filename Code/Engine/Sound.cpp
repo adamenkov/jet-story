@@ -7,11 +7,11 @@ Sound::Sound(const char* szFileName)
 	try
 	{
 		if (FMOD_System_CreateSound(
-			Audio::pFMOD_system,	// FMOD system
-			szFileName,				// file name
-			FMOD_DEFAULT,			// default audio
-			NULL,					// n/a
-			&m_pFMOD_sound			// pointer to sample
+				Audio::g_pFMOD_system,	// FMOD system
+				szFileName,				// file name
+				FMOD_DEFAULT,			// default audio
+				nullptr,				// n/a
+				&m_pFMOD_sound			// pointer to sample
 			) == FMOD_OK)
 		{
 			return;
@@ -21,13 +21,13 @@ Sound::Sound(const char* szFileName)
 	{
 	}
 
-	m_pFMOD_sound = NULL;
+	m_pFMOD_sound = nullptr;
 }
 
 
 Sound::~Sound()
 {
-	if (m_pFMOD_sound)
+	if (m_pFMOD_sound != nullptr)
 	{
 		FMOD_Sound_Release(m_pFMOD_sound);
 	}
@@ -44,16 +44,16 @@ bool Sound::IsPlaying() const
 
 bool Sound::Play(int nLoopCount)
 {
-	if (m_pFMOD_sound)
+	if (m_pFMOD_sound != nullptr)
 	{
 		try
 		{
 			if (FMOD_System_PlaySound(
-				Audio::pFMOD_system,
-				FMOD_CHANNEL_FREE, 
-				m_pFMOD_sound, 
-				true, 
-				&m_pFMOD_channel
+					Audio::g_pFMOD_system,
+					FMOD_CHANNEL_FREE, 
+					m_pFMOD_sound, 
+					true, 
+					&m_pFMOD_channel
 				) == FMOD_OK)
 			{
 				FMOD_Channel_SetMode(m_pFMOD_channel, FMOD_DEFAULT | ((nLoopCount == -1) ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF));
@@ -67,6 +67,7 @@ bool Sound::Play(int nLoopCount)
 		{
 		}
 	}
+
 	return false;
 }
 

@@ -16,7 +16,7 @@ namespace
 
 namespace Audio
 {
-	FMOD_SYSTEM* pFMOD_system;
+	FMOD_SYSTEM* g_pFMOD_system;
 	
 
 	bool Load(const char* szFileName, const char* szName)
@@ -73,8 +73,8 @@ namespace Audio
 
 	bool Init()
 	{
-		return (FMOD_System_Create(&pFMOD_system) == FMOD_OK) &&
-			(FMOD_System_Init(pFMOD_system, 100, FMOD_INIT_NORMAL, NULL) == FMOD_OK);
+		return (FMOD_System_Create(&g_pFMOD_system) == FMOD_OK) &&
+			(FMOD_System_Init(g_pFMOD_system, 100, FMOD_INIT_NORMAL, nullptr) == FMOD_OK);
 	}
 
 	void ShutDown()
@@ -88,12 +88,14 @@ namespace Audio
 			}
 		}
 
-		FMOD_System_Release(pFMOD_system);
+		sounds.clear();
+
+		FMOD_System_Release(g_pFMOD_system);
 	}
 
 	void Audio::Update()
 	{
-		FMOD_System_Update(pFMOD_system);
+		FMOD_System_Update(g_pFMOD_system);
 	}
 
 	void PauseAll()

@@ -12,7 +12,7 @@ bool ApplicationWindowHasFocus();
 
 
 extern LPDIRECT3DDEVICE9	g_pD3DDevice;
-extern LPD3DXSPRITE			g_pSprites;
+extern LPD3DXSPRITE			g_pD3DXSprite;
 
 extern long int g_nFrameID;
 

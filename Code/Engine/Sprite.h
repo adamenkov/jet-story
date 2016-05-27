@@ -40,7 +40,7 @@ public:
 	int	GetWidth()  const { return m_nWidth; }
 	int	GetHeight() const { return m_nHeight; }
 
-	bool IsOK() const { return m_pTexture->GetD3DTexture() != NULL; }
+	bool IsOK() const { return m_pTexture->GetD3DTexture() != nullptr; }
 
 	bool Overlaps(const Sprite* pSpriteOther) const;
 

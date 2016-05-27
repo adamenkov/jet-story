@@ -3,7 +3,7 @@
 #include <cassert>
 
 
-Texture::Texture(const char* szFileName, D3DCOLOR colorTransparent) : m_pTexture(NULL)
+Texture::Texture(const char* szFileName, D3DCOLOR colorTransparent) : m_pTexture(nullptr)
 {
 	if (szFileName)
 	{
@@ -42,7 +42,7 @@ void Texture::LoadFromFile(const char* szFileName, D3DCOLOR colorTransparent)
 		D3DX_DEFAULT,			// mip filter
 		colorTransparent,		// color key for transparency
 		&m_info,				// bitmap file info (from loaded file)
-		NULL,					// color palette
+		nullptr,				// color palette
 		&m_pTexture				// destination texture
 	);
 }

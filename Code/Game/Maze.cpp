@@ -21,11 +21,11 @@ Maze& Maze::GetMaze()
 }
 
 
-void Maze::Init()
+bool Maze::Init()
 {
 	for (int i = 0; i < OBJECTS; ++i)
 	{
-		Texture* pObjectTexture = NULL;
+		Texture* pObjectTexture = nullptr;
 
 		switch (i)
 		{
@@ -104,6 +104,8 @@ void Maze::Init()
 
 	m_textureBlankScreen.LoadFromFile("Assets/BlankScreen.png", D3DCOLOR_RGBA(1, 2, 3, 4));	// opaque black screen
 	m_spriteBlankScreen.SetTexture(&m_textureBlankScreen);
+
+	return true;
 }
 
 
