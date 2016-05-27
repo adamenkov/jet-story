@@ -4,7 +4,7 @@
 #include "Sounds.h"
 
 
-RandomCollectible::RandomCollectible(const Vec2& vInitialPos) :
+RandomCollectible::RandomCollectible(const Vector2& vInitialPos) :
 	Entity(vInitialPos)
 {
 	SetFrameTimer(16);

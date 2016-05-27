@@ -27,7 +27,7 @@ public:
 	void Update();
 	void Render() const;
 
-	void AddDebrisFor(const Vec2& pos)		{ m_room[m_curRow][m_curColumn].AddDebris(pos); }
+	void AddDebrisFor(const Vector2& pos)		{ m_room[m_curRow][m_curColumn].AddDebris(pos); }
 	void AddEntity(Entity* pEntity)			{ m_room[m_curRow][m_curColumn].AddEntity(pEntity); }
 
 	int  GetBasesLeft() const { return m_nBasesLeft; }

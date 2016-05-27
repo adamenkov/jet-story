@@ -15,7 +15,7 @@ class Player;
 class Entity : public Sprite
 {
 public:
-	Entity(const Vec2& vInitialPos);
+	Entity(const Vector2& vInitialPos);
 
 	virtual void Reset();
 
@@ -46,10 +46,10 @@ public:
 	void		ForceExplode() { Explode(); }	// "Mission Accomplished" stuff
 
 	virtual bool IsMovable() const { return false; }
-	virtual Vec2 GetSteering() const { return Vec2(ZERO); }
+	virtual Vector2 GetSteering() const { return Vector2(ZERO); }
 
-	Vec2		GetVelocity() const { return m_vel; }
-	void		SetVelocity(const Vec2& vel) { m_vel = vel; }
+	Vector2		GetVelocity() const { return m_vel; }
+	void		SetVelocity(const Vector2& vel) { m_vel = vel; }
 	void		SetVelocity(float x, float y) { m_vel.x = x; m_vel.y = y; }
 
 	void		SetTimer(int timer) { m_timer = timer; }
@@ -74,9 +74,9 @@ public:
 protected:
 	ELifeTime	m_eLifeTime;
 
-	Vec2		m_vInitialPos;
+	Vector2		m_vInitialPos;
 	
-	Vec2		m_vel;	// pixels per frame
+	Vector2		m_vel;	// pixels per frame
 
 	bool		m_bEnabled;
 

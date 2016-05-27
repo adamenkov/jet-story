@@ -32,7 +32,7 @@ void Font::Render(int x, int y, Engine::EColor eColor, const char* szText)
 {
 	SetColor(eColor);
 
-	for (Vec2 pos(static_cast<float>(x), static_cast<float>(y)); char ch = *szText++; pos.x += m_nWidth)
+	for (Vector2 pos(static_cast<float>(x), static_cast<float>(y)); char ch = *szText++; pos.x += m_nWidth)
 	{
 		SetAnimationFrame(ch);
 		SetPos(pos);

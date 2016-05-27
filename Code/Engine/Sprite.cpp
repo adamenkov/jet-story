@@ -110,7 +110,7 @@ bool Sprite::Overlaps(const Sprite* pSpriteOther) const
 	LONG top  = static_cast<LONG>(m_pos.y);
 	RECT rect = { left, top, left + m_nWidth, top + m_nHeight };
 	
-	Vec2 posOther = pSpriteOther->GetPos();
+	Vector2 posOther = pSpriteOther->GetPos();
 	left = static_cast<LONG>(posOther.x);
 	top  = static_cast<LONG>(posOther.y);
 	RECT rectOther = { left, top, left + pSpriteOther->GetWidth(), top + pSpriteOther->GetHeight() };

@@ -17,13 +17,13 @@ namespace Engine
 	}
 
 
-	void DrawText(const Vec2& pos, EColor eColor, const char* szText)
+	void DrawText(const Vector2& pos, EColor eColor, const char* szText)
 	{
 		g_pFont->Render(int(pos.x), int(pos.y), eColor, szText);
 	}
 
 
-	void DrawText(const Vec2& pos, EColor eColor, char ch)
+	void DrawText(const Vector2& pos, EColor eColor, char ch)
 	{
 		char szText[2];
 		szText[0] = ch;

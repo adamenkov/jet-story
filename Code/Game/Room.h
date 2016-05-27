@@ -27,7 +27,7 @@ public:
 	void AddEntity(Entity* pEntity);
 	void AddGameEntity(Entity* pEntity);
 	
-	void AddDebris(const Vec2& pos);
+	void AddDebris(const Vector2& pos);
 	
 	void ExplodeAllEntititiesExceptPlayer();
 
@@ -45,7 +45,7 @@ private:
 	void AddObstacle(int row, int column, int left, int top, int right, int bottom);
 	bool OverlapsObstacles(const Entity* pEntity, float x, float y) const;
 	
-	Entity* CreateEntity(int type, const Vec2& vInitialPos, const Textures& textures);
+	Entity* CreateEntity(int type, const Vector2& vInitialPos, const Textures& textures);
 
 	int GetBlock(int row, int column) const { return m_block[row][column]; }
 

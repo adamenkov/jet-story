@@ -109,7 +109,7 @@ void Room::Init(const unsigned char* pRoomInitSequence, const unsigned char* pEn
 
 		if (type != 0)
 		{
-			Entity* pEntity = CreateEntity(type, Vec2(float(x), float(y)), textures);
+			Entity* pEntity = CreateEntity(type, Vector2(float(x), float(y)), textures);
 			if (pEntity)
 			{
 				AddGameEntity(pEntity);
@@ -177,7 +177,7 @@ bool Room::OverlapsObstacles(const Entity* pEntity, float x, float y) const
 }
 
 
-Entity* Room::CreateEntity(int type, const Vec2& vInitialPos, const Textures& textures)
+Entity* Room::CreateEntity(int type, const Vector2& vInitialPos, const Textures& textures)
 {
 	Entity* pEntity = NULL;
 
@@ -303,14 +303,14 @@ void Room::MoveEntitiesAndResolveCollisions()
 			continue;
 		}
 
-		Vec2 pos = pEntity->GetPos();
+		Vector2 pos = pEntity->GetPos();
 		//TODO Fix assertion failed when player is dying in room (2, 0) and flying into Base
 		assert(!OverlapsObstacles(pEntity, pos.x, pos.y));
 
-		Vec2 vel = pEntity->GetVelocity();
-		Vec2 acc = pEntity->GetSteering();
-		Vec2 newVel = vel + acc;
-		Vec2 newPos = pEntity->GetPos() + vel + 0.5f * acc;
+		Vector2 vel = pEntity->GetVelocity();
+		Vector2 acc = pEntity->GetSteering();
+		Vector2 newVel = vel + acc;
+		Vector2 newPos = pEntity->GetPos() + vel + 0.5f * acc;
 
 		bool bHorizonalCollision = (int(newPos.x) < 0) || (int(newPos.x) + pEntity->GetWidth() > Engine::eScreenWidthInPixels)
 			? (pEntity != &player)	// Only player may leave the room
@@ -542,7 +542,7 @@ void Room::AddGameEntity(Entity* pEntity)
 }
 
 
-void Room::AddDebris(const Vec2& pos)
+void Room::AddDebris(const Vector2& pos)
 {
 	for (int i = 0; i < 8; ++i)
 	{
@@ -591,7 +591,7 @@ void Room::RemoveEntities(Entity::ELifeTime eMinimumLifeTimeToRemove)
 
 void Room::AddExplosion()
 {
-	Vec2 pos(ZERO);
+	Vector2 pos(ZERO);
 	Explosion* pExplosion = new Explosion(pos);
 	
 	// Adding explosion close to an obstacle, otherwise it may not look very plausible

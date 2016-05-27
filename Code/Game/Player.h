@@ -25,7 +25,7 @@ public:
 	virtual void Render() const;
 
 	virtual bool IsMovable() const { return true; }
-	virtual Vec2 GetSteering() const;
+	virtual Vector2 GetSteering() const;
 	virtual void OnCollision(bool bHorizontal, bool bVertical);
 
 	

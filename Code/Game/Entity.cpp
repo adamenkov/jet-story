@@ -4,7 +4,7 @@
 #include "Projectiles.h"
 
 
-Entity::Entity(const Vec2& vInitialPos) :
+Entity::Entity(const Vector2& vInitialPos) :
 	m_eLifeTime(eLT_Session),
 	m_vInitialPos(vInitialPos),
 	m_vel(ZERO),
@@ -65,11 +65,11 @@ void Entity::Explode()
 	{
 		for (int col = 0; col < GetWidth(); col += 16)
 		{
-			Vec2 pos = m_pos;
+			Vector2 pos = m_pos;
 			pos.x += col;
 			pos.y += row;
 			maze.AddEntity(new Explosion(pos));
-			maze.AddDebrisFor(pos + Vec2(4, 4));
+			maze.AddDebrisFor(pos + Vector2(4, 4));
 		}
 	}
 

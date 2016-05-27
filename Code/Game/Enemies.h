@@ -10,7 +10,7 @@
 class Enemy : public Entity
 {
 public:
-	Enemy(const Vec2& vInitialPos) : Entity(vInitialPos) {}
+	Enemy(const Vector2& vInitialPos) : Entity(vInitialPos) {}
 	
 	virtual void Reset();
 	virtual bool IsMovable() const { return true; }
@@ -28,7 +28,7 @@ protected:
 class DualCannon : public Enemy
 {
 public:
-	DualCannon(const Vec2& vInitialPos);
+	DualCannon(const Vector2& vInitialPos);
 
 	virtual void Reset();
 	virtual void Move();
@@ -39,7 +39,7 @@ public:
 class Platform : public Enemy
 {
 public:
-	Platform(const Vec2& vInitialPos) : Enemy(vInitialPos) {}
+	Platform(const Vector2& vInitialPos) : Enemy(vInitialPos) {}
 
 	virtual void Reset();
 	virtual void Explode();
@@ -52,7 +52,7 @@ public:
 class Platform2 : public Enemy
 {
 public:
-	Platform2(const Vec2& vInitialPos) : Enemy(vInitialPos) {}
+	Platform2(const Vector2& vInitialPos) : Enemy(vInitialPos) {}
 
 	virtual void Reset();
 	virtual void Explode();
@@ -65,7 +65,7 @@ public:
 class BigBall : public Enemy
 {
 public:
-	BigBall(const Vec2& vInitialPos) : Enemy(vInitialPos) {}
+	BigBall(const Vector2& vInitialPos) : Enemy(vInitialPos) {}
 
 	virtual void Reset();
 	virtual void Move();
@@ -76,7 +76,7 @@ public:
 class Globe : public Enemy
 {
 public:
-	Globe(const Vec2& vInitialPos);
+	Globe(const Vector2& vInitialPos);
 
 	virtual void Reset();
 	virtual void Move();
@@ -87,7 +87,7 @@ public:
 class Medusa : public Enemy
 {
 public:
-	Medusa(const Vec2& vInitialPos);
+	Medusa(const Vector2& vInitialPos);
 
 	virtual void Reset();
 	virtual void Move();
@@ -98,7 +98,7 @@ public:
 class Revolver : public Enemy
 {
 public:
-	Revolver(const Vec2& vInitialPos);
+	Revolver(const Vector2& vInitialPos);
 
 	virtual void Reset();
 	virtual void Move();
@@ -109,7 +109,7 @@ public:
 class BigZ : public Enemy
 {
 public:
-	BigZ(const Vec2& vInitialPos) : Enemy(vInitialPos) {}
+	BigZ(const Vector2& vInitialPos) : Enemy(vInitialPos) {}
 
 	virtual void Reset();
 	virtual void Animate();
@@ -121,7 +121,7 @@ public:
 class Cannon : public Enemy
 {
 public:
-	Cannon(const Vec2& vInitialPos) : Enemy(vInitialPos), m_bBusy(false) {}
+	Cannon(const Vector2& vInitialPos) : Enemy(vInitialPos), m_bBusy(false) {}
 
 	virtual void Reset();
 	virtual void Animate();
@@ -138,7 +138,7 @@ private:
 class FlyingCannon : public Cannon
 {
 public:
-	FlyingCannon(const Vec2& vInitialPos);
+	FlyingCannon(const Vector2& vInitialPos);
 
 	virtual void Reset();
 	virtual void Animate();
@@ -150,7 +150,7 @@ public:
 class Flier : public Enemy
 {
 public:
-	Flier(const Vec2& vInitialPos);
+	Flier(const Vector2& vInitialPos);
 
 	virtual void Reset();
 	virtual void Animate();
@@ -162,7 +162,7 @@ public:
 class Flier2 : public Enemy
 {
 public:
-	Flier2(const Vec2& vInitialPos);
+	Flier2(const Vector2& vInitialPos);
 
 	virtual void Reset();
 	virtual void Animate();
@@ -174,7 +174,7 @@ public:
 class RevolvingRadar : public Enemy
 {
 public:
-	RevolvingRadar(const Vec2& vInitialPos);
+	RevolvingRadar(const Vector2& vInitialPos);
 
 	virtual void Reset();
 	virtual int GetScore() const { return 95; }
@@ -184,7 +184,7 @@ public:
 class RocketLauncher : public Enemy
 {
 public:
-	RocketLauncher(const Vec2& vInitialPos) : Enemy(vInitialPos) {}
+	RocketLauncher(const Vector2& vInitialPos) : Enemy(vInitialPos) {}
 
 	virtual void Reset();
 	virtual void Update();
@@ -195,7 +195,7 @@ public:
 class LeftRocket : public Enemy
 {
 public:
-	LeftRocket(const Vec2& vInitialPos) : Enemy(vInitialPos) {}
+	LeftRocket(const Vector2& vInitialPos) : Enemy(vInitialPos) {}
 
 	virtual void Reset();
 	virtual int GetScore() const { return 30; }
@@ -205,7 +205,7 @@ public:
 class RightRocket : public Enemy
 {
 public:
-	RightRocket(const Vec2& vInitialPos) : Enemy(vInitialPos) {}
+	RightRocket(const Vector2& vInitialPos) : Enemy(vInitialPos) {}
 
 	virtual void Reset();
 	virtual int GetScore() const { return 30; }
@@ -215,7 +215,7 @@ public:
 class Brick : public Enemy
 {
 public:
-	Brick(const Vec2& vInitialPos) : Enemy(vInitialPos) {}
+	Brick(const Vector2& vInitialPos) : Enemy(vInitialPos) {}
 
 	virtual void Reset();
 	virtual int GetScore() const { return 50; }
@@ -225,7 +225,7 @@ public:
 class Factory : public Enemy
 {
 public:
-	Factory(const Vec2& vInitialPos) : Enemy(vInitialPos) {}
+	Factory(const Vector2& vInitialPos) : Enemy(vInitialPos) {}
 
 	virtual void Reset();
 	virtual int GetScore() const { return 75; }
@@ -235,7 +235,7 @@ public:
 class Bomber : public Enemy
 {
 public:
-	Bomber(const Vec2& vInitialPos) : Enemy(vInitialPos) {}
+	Bomber(const Vector2& vInitialPos) : Enemy(vInitialPos) {}
 
 	virtual void Reset();
 	virtual void Update();
@@ -246,7 +246,7 @@ public:
 class Rocket : public Enemy
 {
 public:
-	Rocket(const Vec2& vInitialPos);
+	Rocket(const Vector2& vInitialPos);
 
 	virtual void Reset();
 	virtual int GetScore() const { return 95; }
@@ -256,7 +256,7 @@ public:
 class Radiator : public Enemy
 {
 public:
-	Radiator(const Vec2& vInitialPos, bool bLeft) : Enemy(vInitialPos), m_bLeft(bLeft) {}
+	Radiator(const Vector2& vInitialPos, bool bLeft) : Enemy(vInitialPos), m_bLeft(bLeft) {}
 
 	virtual void Reset();
 	virtual void Update();
@@ -272,7 +272,7 @@ private:
 class Radar : public Enemy
 {
 public:
-	Radar(const Vec2& vInitialPos) : Enemy(vInitialPos), m_bBusy(false) {}
+	Radar(const Vector2& vInitialPos) : Enemy(vInitialPos), m_bBusy(false) {}
 
 	virtual void Reset();
 	virtual void Update();
@@ -288,7 +288,7 @@ private:
 class Base : public Enemy
 {
 public:
-	Base(const Vec2& vInitialPos) : Enemy(vInitialPos) {}
+	Base(const Vector2& vInitialPos) : Enemy(vInitialPos) {}
 
 	virtual void Reset();
 	virtual void Explode();

@@ -8,12 +8,12 @@
 
 enum type_zero { ZERO };
 
-struct Vec2
+struct Vector2
 {
 	float x, y;
 
-	Vec2(type_zero) : x(0.f), y(0.f) {}
-	Vec2(float x, float y) : x(x), y(y) {}
+	Vector2(type_zero) : x(0.f), y(0.f) {}
+	Vector2(float x, float y) : x(x), y(y) {}
 
 	bool IsZero() const
 	{
@@ -48,38 +48,38 @@ struct Vec2
 		y = 0.f;
 	}
 
-	Vec2& operator+=(const Vec2& rhs)
+	Vector2& operator+=(const Vector2& rhs)
 	{
 		x += rhs.x;
 		y += rhs.y;
 		return *this;
 	}
 
-	Vec2& operator*=(float coeff)
+	Vector2& operator*=(float coeff)
 	{
 		x *= coeff;
 		y *= coeff;
 		return *this;
 	}
 
-	friend Vec2 operator+(const Vec2& lhs, const Vec2& rhs)
+	friend Vector2 operator+(const Vector2& lhs, const Vector2& rhs)
 	{
-		return Vec2(lhs.x + rhs.x, lhs.y + rhs.y);
+		return Vector2(lhs.x + rhs.x, lhs.y + rhs.y);
 	}
 
-	friend Vec2 operator-(const Vec2& lhs, const Vec2& rhs)
+	friend Vector2 operator-(const Vector2& lhs, const Vector2& rhs)
 	{
-		return Vec2(lhs.x - rhs.x, lhs.y - rhs.y);
+		return Vector2(lhs.x - rhs.x, lhs.y - rhs.y);
 	}
 	
-	friend Vec2 operator*(float coeff, const Vec2& rhs)
+	friend Vector2 operator*(float coeff, const Vector2& rhs)
 	{
-		return Vec2(coeff * rhs.x, coeff * rhs.y);
+		return Vector2(coeff * rhs.x, coeff * rhs.y);
 	}
 
-	friend Vec2 operator/(const Vec2& rhs, float denominator)
+	friend Vector2 operator/(const Vector2& rhs, float denominator)
 	{
-		return Vec2(rhs.x / denominator, rhs.y / denominator);
+		return Vector2(rhs.x / denominator, rhs.y / denominator);
 	}
 };
 

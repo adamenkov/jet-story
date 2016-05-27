@@ -10,7 +10,7 @@
 class RandomCollectible : public Entity
 {
 public:
-	RandomCollectible(const Vec2& vInitialPos);
+	RandomCollectible(const Vector2& vInitialPos);
 
 	virtual void OnCollision(Player& player);
 
@@ -30,7 +30,7 @@ protected:
 class Fuel : public RandomCollectible
 {
 public:
-	Fuel(const Vec2& vInitialPos) : RandomCollectible(vInitialPos) {}
+	Fuel(const Vector2& vInitialPos) : RandomCollectible(vInitialPos) {}
 
 	virtual void OnCollision(Player& player);
 };
@@ -39,7 +39,7 @@ public:
 class Ammo : public RandomCollectible
 {
 public:
-	Ammo(const Vec2& vInitialPos) : RandomCollectible(vInitialPos) {}
+	Ammo(const Vector2& vInitialPos) : RandomCollectible(vInitialPos) {}
 
 	virtual void OnCollision(Player& player);
 };
@@ -48,7 +48,7 @@ public:
 class Bombs : public RandomCollectible
 {
 public:
-	Bombs(const Vec2& vInitialPos) : RandomCollectible(vInitialPos) {}
+	Bombs(const Vector2& vInitialPos) : RandomCollectible(vInitialPos) {}
 
 	virtual void OnCollision(Player& player);
 };
@@ -57,7 +57,7 @@ public:
 class Missiles : public RandomCollectible
 {
 public:
-	Missiles(const Vec2& vInitialPos) : RandomCollectible(vInitialPos) {}
+	Missiles(const Vector2& vInitialPos) : RandomCollectible(vInitialPos) {}
 
 	virtual void OnCollision(Player& player);
 };
@@ -66,7 +66,7 @@ public:
 class Balls : public RandomCollectible
 {
 public:
-	Balls(const Vec2& vInitialPos) : RandomCollectible(vInitialPos) {}
+	Balls(const Vector2& vInitialPos) : RandomCollectible(vInitialPos) {}
 
 	virtual void OnCollision(Player& player);
 };
@@ -75,7 +75,7 @@ public:
 class Shield : public RandomCollectible
 {
 public:
-	Shield(const Vec2& vInitialPos) : RandomCollectible(vInitialPos) {}
+	Shield(const Vector2& vInitialPos) : RandomCollectible(vInitialPos) {}
 
 	virtual void OnCollision(Player& player);
 };
@@ -84,7 +84,7 @@ public:
 class Stars : public RandomCollectible
 {
 public:
-	Stars(const Vec2& vInitialPos) : RandomCollectible(vInitialPos) {}
+	Stars(const Vector2& vInitialPos) : RandomCollectible(vInitialPos) {}
 
 	virtual void OnCollision(Player& player);
 };

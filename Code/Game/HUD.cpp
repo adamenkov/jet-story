@@ -75,7 +75,7 @@ void HUD::Render()
 
 #ifdef DEBUG_MAZE
 	{
-		Vec2 pos = m_player.GetPos();
+		Vector2 pos = m_player.GetPos();
 		std::ostringstream os;
 		os << "X: " << int(pos.x) << ", Y: " << int(pos.y);
 		Engine::Print(1, 22, Engine::eC_White, os.str().c_str());

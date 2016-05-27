@@ -178,7 +178,7 @@ void Maze::SetBrightness(unsigned char cBrightness)
 void Maze::UpdateCurrentRowAndColumn()
 {
 	Player& player = Player::GetPlayer();
-	Vec2 pos = player.GetPos();
+	Vector2 pos = player.GetPos();
 
 	float x = pos.x;
 	float y = pos.y;

@@ -13,8 +13,8 @@ const float PIover2 = 1.570796327f;
 
 Player::Player() :
 	//TODO temporary for Mission Accomplished
-	//Entity(Vec2(48.f, 72.f)),
-	Entity(Vec2(80.f, 72.f)),
+	//Entity(Vector2(48.f, 72.f)),
+	Entity(Vector2(80.f, 72.f)),
 	m_texture("Assets/Player/Player.png"),
 
 	m_textureJetDownBigLeft ("Assets/Player/JetDownBigLeft.png"),
@@ -176,10 +176,10 @@ void Player::Render() const
 }
 
 
-Vec2 Player::GetSteering() const
+Vector2 Player::GetSteering() const
 {
 	// Apply gravity
-	Vec2 vSteering(0.f, 0.015f);
+	Vector2 vSteering(0.f, 0.015f);
 
 	if ((m_nShield >= 0) && (m_nFuel > 0))
 	{
@@ -307,7 +307,7 @@ void Player::Update()
 		if (bKeyFirePressed)
 		{
 			bool bLeft = (m_nAnimationFrame == 1);
-			PlayerBullet* pBullet = new PlayerBullet(m_pos + Vec2(bLeft ? 0.f : 24.f, 7.f));
+			PlayerBullet* pBullet = new PlayerBullet(m_pos + Vector2(bLeft ? 0.f : 24.f, 7.f));
 			pBullet->SetVelocity(bLeft ? -6.f : 6.f, 0.f);
 			pBullet->SetLifeTime(Entity::eLT_Room);
 

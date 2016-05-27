@@ -13,7 +13,7 @@ class Cannon;
 class Explosion : public Entity
 {
 public:
-	Explosion(const Vec2& vInitialPos);
+	Explosion(const Vector2& vInitialPos);
 
 private:
 	Texture m_texture;
@@ -23,19 +23,19 @@ private:
 class Debris : public Entity
 {
 public:
-	Debris(const Vec2& vInitialPos);
+	Debris(const Vector2& vInitialPos);
 
 	virtual void Render() const;
 	virtual bool IsMovable() const		{ return true; }
-	virtual Vec2 GetSteering() const	{ return Vec2(0.f, 0.16f); }
+	virtual Vector2 GetSteering() const	{ return Vector2(0.f, 0.16f); }
 };
 
 
 class HorizontalWave : public Entity
 {
 public:
-	HorizontalWave(Cannon* pCannon, const Vec2& vInitialPos, bool bLeft);
-	HorizontalWave(Radar* pRadar, const Vec2& vInitialPos, bool bLeft);
+	HorizontalWave(Cannon* pCannon, const Vector2& vInitialPos, bool bLeft);
+	HorizontalWave(Radar* pRadar, const Vector2& vInitialPos, bool bLeft);
 
 	virtual void Render() const;
 	virtual void SetGarbage();
@@ -52,7 +52,7 @@ private:
 class Wave : public Entity
 {
 public:
-	Wave(Radar* pRadar, const Vec2& vInitialPos, const Vec2& vel);
+	Wave(Radar* pRadar, const Vector2& vInitialPos, const Vector2& vel);
 
 	virtual void Render() const;
 	virtual void SetGarbage();
@@ -68,7 +68,7 @@ private:
 class Radiation : public Entity
 {
 public:
-	Radiation(const Vec2& vInitialPos, bool bLeft);
+	Radiation(const Vector2& vInitialPos, bool bLeft);
 
 	virtual void OnCollision(Player& player);
 	virtual void OnCollision(bool bHorizontal, bool bVertical);
@@ -82,7 +82,7 @@ private:
 class VerticalRocket : public Entity
 {
 public:
-	VerticalRocket(const Vec2& vInitialPos);
+	VerticalRocket(const Vector2& vInitialPos);
 
 	virtual void OnCollision(Player& player);
 	virtual void OnCollision(bool bHorizontal, bool bVertical);
@@ -96,7 +96,7 @@ private:
 class Bomb : public Entity
 {
 public:
-	Bomb(const Vec2& vInitialPos);
+	Bomb(const Vector2& vInitialPos);
 
 	virtual void OnCollision(Player& player);
 	virtual void OnCollision(bool bHorizontal, bool bVertical);
@@ -111,9 +111,9 @@ private:
 class PlayerBullet : public Entity
 {
 public:
-	PlayerBullet(const Vec2& vInitialPosition);
+	PlayerBullet(const Vector2& vInitialPosition);
 
-	virtual void Render() const { Engine::DrawText(m_pos + Vec2(0.f, -3.f), Engine::eC_White, "`"); }
+	virtual void Render() const { Engine::DrawText(m_pos + Vector2(0.f, -3.f), Engine::eC_White, "`"); }
 	virtual void SetGarbage() { Entity::SetGarbage(); Player::GetPlayer().OnNoPlayerBullet(); }
 	virtual bool IsMovable() const { return true; }
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) { SetGarbage(); }
@@ -143,7 +143,7 @@ public:
 	virtual void OnCollision(bool bHorizontal, bool bVertical);
 	virtual void OnCollision(Enemy& enemy) { enemy.Explode(); }
 	virtual void OnTimer() { SetGarbage(); }
-	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vec2(12.f, 0.f)); }
+	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vector2(12.f, 0.f)); }
 };
 
 
@@ -154,7 +154,7 @@ public:
 	virtual void Update();
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) { SetGarbage(); }
 	virtual void OnCollision(Enemy& enemy);
-	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vec2(12.f, 8.f)); }
+	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vector2(12.f, 8.f)); }
 };
 
 
@@ -167,7 +167,7 @@ public:
 	virtual void Update();
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) { SetGarbage(); }
 	virtual void OnCollision(Enemy& enemy);
-	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vec2(12.f, 8.f)); }
+	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vector2(12.f, 8.f)); }
 
 private:
 	bool m_bLeft;
@@ -184,7 +184,7 @@ public:
 	virtual void OnCollision(bool bHorizontal, bool bVertical);
 	virtual void OnCollision(Enemy& enemy) { enemy.Explode(); }
 	virtual void OnTimer() { SetGarbage(); }
-	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vec2(12.f, 0.f)); }
+	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vector2(12.f, 0.f)); }
 };
 
 

@@ -29,7 +29,7 @@ void GameOver::Update()
 		{
 			if ((rand() % 40) == 0)
 			{
-				maze.AddDebrisFor(player.GetPos() + Vec2(float(rand() % (player.GetWidth() - 8)), float(rand() % (player.GetHeight() - 8))));
+				maze.AddDebrisFor(player.GetPos() + Vector2(float(rand() % (player.GetWidth() - 8)), float(rand() % (player.GetHeight() - 8))));
 				Audio::Play(Sounds::EXPLOSION);	// present even if sounds are off
 			}
 		}

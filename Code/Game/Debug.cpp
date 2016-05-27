@@ -38,7 +38,7 @@ namespace Debug
 			if (!pEntity->IsEnabled())
 				continue;
 
-			Vec2 pos = pEntity->GetPos();
+			Vector2 pos = pEntity->GetPos();
 
 			if (bDrawPos)
 			{
@@ -49,18 +49,18 @@ namespace Debug
 
 			if (bDrawVel)
 			{
-				Vec2 vel = pEntity->GetVelocity();
+				Vector2 vel = pEntity->GetVelocity();
 				std::ostringstream os;
 				os << std::setprecision(3) << vel.x << "," << vel.y;
-				Engine::DrawText(pos + Vec2(0.f, 8.f), Engine::eC_White, os.str().c_str());
+				Engine::DrawText(pos + Vector2(0.f, 8.f), Engine::eC_White, os.str().c_str());
 			}
 
 			if (bDrawAcc)
 			{
-				Vec2 acc = pEntity->GetSteering();
+				Vector2 acc = pEntity->GetSteering();
 				std::ostringstream os;
 				os << std::setprecision(3) << acc.x << "," << acc.y;
-				Engine::DrawText(pos + Vec2(0.f, 16.f), Engine::eC_White, os.str().c_str());
+				Engine::DrawText(pos + Vector2(0.f, 16.f), Engine::eC_White, os.str().c_str());
 			}
 		}
 	}

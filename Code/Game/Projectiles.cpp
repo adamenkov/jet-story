@@ -10,7 +10,7 @@
 const float PI = 3.141592659f;
 
 
-Explosion::Explosion(const Vec2& vInitialPos) :
+Explosion::Explosion(const Vector2& vInitialPos) :
 	Entity(vInitialPos),
 	m_texture("Assets/Projectiles/Explosion.png")
 {
@@ -21,7 +21,7 @@ Explosion::Explosion(const Vec2& vInitialPos) :
 }
 
 
-Debris::Debris(const Vec2& vInitialPos) : Entity(vInitialPos)
+Debris::Debris(const Vector2& vInitialPos) : Entity(vInitialPos)
 {
 	m_nWidth = 8;
 	m_nHeight = 8;
@@ -45,7 +45,7 @@ void Debris::Render() const
 }
 
 
-HorizontalWave::HorizontalWave(Cannon* pCannon, const Vec2& vInitialPos, bool bLeft) :
+HorizontalWave::HorizontalWave(Cannon* pCannon, const Vector2& vInitialPos, bool bLeft) :
 	Entity(vInitialPos),
 	m_pCannon(pCannon),
 	m_pRadar(NULL)
@@ -57,7 +57,7 @@ HorizontalWave::HorizontalWave(Cannon* pCannon, const Vec2& vInitialPos, bool bL
 }
 
 
-HorizontalWave::HorizontalWave(Radar* pRadar, const Vec2& vInitialPos, bool bLeft) :
+HorizontalWave::HorizontalWave(Radar* pRadar, const Vector2& vInitialPos, bool bLeft) :
 	Entity(vInitialPos),
 	m_pCannon(NULL),
 	m_pRadar(pRadar)
@@ -103,7 +103,7 @@ void HorizontalWave::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PAR
 }
 
 
-Wave::Wave(Radar* pRadar, const Vec2& vInitialPos, const Vec2& vel) :
+Wave::Wave(Radar* pRadar, const Vector2& vInitialPos, const Vector2& vel) :
 	Entity(vInitialPos),
 	m_pRadar(pRadar)
 {
@@ -140,7 +140,7 @@ void Wave::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertic
 }
 
 
-Radiation::Radiation(const Vec2& vInitialPos, bool bLeft) :
+Radiation::Radiation(const Vector2& vInitialPos, bool bLeft) :
 	Entity(vInitialPos),
 	m_texture("Assets/Projectiles/Radiation.png")
 {
@@ -163,7 +163,7 @@ void Radiation::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bV
 }
 
 
-VerticalRocket::VerticalRocket(const Vec2& vInitialPos) :
+VerticalRocket::VerticalRocket(const Vector2& vInitialPos) :
 	Entity(vInitialPos),
 	m_texture("Assets/Projectiles/VerticalRocket.bmp")
 {
@@ -187,7 +187,7 @@ void VerticalRocket::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PAR
 }
 
 
-Bomb::Bomb(const Vec2& vInitialPos) :
+Bomb::Bomb(const Vector2& vInitialPos) :
 	Entity(vInitialPos),
 	m_texture("Assets/Projectiles/Bomb.bmp")
 {
@@ -210,7 +210,7 @@ void Bomb::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertic
 }
 
 
-PlayerBullet::PlayerBullet(const Vec2& vInitialPosition) : Entity(vInitialPosition)
+PlayerBullet::PlayerBullet(const Vector2& vInitialPosition) : Entity(vInitialPosition)
 {
 	m_nWidth = 7;
 	m_nHeight = 2;
@@ -224,7 +224,7 @@ void PlayerBullet::OnCollision(Enemy& enemy)
 }
 
 
-PlayerBomb::PlayerBomb() : Entity(Vec2(ZERO))
+PlayerBomb::PlayerBomb() : Entity(Vector2(ZERO))
 {
 	m_nWidth = 8;
 	m_nHeight = 8;
@@ -337,9 +337,9 @@ void PlayerStar::Update()
 	PlayerBomb::Update();
 
 	Player& player = Player::GetPlayer();
-	Vec2 playerPos = player.GetPos();
-	playerPos += Vec2(16.f, 8.f);
-	Vec2 vToPlayer = playerPos - m_pos;
+	Vector2 playerPos = player.GetPos();
+	playerPos += Vector2(16.f, 8.f);
+	Vector2 vToPlayer = playerPos - m_pos;
 	m_vel += vToPlayer / 1024.f;
 }
 

@@ -56,8 +56,8 @@ namespace Engine
 namespace Engine
 {
 	extern void DrawText(int x, int y,    EColor eColor, const char* szText);
-	extern void DrawText(const Vec2& pos, EColor eColor, const char* szText);
-	extern void DrawText(const Vec2& pos, EColor eColor, char ch);
+	extern void DrawText(const Vector2& pos, EColor eColor, const char* szText);
+	extern void DrawText(const Vector2& pos, EColor eColor, char ch);
 
 	extern void Print(int x, int y, EColor eColor, const char* szText);
 	extern void Print(int x, int y, EColor eColor, char ch);

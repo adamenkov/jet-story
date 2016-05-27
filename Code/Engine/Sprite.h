@@ -22,8 +22,8 @@ public:
 	virtual void Animate();
 	virtual void Render() const;
 
-	Vec2 GetPos() const				{ return m_pos; }
-	void SetPos(const Vec2& pos)	{ m_pos = pos; }
+	Vector2 GetPos() const				{ return m_pos; }
+	void SetPos(const Vector2& pos)	{ m_pos = pos; }
 	void SetPos(float x, float y)	{ m_pos.x = x; m_pos.y = y; }
 
 	void SetFrameTimer(int nFrameTimer)	{ m_nFrameTimer = nFrameTimer; }
@@ -45,7 +45,7 @@ public:
 	bool Overlaps(const Sprite* pSpriteOther) const;
 
 protected:
-	Vec2		m_pos;
+	Vector2		m_pos;
 
 	Texture*	m_pTexture;
 
