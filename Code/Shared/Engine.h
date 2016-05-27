@@ -4,6 +4,8 @@
 #pragma once
 
 #define _USING_V110_SDK71_ 1
+#include <d3d9.h>
+#include "../Engine/Vector2.h"
 
 
 namespace Engine
@@ -49,15 +51,7 @@ namespace Engine
 		eC_TotalColors
 	};
 
-}	// namespace Engine
 
-
-#include <d3d9.h>
-#include "../Engine/Vector2.h"
-
-
-namespace Engine
-{
 	extern void DrawText(int x, int y,    EColor eColor, const char* szText);
 	extern void DrawText(const Vector2& pos, EColor eColor, const char* szText);
 	extern void DrawText(const Vector2& pos, EColor eColor, char ch);
@@ -72,8 +66,8 @@ namespace Engine
 	extern bool	IsKeyDown(char key);
 
 	extern void	Exit();
-
 }	// namespace Engine
+
 
 namespace Audio
 {
@@ -86,9 +80,10 @@ namespace Audio
 
 	void PauseAll();
 	void ResumeAll();
-
 }	// namespace Audio
 
+
+// Don't move this.
 #include "../Engine/Sprite.h"
 
 #define UNUSED_PARAM(x)
