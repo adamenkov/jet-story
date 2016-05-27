@@ -91,7 +91,7 @@
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Font.cpp" />
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Engine.cpp" />
