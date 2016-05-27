@@ -50,7 +50,6 @@ namespace Engine
 
 
 #include <d3d9.h>
-#include "Audio.h"
 #include "../Engine/Vector2.h"
 
 
@@ -73,6 +72,19 @@ namespace Engine
 
 }	// namespace Engine
 
+namespace Audio
+{
+	bool Load(const char* szFileName, const char* szName);
+
+	bool IsPlaying(const char* szName);
+	bool Play(const char* szName, int nLoopCount = 1);
+	void Stop(const char* szName);
+	void StopAll();
+
+	void PauseAll();
+	void ResumeAll();
+
+}	// namespace Audio
 
 #include "../Engine/Sprite.h"
 
