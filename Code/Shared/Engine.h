@@ -39,7 +39,6 @@ namespace Engine
 		eC_Grey,
 
 		eC_LightBlack,
-
 		eC_LightBlue,
 		eC_LightRed,
 		eC_LightMagenta,
@@ -52,7 +51,7 @@ namespace Engine
 	};
 
 
-	extern void DrawText(int x, int y,    EColor eColor, const char* szText);
+	extern void DrawText(int x, int y,       EColor eColor, const char* szText);
 	extern void DrawText(const Vector2& pos, EColor eColor, const char* szText);
 	extern void DrawText(const Vector2& pos, EColor eColor, char ch);
 
@@ -85,6 +84,7 @@ namespace Audio
 
 // Don't move this.
 #include "../Engine/Sprite.h"
+
 
 #define UNUSED_PARAM(x)
 

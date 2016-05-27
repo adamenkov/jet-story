@@ -257,7 +257,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 
 
-bool HasFocus()
+bool ApplicationWindowHasFocus()
 {
 	return (GetFocus() == g_hWnd);
 }
@@ -357,7 +357,7 @@ int CALLBACK WinMain(
 }
 
 
-void ExitEngine()
+void DestroyWindow()
 {
 	DestroyWindow(g_hWnd);
 }

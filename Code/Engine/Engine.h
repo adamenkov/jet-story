@@ -1,3 +1,5 @@
+#ifndef __ENGINE_INTERNAL_H
+#define __ENGINE_INTERNAL_H
 
 #pragma once
 
@@ -5,8 +7,8 @@
 #include <d3dx9.h>
 
 
-void ExitEngine();
-bool HasFocus();
+void DestroyWindow();
+bool ApplicationWindowHasFocus();
 
 
 extern LPDIRECT3DDEVICE9	g_pD3DDevice;
@@ -18,3 +20,4 @@ class Font;
 extern Font* g_pFont;
 
 
+#endif	// #ifndef __ENGINE_INTERNAL_H

@@ -17,8 +17,8 @@ namespace Game
 	extern void Update();
 
 	extern void KeyPressed(char key);
-
 }	// namespace Game
+
 
 #define UNUSED_PARAM(x)
 

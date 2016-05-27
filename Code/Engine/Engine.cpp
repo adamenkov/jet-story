@@ -67,13 +67,12 @@ namespace Engine
 	
 	bool IsKeyDown(char key)
 	{
-		return (HasFocus() && (GetAsyncKeyState(key) < 0));
+		return (ApplicationWindowHasFocus() && (GetAsyncKeyState(key) < 0));
 	}
 
 
 	void Exit()
 	{
-		ExitEngine();
+		DestroyWindow();
 	}
-
 }	// namespace Engine
