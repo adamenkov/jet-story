@@ -1,5 +1,5 @@
-#include "../Common/Game.h"
-#include "../Common/Engine.h"
+#include "../Shared/Game.h"
+#include "../Shared/Engine.h"
 #include "Debug.h"
 #include "GameStates.h"
 #include "Maze.h"

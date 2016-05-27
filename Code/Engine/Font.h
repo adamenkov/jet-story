@@ -13,7 +13,7 @@ public:
 
 	virtual ~Font();
 
-	void Render(int x, int y, Engine::EColor eColor, const char* szText);
+	virtual void Render(int x, int y, Engine::EColor eColor, const char* szText);
 };
 
 

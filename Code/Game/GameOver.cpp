@@ -1,5 +1,5 @@
 #include "GameOver.h"
-#include "../Common/Game.h"
+#include "../Shared/Game.h"
 #include "GameStates.h"
 #include "HUD.h"
 #include "Maze.h"

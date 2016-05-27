@@ -4,7 +4,7 @@
 #pragma once
 
 // Don't change the order
-#include "../Common/Engine.h"
+#include "../Shared/Engine.h"
 #include "Texture.h"
 #include "Vector2.h"
 #include <D3D9Types.h>

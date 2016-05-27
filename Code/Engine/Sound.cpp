@@ -1,5 +1,5 @@
 #include "Sound.h"
-#include "../Common/Audio.h"
+#include "../Shared/Audio.h"
 
 
 Sound::Sound(const char* szFileName)

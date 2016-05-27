@@ -1,6 +1,6 @@
 #include "Intro.h"
 #include <cassert>
-#include "../Common/Engine.h"
+#include "../Shared/Engine.h"
 
 
 Intro::Intro() : m_eIntroState(eIS_FirstScreen)

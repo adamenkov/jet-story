@@ -4,7 +4,7 @@
 #pragma once
 
 #include "Entity.h"
-#include "../Common/Engine.h"
+#include "../Shared/Engine.h"
 
 
 class Enemy : public Entity

@@ -1,5 +1,5 @@
 #include "Collectibles.h"
-#include "../Common/Game.h"
+#include "../Shared/Game.h"
 #include "Player.h"
 #include "Sounds.h"
 

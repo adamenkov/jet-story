@@ -1,6 +1,6 @@
-#include "../Common/Engine.h"
-#include "../Common/Game.h"
-#include "../Common/Audio.h"
+#include "../Shared/Engine.h"
+#include "../Shared/Game.h"
+#include "../Shared/Audio.h"
 #include <cstdlib>
 #include <ctime>
 #include "Font.h"

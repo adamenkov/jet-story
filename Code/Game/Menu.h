@@ -6,7 +6,7 @@
 #define _USING_V110_SDK71_ 1
 
 #include <string>
-#include "../Common/Engine.h"
+#include "../Shared/Engine.h"
 #include "GameStates.h"
 
 

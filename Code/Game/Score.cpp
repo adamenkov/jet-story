@@ -4,8 +4,8 @@
 #include <iterator>
 #include <sstream>
 #include <string>
-#include "../Common/Engine.h"
-#include "../Common/Game.h"
+#include "../Shared/Engine.h"
+#include "../Shared/Game.h"
 #include "Player.h"
 #include "Settings.h"
 #include "Sounds.h"

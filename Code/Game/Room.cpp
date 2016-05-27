@@ -5,7 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <Windows.h>
-#include "../Common/Engine.h"
+#include "../Shared/Engine.h"
 #include "Collectibles.h"
 #include "Enemies.h"
 #include "Maze.h"

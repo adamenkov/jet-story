@@ -1,6 +1,6 @@
 #include "Accomplished.h"
 #include <cassert>
-#include "../Common/Game.h"
+#include "../Shared/Game.h"
 #include "Debug.h"
 #include "GameStates.h"
 #include "HUD.h"

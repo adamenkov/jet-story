@@ -6,7 +6,7 @@
 #define _USING_V110_SDK71_ 1
 
 #include <vector>
-#include "../Common/Engine.h"
+#include "../Shared/Engine.h"
 #include "Entity.h"
 
 class Texture;

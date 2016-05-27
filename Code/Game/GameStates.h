@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "../Common/Game.h"
+#include "../Shared/Game.h"
 
 
 struct GameState

@@ -2,8 +2,8 @@
 #include <cassert>
 #include <fstream>
 #include <string>
-#include "../Common/Engine.h"
-#include "../Common/Game.h"
+#include "../Shared/Engine.h"
+#include "../Shared/Game.h"
 #include "Settings.h"
 #include "Sounds.h"
 

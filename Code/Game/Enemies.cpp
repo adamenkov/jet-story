@@ -1,6 +1,6 @@
 #include "Enemies.h"
-#include "../Common/Engine.h"
-#include "../Common/Game.h"
+#include "../Shared/Engine.h"
+#include "../Shared/Game.h"
 #include "Debug.h"
 #include "Maze.h"
 #include "Player.h"
