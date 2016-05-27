@@ -1,6 +1,5 @@
 #include "Texture.h"
-#include "../Shared/Engine.h"
-#include "Common.h"
+#include "Engine.h"
 #include <cassert>
 
 

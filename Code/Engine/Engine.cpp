@@ -1,10 +1,9 @@
-#include "../Shared/Engine.h"
+#include "Engine.h"
 #include <cstdarg>
 #include <fstream>
 #include <d3d9.h>
 #include <Windows.h>
 #include "../Shared/Game.h"
-#include "Common.h"
 #include "Font.h"
 #include "Vector2.h"
 

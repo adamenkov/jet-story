@@ -1,6 +1,5 @@
 #include "Sprite.h"
-#include "../Shared/Engine.h"
-#include "Common.h"
+#include "Engine.h"
 
 
 Sprite::Sprite() :

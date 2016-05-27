@@ -98,7 +98,7 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Common.h" />
+    <ClInclude Include="Engine.h" />
     <ClInclude Include="fmod.h" />
     <ClInclude Include="fmod.hpp" />
     <ClInclude Include="fmod_codec.h" />

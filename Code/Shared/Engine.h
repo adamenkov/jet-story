@@ -1,5 +1,5 @@
-#ifndef __ENGINE_H
-#define __ENGINE_H
+#ifndef __ENGINE_SHARED_H
+#define __ENGINE_SHARED_H
 
 #pragma once
 
@@ -89,4 +89,4 @@ namespace Audio
 #define UNUSED_PARAM(x)
 
 
-#endif	// #ifndef __ENGINE_H
+#endif	// #ifndef __ENGINE_SHARED_H
