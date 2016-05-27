@@ -109,7 +109,7 @@ void Menu::Render() const
 		Engine::Print( 2, 19, Engine::eC_Grey,  "4.  START GAME");
 
 
-		enum { y = 8 * (Engine::eScreenHeightInChars - 1) };
+		enum { y = 8 * (Engine::eScreenHeightInCharacters - 1) };
 
 		Engine::DrawText(
 			-m_nFPSCounter % 8,
@@ -117,14 +117,14 @@ void Menu::Render() const
 			Engine::eC_Cyan,
 			m_sRunningLine.substr(
 				(m_nFPSCounter / 8) % m_sRunningLine.length(), 
-				Engine::eScreenWidthInChars
+				Engine::eScreenWidthInCharacters
 			).c_str()
 		);
 
 		Engine::Print(0,
-			Engine::eScreenHeightInChars - 1, Engine::eC_Black, '\x1F');
-		Engine::Print(Engine::eScreenWidthInChars - 1,
-			Engine::eScreenHeightInChars - 1, Engine::eC_Black, '\x1F');
+			Engine::eScreenHeightInCharacters - 1, Engine::eC_Black, '\x1F');
+		Engine::Print(Engine::eScreenWidthInCharacters - 1,
+			Engine::eScreenHeightInCharacters - 1, Engine::eC_Black, '\x1F');
 
 		break;
 		

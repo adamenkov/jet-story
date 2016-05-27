@@ -14,11 +14,14 @@ namespace Engine
 
 		eScreenScale = 3,
 
-		eScreenWidthInChars		= 32,
-		eScreenHeightInChars	= 24,
+		eScreenWidthInCharacters	= 32,
+		eScreenHeightInCharacters	= 24,
 
-		eScreenWidthInPixels	= 8 * eScreenWidthInChars,
-		eScreenHeightInPixels	= 8 * eScreenHeightInChars,
+		eCharacterWidthInPixels		= 8,
+		eCharacterHeightInPixels	= 8,
+
+		eScreenWidthInPixels	= eCharacterWidthInPixels * eScreenWidthInCharacters,
+		eScreenHeightInPixels	= eCharacterHeightInPixels * eScreenHeightInCharacters,
 	};
 
 

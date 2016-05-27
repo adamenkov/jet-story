@@ -29,7 +29,7 @@ void Intro::Render() const
 		assert(!!!"Should not be here!");
 	}
 
-	Engine::Print(0, Engine::eScreenHeightInChars - 1, Engine::eC_Grey, "(PRESS ANY KEY TO CONTINUE)");
+	Engine::Print(0, Engine::eScreenHeightInCharacters - 1, Engine::eC_Grey, "(PRESS ANY KEY TO CONTINUE)");
 }
 
 

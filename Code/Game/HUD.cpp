@@ -10,7 +10,7 @@
 
 HUD::HUD()
 {
-	for (int x = 0; x < Engine::eScreenWidthInChars; ++x)
+	for (int x = 0; x < Engine::eScreenWidthInCharacters; ++x)
 	{
 		m_tiles.push_back(Tile(x, 0));
 		m_tiles.push_back(Tile(x, 3));

@@ -34,7 +34,7 @@ namespace Engine
 
 	void Print(int x, int y, EColor eColor, const char* szText)
 	{
-		DrawText(8 * x, 8 * y, eColor, szText);
+		DrawText(eCharacterWidthInPixels * x, eCharacterHeightInPixels * y, eColor, szText);
 	}
 
 
@@ -43,7 +43,7 @@ namespace Engine
 		char szText[2];
 		szText[0] = ch;
 		szText[1] = 0;
-		DrawText(8 * x, 8 * y, eColor, szText);
+		DrawText(eCharacterWidthInPixels * x, eCharacterHeightInPixels * y, eColor, szText);
 	}
 
 

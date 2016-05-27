@@ -180,8 +180,8 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		int nNewClientWidth  = nNewWindowWidth  - nClientToWindowWidthDelta;
 		int nNewClientHeight = nNewWindowHeight - nClientToWindowHeightDelta;
 
-		int nNewCorrectedClientWidth  = nNewClientHeight * Engine::eScreenWidthInChars  / Engine::eScreenHeightInChars;
-		int nNewCorrectedClientHeight = nNewClientWidth  * Engine::eScreenHeightInChars / Engine::eScreenWidthInChars;
+		int nNewCorrectedClientWidth  = nNewClientHeight * Engine::eScreenWidthInCharacters  / Engine::eScreenHeightInCharacters;
+		int nNewCorrectedClientHeight = nNewClientWidth  * Engine::eScreenHeightInCharacters / Engine::eScreenWidthInCharacters;
 
 		// Keep ZX Spectrum display aspect ratio
 		switch (wParam)
