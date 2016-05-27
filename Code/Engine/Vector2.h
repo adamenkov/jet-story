@@ -76,11 +76,6 @@ struct Vector2
 	{
 		return Vector2(coeff * rhs.x, coeff * rhs.y);
 	}
-
-	friend Vector2 operator/(const Vector2& rhs, float denominator)
-	{
-		return Vector2(rhs.x / denominator, rhs.y / denominator);
-	}
 };
 
 

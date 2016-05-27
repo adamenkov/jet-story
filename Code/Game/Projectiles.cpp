@@ -340,7 +340,7 @@ void PlayerStar::Update()
 	Vector2 playerPos = player.GetPos();
 	playerPos += Vector2(16.f, 8.f);
 	Vector2 vToPlayer = playerPos - m_pos;
-	m_vel += vToPlayer / 1024.f;
+	m_vel += (1.f / 1024.f) * vToPlayer;
 }
 
 
