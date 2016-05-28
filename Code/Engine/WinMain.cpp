@@ -192,6 +192,52 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Game::KeyPressed(static_cast<char>(wParam));
 		break;
 
+	case WM_SIZE:
+	{
+		RECT rect;
+		GetWindowRect(hWnd, &rect);
+		int nWindowWidth = rect.right - rect.left;
+		int nWindowHeight = rect.bottom - rect.top;
+
+		int nMinClientWidth = GetSystemMetrics(SM_CXMIN) - nClientToWindowWidthDelta;
+		int nMinClientHeight = nMinClientWidth * Engine::eScreenHeightInCharacters / Engine::eScreenWidthInCharacters;
+
+		bool sizeNeedsCorrection = false;
+
+		int nClientHeight = nWindowHeight - nClientToWindowHeightDelta;
+		if (nClientHeight < nMinClientHeight)
+		{
+			rect.bottom = rect.top + (nMinClientHeight + nClientToWindowHeightDelta);
+			sizeNeedsCorrection = true;
+		}
+		else
+		{
+			int nClientWidth = nWindowWidth - nClientToWindowWidthDelta;
+			int nCorrectedClientHeight = nClientWidth  * Engine::eScreenHeightInCharacters / Engine::eScreenWidthInCharacters;
+			if (nClientHeight > nCorrectedClientHeight)
+			{
+				rect.bottom = rect.top + (nCorrectedClientHeight + nClientToWindowHeightDelta);
+				sizeNeedsCorrection = true;
+			}
+			else
+			{
+				int nCorrectedClientWidth = nClientHeight * Engine::eScreenWidthInCharacters / Engine::eScreenHeightInCharacters;
+				if (nClientWidth > nCorrectedClientWidth)
+				{
+					rect.right = rect.left + (nCorrectedClientWidth + nClientToWindowWidthDelta);
+					sizeNeedsCorrection = true;
+				}
+			}
+		}
+		
+		if (sizeNeedsCorrection)
+		{
+			MoveWindow(hWnd, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, FALSE);
+		}
+
+		break;
+	}
+
 	case WM_SIZING:
 	{
 		RECT* pRect = reinterpret_cast<RECT*>(lParam);
