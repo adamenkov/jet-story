@@ -262,7 +262,7 @@ void PlayerBall::OnCollision(bool bHorizontal, bool bVertical)
 		m_vel.y = -m_vel.y;
 	}
 
-	Sounds::Play(Sounds::PLAYER_BALL_COLLISION);
+	Audio::Play(Sounds::PLAYER_BALL_COLLISION);
 }
 
 
@@ -356,5 +356,5 @@ void PlayerStar::OnCollision(bool bHorizontal, bool bVertical)
 		m_vel.y = -m_vel.y;
 	}
 
-	Sounds::Play(Sounds::PLAYER_BALL_COLLISION);
+	Audio::Play(Sounds::PLAYER_BALL_COLLISION);
 }

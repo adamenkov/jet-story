@@ -10,7 +10,7 @@
 void GameOver::OnEnter()
 {
 	Audio::PauseAll();
-	Sounds::Play(Sounds::GAME_OVER);
+	Audio::Play(Sounds::GAME_OVER);
 
 	m_nFrameID = 0;
 }

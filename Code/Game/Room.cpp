@@ -415,16 +415,16 @@ void Room::MoveEntitiesAndResolveCollisions()
 
 	if (bPlayerVsEnemyCollision && (player.GetShield() >= 0) && (Maze::GetMaze().GetBasesLeft() > 0))
 	{
-		if (!Sounds::IsPlaying(Sounds::LESS_SHIELD))
+		if (!Audio::IsPlaying(Sounds::LESS_SHIELD))
 		{
-			Sounds::Play(Sounds::LESS_SHIELD);
+			Audio::Play(Sounds::LESS_SHIELD);
 		}
 	}
 	else
 	{
-		if (Sounds::IsPlaying(Sounds::LESS_SHIELD))
+		if (Audio::IsPlaying(Sounds::LESS_SHIELD))
 		{
-			Sounds::Stop(Sounds::LESS_SHIELD);
+			Audio::Stop(Sounds::LESS_SHIELD);
 		}
 	}
 }
@@ -481,17 +481,17 @@ void Room::CollectGarbageEntities()
 	{
 		if (Settings::bSoundEffects && !Settings::bMusic)
 		{
-			if (!Sounds::IsPlaying(Sounds::EMPTY_ROOM))
+			if (!Audio::IsPlaying(Sounds::EMPTY_ROOM))
 			{
-				Sounds::Play(Sounds::EMPTY_ROOM, -1);
+				Audio::Play(Sounds::EMPTY_ROOM, -1);
 			}
 		}
 	}
 	else
 	{
-		if (Sounds::IsPlaying(Sounds::EMPTY_ROOM))
+		if (Audio::IsPlaying(Sounds::EMPTY_ROOM))
 		{
-			Sounds::Stop(Sounds::EMPTY_ROOM);
+			Audio::Stop(Sounds::EMPTY_ROOM);
 		}
 	}
 }

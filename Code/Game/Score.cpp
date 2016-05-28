@@ -116,14 +116,14 @@ void Score::KeyPressed(char key)
 	{
 	case eS_WaitingForFirstInitial:
 		m_cPlayerFirstInitial = key;
-		Sounds::Play(Sounds::KEY_DEFINED);
+		Audio::Play(Sounds::KEY_DEFINED);
 		m_eState = eS_WaitingForSecondInitial;
 		m_waitFrames = 20;
 		break;
 
 	case eS_WaitingForSecondInitial:
 		m_cPlayerSecondInitial = key;
-		Sounds::Play(Sounds::KEY_DEFINED);
+		Audio::Play(Sounds::KEY_DEFINED);
 		m_eState = eS_WaitingForThirdInitial;
 		m_waitFrames = 20;
 		break;
@@ -131,7 +131,7 @@ void Score::KeyPressed(char key)
 	case eS_WaitingForThirdInitial:
 	{
 		m_cPlayerThirdInitial = key;
-		Sounds::Play(Sounds::KEY_DEFINED);
+		Audio::Play(Sounds::KEY_DEFINED);
 		m_BestScores[ Player::GetPlayer().GetScore() ] = std::string() + m_cPlayerFirstInitial + m_cPlayerSecondInitial + m_cPlayerThirdInitial;
 		BestScores::iterator leastScore = m_BestScores.begin();
 		std::advance(leastScore, m_BestScores.size() - 1);

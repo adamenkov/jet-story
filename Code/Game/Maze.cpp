@@ -161,9 +161,9 @@ void Maze::OnBaseDestroyed()
 {
 	if (--m_nBasesLeft <= 0)
 	{
-		if (Sounds::IsPlaying(Sounds::LESS_SHIELD))
+		if (Audio::IsPlaying(Sounds::LESS_SHIELD))
 		{
-			Sounds::Stop(Sounds::LESS_SHIELD);
+			Audio::Stop(Sounds::LESS_SHIELD);
 		}
 
 		GameStates::SwitchTo("accomplished");

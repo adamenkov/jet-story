@@ -30,7 +30,7 @@ void RandomCollectible::CollectFuel(Player& player)
 {
 	player.Refuel();
 	m_bEnabled = false;
-	Sounds::Play(Sounds::ITEM_COLLECTED);
+	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
@@ -38,7 +38,7 @@ void RandomCollectible::CollectAmmo(Player& player)
 {
 	player.RestoreAmmo();
 	m_bEnabled = false;
-	Sounds::Play(Sounds::ITEM_COLLECTED);
+	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
@@ -48,7 +48,7 @@ void RandomCollectible::CollectBombs(Player& player)
 	player.SetBombs(50);
 	player.RestoreAmmo();
 	m_bEnabled = false;
-	Sounds::Play(Sounds::ITEM_COLLECTED);
+	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
@@ -58,7 +58,7 @@ void RandomCollectible::CollectMissiles(Player& player)
 	player.SetBombs(50);
 	player.RestoreAmmo();
 	m_bEnabled = false;
-	Sounds::Play(Sounds::ITEM_COLLECTED);
+	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
@@ -68,7 +68,7 @@ void RandomCollectible::CollectBalls(Player& player)
 	player.SetBombs(20);
 	player.RestoreAmmo();
 	m_bEnabled = false;
-	Sounds::Play(Sounds::ITEM_COLLECTED);
+	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
@@ -76,7 +76,7 @@ void RandomCollectible::CollectShield(Player& player)
 {
 	player.RestoreShield();
 	m_bEnabled = false;
-	Sounds::Play(Sounds::ITEM_COLLECTED);
+	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
@@ -86,7 +86,7 @@ void RandomCollectible::CollectStars(Player& player)
 	player.SetBombs(20);
 	player.RestoreAmmo();
 	m_bEnabled = false;
-	Sounds::Play(Sounds::ITEM_COLLECTED);
+	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 

@@ -83,7 +83,7 @@ void Menu::Render() const
 			if (m_waitFrames == 40)
 			{
 				Settings::bInvulnerability = true;
-				Sounds::Play(Sounds::SHHH);
+				Audio::Play(Sounds::SHHH);
 			}
 		}
 	}
@@ -156,12 +156,12 @@ void Menu::KeyPressed(char key)
 	switch (m_eState)
 	{
 	case eMS_MainMenu:
-		Sounds::Play(Sounds::KEY_PRESSED);
+		Audio::Play(Sounds::KEY_PRESSED);
 
 		switch (key)
 		{
 		case '1':
-			Sounds::Play(Sounds::REDEFINE_KEYS);
+			Audio::Play(Sounds::REDEFINE_KEYS);
 			Settings::cKeyLeft	= ' ';
 			Settings::cKeyRight	= ' ';
 			Settings::cKeyDown	= ' ';
@@ -196,37 +196,37 @@ void Menu::KeyPressed(char key)
 		break;
 
 	case eMS_GetReadyForSession:
-		Sounds::Play(Sounds::KEY_DEFINED);
+		Audio::Play(Sounds::KEY_DEFINED);
 		GameStates::SwitchTo("session");
 		break;
 
 	case eMS_AssigningKey_Left:
 		Settings::cKeyLeft = key;
-		Sounds::Play(Sounds::KEY_DEFINED);
+		Audio::Play(Sounds::KEY_DEFINED);
 		m_waitFrames = 20;
 		break;
 
 	case eMS_AssigningKey_Right:
 		Settings::cKeyRight = key;
-		Sounds::Play(Sounds::KEY_DEFINED);
+		Audio::Play(Sounds::KEY_DEFINED);
 		m_waitFrames = 20;
 		break;
 
 	case eMS_AssigningKey_Down:
 		Settings::cKeyDown = key;
-		Sounds::Play(Sounds::KEY_DEFINED);
+		Audio::Play(Sounds::KEY_DEFINED);
 		m_waitFrames = 20;
 		break;
 
 	case eMS_AssigningKey_Up:
 		Settings::cKeyUp = key;
-		Sounds::Play(Sounds::KEY_DEFINED);
+		Audio::Play(Sounds::KEY_DEFINED);
 		m_waitFrames = 20;
 		break;
 
 	case eMS_AssigningKey_Fire:
 		Settings::cKeyFire = key;
-		Sounds::Play(Sounds::KEY_DEFINED);
+		Audio::Play(Sounds::KEY_DEFINED);
 		m_waitFrames =
 			((Settings::cKeyLeft  == 'K') &&
 			 (Settings::cKeyRight == 'A') &&

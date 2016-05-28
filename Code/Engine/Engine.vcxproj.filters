@@ -4,7 +4,7 @@
     <Filter Include="Graphics">
       <UniqueIdentifier>{1250849a-bb4e-4914-9993-bd3b095bf33e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sound">
+    <Filter Include="Audio">
       <UniqueIdentifier>{ab0b5033-94b4-40b2-bbd6-687f92016fd3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -19,26 +19,26 @@
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Audio.cpp">
-      <Filter>Sound</Filter>
+      <Filter>Audio</Filter>
     </ClCompile>
     <ClCompile Include="Sound.cpp">
-      <Filter>Sound</Filter>
+      <Filter>Audio</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fmod_dsp.h">
-      <Filter>Sound</Filter>
+      <Filter>Audio</Filter>
     </ClInclude>
     <ClInclude Include="fmod.h">
-      <Filter>Sound</Filter>
+      <Filter>Audio</Filter>
     </ClInclude>
     <ClInclude Include="fmod.hpp">
-      <Filter>Sound</Filter>
+      <Filter>Audio</Filter>
     </ClInclude>
     <ClInclude Include="fmod_codec.h">
-      <Filter>Sound</Filter>
+      <Filter>Audio</Filter>
     </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Graphics</Filter>
@@ -50,7 +50,7 @@
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h">
-      <Filter>Sound</Filter>
+      <Filter>Audio</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Stopwatch.h" />

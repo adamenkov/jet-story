@@ -14,7 +14,7 @@ void Accomplished::OnEnter()
 	Maze& maze = Maze::GetMaze();
 	maze.ExplodeAllEntititiesExceptPlayer();
 
-	Sounds::Play(Sounds::ALL_BASES_DESTROYED);
+	Audio::Play(Sounds::ALL_BASES_DESTROYED);
 
 	m_cBrightness = 255;
 
@@ -58,11 +58,11 @@ void Accomplished::Update()
 		{
 			if (m_nFrameID == 500)
 			{
-				Sounds::Play(Sounds::MISSION);
+				Audio::Play(Sounds::MISSION);
 			}
 			if (m_nFrameID == 1000)
 			{
-				Sounds::Play(Sounds::ACCOMPLISHED);
+				Audio::Play(Sounds::ACCOMPLISHED);
 			}
 			if (m_nFrameID == 2500)
 			{

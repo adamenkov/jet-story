@@ -293,7 +293,7 @@ void Player::Update()
 			{
 				m_pPlayerBomb->SetPosNearPlayer();
 				Maze::GetMaze().AddEntity(m_pPlayerBomb);
-				Sounds::Play(Sounds::PLAYER_BOMB_LAUNCH);
+				Audio::Play(Sounds::PLAYER_BOMB_LAUNCH);
 
 				--m_nBombs;
 				m_frameIDBombSpawned = frameID;
@@ -312,7 +312,7 @@ void Player::Update()
 			pBullet->SetLifeTime(Entity::eLT_Room);
 
 			Maze::GetMaze().AddEntity(pBullet);
-			Sounds::Play(Sounds::FIRE);
+			Audio::Play(Sounds::FIRE);
 
 			--m_nAmmo;
 			++m_nPlayerBullets;
@@ -376,9 +376,9 @@ void Player::ConsumeShield(int nUnits)
 
 	if (m_nShield < 0)
 	{
-		if (Sounds::IsPlaying(Sounds::LESS_SHIELD))
+		if (Audio::IsPlaying(Sounds::LESS_SHIELD))
 		{
-			Sounds::Stop(Sounds::LESS_SHIELD);
+			Audio::Stop(Sounds::LESS_SHIELD);
 		}
 
 		GameStates::SwitchTo("game_over");
