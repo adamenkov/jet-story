@@ -3,26 +3,26 @@
 #include <cassert>
 
 
-Texture::Texture(const char* szFileName, D3DCOLOR colorTransparent) : m_pTexture(nullptr)
+Texture::Texture(const std::string& fileName, D3DCOLOR colorTransparent) : m_pTexture(nullptr)
 {
-	if (szFileName)
+	if (!fileName.empty())
 	{
-		LoadFromFile(szFileName, colorTransparent);
+		LoadFromFile(fileName, colorTransparent);
 	}
 }
 
 Texture::~Texture()
 {
-	if (m_pTexture)
+	if (m_pTexture != nullptr)
 	{
 		m_pTexture->Release();
 	}
 }
 
 
-void Texture::LoadFromFile(const char* szFileName, D3DCOLOR colorTransparent)
+void Texture::LoadFromFile(const std::string& fileName, D3DCOLOR colorTransparent)
 {
-	if (D3DXGetImageInfoFromFile(szFileName, &m_info) != D3D_OK)
+	if (D3DXGetImageInfoFromFile(fileName.c_str(), &m_info) != D3D_OK)
 	{
 		Engine::LogError("Couldn't get image information from file %s.");
 		assert(false);
@@ -31,7 +31,7 @@ void Texture::LoadFromFile(const char* szFileName, D3DCOLOR colorTransparent)
 
 	D3DXCreateTextureFromFileEx( 
 		g_pD3DDevice,			// Direct3D device object
-		szFileName,				// bitmap filename
+		fileName.c_str(),		// bitmap filename
 		m_info.Width,			// bitmap image width
 		m_info.Height,			// bitmap image height
 		1,						// mip-map levels (1 for no chain)

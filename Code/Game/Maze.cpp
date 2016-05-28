@@ -40,7 +40,7 @@ bool Maze::Init()
 			{
 				std::ostringstream os;
 				os << "Assets/Objects/Object" << i << ".bmp";
-				pObjectTexture = new Texture(os.str().c_str());
+				pObjectTexture = new Texture(os.str());
 			}
 		}
 
@@ -55,7 +55,7 @@ bool Maze::Init()
 		std::ostringstream os;
 		os << "Assets/Maze/Block" << i << ".bmp";
 
-		Texture* pBlockTexture = new Texture(os.str().c_str());
+		Texture* pBlockTexture = new Texture(os.str());
 		pBlockSprite->SetTexture(pBlockTexture);
 
 		m_blockSprites .push_back(pBlockSprite);

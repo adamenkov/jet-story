@@ -66,7 +66,7 @@ void Score::Render() const
 		{
 			std::ostringstream os;
 			os << place << ".  " << it->second << "   " << std::setw(6) << std::setfill('0') << it->first;
-			Engine::Print(8, 2 * place + 4, Engine::eC_LightYellow, os.str().c_str());
+			Engine::Print(8, 2 * place + 4, Engine::eC_LightYellow, os.str());
 			++place;
 		}
 		return;

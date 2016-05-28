@@ -3,6 +3,8 @@
 
 #pragma once
 
+#define _USING_V110_SDK71_ 1
+#include <string>
 #include "fmod.hpp"
 
 
@@ -21,7 +23,7 @@ namespace Audio
 class Sound
 {
 public:
-	Sound(const char* szFileName);
+	Sound(const std::string& fileName);
 	~Sound();
 
 	bool IsOK() const { return m_pFMOD_sound != nullptr; }

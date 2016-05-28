@@ -10,15 +10,15 @@
 
 namespace Engine
 {
-	void DrawText(int x, int y, EColor eColor, const char* szText)
+	void DrawText(int x, int y, EColor eColor, const std::string& text)
 	{
-		g_pFont->Render(x, y, eColor, szText);
+		g_pFont->Render(x, y, eColor, text);
 	}
 
 
-	void DrawText(const Vector2& pos, EColor eColor, const char* szText)
+	void DrawText(const Vector2& pos, EColor eColor, const std::string& text)
 	{
-		g_pFont->Render(int(pos.x), int(pos.y), eColor, szText);
+		g_pFont->Render(int(pos.x), int(pos.y), eColor, text);
 	}
 
 
@@ -31,18 +31,17 @@ namespace Engine
 	}
 
 
-	void Print(int x, int y, EColor eColor, const char* szText)
+	void Print(int x, int y, EColor eColor, const std::string& text)
 	{
-		DrawText(eCharacterWidthInPixels * x, eCharacterHeightInPixels * y, eColor, szText);
+		DrawText(eCharacterWidthInPixels * x, eCharacterHeightInPixels * y, eColor, text);
 	}
 
 
 	void Print(int x, int y, EColor eColor, char ch)
 	{
-		char szText[2];
-		szText[0] = ch;
-		szText[1] = 0;
-		DrawText(eCharacterWidthInPixels * x, eCharacterHeightInPixels * y, eColor, szText);
+		std::string text;
+		text += ch;
+		DrawText(eCharacterWidthInPixels * x, eCharacterHeightInPixels * y, eColor, text);
 	}
 
 

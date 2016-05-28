@@ -28,14 +28,16 @@ Font::~Font()
 }
 
 
-void Font::Render(int x, int y, Engine::EColor eColor, const char* szText)
+void Font::Render(int x, int y, Engine::EColor eColor, const std::string& text)
 {
 	SetColor(eColor);
+	Vector2 pos(static_cast<float>(x), static_cast<float>(y));
 
-	for (Vector2 pos(static_cast<float>(x), static_cast<float>(y)); char ch = *szText++; pos.x += m_nWidth)
+	for (std::string::const_iterator it = text.begin(), itEnd = text.end(); it != itEnd; ++it)
 	{
-		SetAnimationFrame(ch);
+		SetAnimationFrame(*it);
 		SetPos(pos);
 		Sprite::Render();
+		pos.x += m_nWidth;
 	}
 }

@@ -78,7 +78,7 @@ void HUD::Render()
 		Vector2 pos = m_player.GetPos();
 		std::ostringstream os;
 		os << "X: " << int(pos.x) << ", Y: " << int(pos.y);
-		Engine::Print(1, 22, Engine::eC_White, os.str().c_str());
+		Engine::Print(1, 22, Engine::eC_White, os.str());
 	}
 #endif	// #ifdef DEBUG_MAZE
 
@@ -124,5 +124,5 @@ void HUD::RenderInt(int x, int y, int value, int width) const
 {
 	std::ostringstream os;
 	os << std::setw(width) << std::setfill('0') << value;
-	Engine::Print(x, y, Engine::eC_White, os.str().c_str());
+	Engine::Print(x, y, Engine::eC_White, os.str());
 }

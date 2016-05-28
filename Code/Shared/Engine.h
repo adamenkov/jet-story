@@ -5,6 +5,7 @@
 
 #define _USING_V110_SDK71_ 1
 #include <d3d9.h>
+#include <string>
 #include "../Engine/Vector2.h"
 
 
@@ -51,11 +52,11 @@ namespace Engine
 	};
 
 
-	extern void DrawText(int x, int y,       EColor eColor, const char* szText);
-	extern void DrawText(const Vector2& pos, EColor eColor, const char* szText);
+	extern void DrawText(int x, int y,       EColor eColor, const std::string& text);
+	extern void DrawText(const Vector2& pos, EColor eColor, const std::string& text);
 	extern void DrawText(const Vector2& pos, EColor eColor, char ch);
 
-	extern void Print(int x, int y, EColor eColor, const char* szText);
+	extern void Print(int x, int y, EColor eColor, const std::string& text);
 	extern void Print(int x, int y, EColor eColor, char ch);
 
 	extern void	LogError(const char* szFormat, ...);
@@ -70,11 +71,11 @@ namespace Engine
 
 namespace Audio
 {
-	bool Load(const char* szFileName, const char* szName);
+	bool Load(const std::string& fileName, const std::string& name);
 
-	bool IsPlaying(const char* szName);
-	bool Play(const char* szName, int nLoopCount = 1);
-	void Stop(const char* szName);
+	bool IsPlaying(const std::string& name);
+	bool Play(const std::string& name, int nLoopCount = 1);
+	void Stop(const std::string& name);
 	void StopAll();
 
 	void PauseAll();

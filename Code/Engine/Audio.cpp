@@ -19,17 +19,17 @@ namespace Audio
 	FMOD_SYSTEM* g_pFMOD_system;
 	
 
-	bool Load(const char* szFileName, const char* szName)
+	bool Load(const std::string& fileName, const std::string& name)
 	{
-		if (strlen(szFileName) == 0)
+		if (fileName.empty())
 			return false;
 		
-		Sound* pSound = new Sound(szFileName);
+		Sound* pSound = new Sound(fileName);
 		assert(pSound->IsOK());
 		if (pSound->IsOK())
 		{
-			delete sounds[szName];
-			sounds[szName] = pSound;
+			delete sounds[name];
+			sounds[name] = pSound;
 			return true;
 		}
 
@@ -37,21 +37,21 @@ namespace Audio
 		return false;
 	}
 	
-	bool IsPlaying(const char* szName)
+	bool IsPlaying(const std::string& name)
 	{
-		Sound* pSound = sounds[szName];
+		Sound* pSound = sounds[name];
 		return pSound ? pSound->IsPlaying() : false;
 	}
 
-	bool Play(const char* szName, int nLoopCount)
+	bool Play(const std::string& name, int nLoopCount)
 	{
-		Sound* pSound = sounds[szName];
+		Sound* pSound = sounds[name];
 		return pSound ? pSound->Play(nLoopCount) : false;
 	}
 	
-	void Stop(const char* szName)
+	void Stop(const std::string& name)
 	{
-		if (Sound* pSound = sounds[szName])
+		if (Sound* pSound = sounds[name])
 		{
 			pSound->Stop();
 		}

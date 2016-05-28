@@ -27,7 +27,7 @@ namespace Debug
 		{
 			std::ostringstream os;
 			os << "A=" << A << ", B=" << B;
-			Engine::Print(0, 3, Engine::eC_White, os.str().c_str());
+			Engine::Print(0, 3, Engine::eC_White, os.str());
 		}
 
 		Entities& entities = Maze::GetMaze().GetRoomEntities();
@@ -44,7 +44,7 @@ namespace Debug
 			{
 				std::ostringstream os;
 				os << int(pos.x) << "," << int(pos.y);
-				Engine::DrawText(pos, Engine::eC_White, os.str().c_str());
+				Engine::DrawText(pos, Engine::eC_White, os.str());
 			}
 
 			if (bDrawVel)
@@ -52,7 +52,7 @@ namespace Debug
 				Vector2 vel = pEntity->GetVelocity();
 				std::ostringstream os;
 				os << std::setprecision(3) << vel.x << "," << vel.y;
-				Engine::DrawText(pos + Vector2(0.f, 8.f), Engine::eC_White, os.str().c_str());
+				Engine::DrawText(pos + Vector2(0.f, 8.f), Engine::eC_White, os.str());
 			}
 
 			if (bDrawAcc)
@@ -60,7 +60,7 @@ namespace Debug
 				Vector2 acc = pEntity->GetSteering();
 				std::ostringstream os;
 				os << std::setprecision(3) << acc.x << "," << acc.y;
-				Engine::DrawText(pos + Vector2(0.f, 16.f), Engine::eC_White, os.str().c_str());
+				Engine::DrawText(pos + Vector2(0.f, 16.f), Engine::eC_White, os.str());
 			}
 		}
 	}

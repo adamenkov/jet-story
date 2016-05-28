@@ -118,7 +118,7 @@ void Menu::Render() const
 			m_sRunningLine.substr(
 				(m_nFPSCounter / 8) % m_sRunningLine.length(), 
 				Engine::eScreenWidthInCharacters
-			).c_str()
+			)
 		);
 
 		Engine::Print(0,

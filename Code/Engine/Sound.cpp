@@ -2,13 +2,13 @@
 #include "../Shared/Engine.h"
 
 
-Sound::Sound(const char* szFileName)
+Sound::Sound(const std::string& fileName)
 {
 	try
 	{
 		if (FMOD_System_CreateSound(
 				Audio::g_pFMOD_system,	// FMOD system
-				szFileName,				// file name
+				fileName.c_str(),		// file name
 				FMOD_DEFAULT,			// default audio
 				nullptr,				// n/a
 				&m_pFMOD_sound			// pointer to sample
