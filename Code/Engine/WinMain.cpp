@@ -246,7 +246,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			else
 			{
-				pRect->top = pRect->bottom - (nPossibleCorrectedClientHeight - nClientToWindowHeightDelta);
+				pRect->top = pRect->bottom - (nPossibleCorrectedClientHeight + nClientToWindowHeightDelta);
 			}
 			break;
 
