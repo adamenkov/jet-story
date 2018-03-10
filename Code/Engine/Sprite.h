@@ -22,7 +22,7 @@ public:
 	virtual void Animate();
 	virtual void Render() const;
 
-	Vector2 GetPos() const				{ return m_pos; }
+	Vector2 GetPos() const			{ return m_pos; }
 	void SetPos(const Vector2& pos)	{ m_pos = pos; }
 	void SetPos(float x, float y)	{ m_pos.x = x; m_pos.y = y; }
 
@@ -40,14 +40,14 @@ public:
 	int	GetWidth()  const { return m_nWidth; }
 	int	GetHeight() const { return m_nHeight; }
 
-	bool IsOK() const { return m_pTexture->GetD3DTexture() != nullptr; }
+	bool IsOK() const { return m_pTexture->IsOK(); }
 
 	bool Overlaps(const Sprite* pSpriteOther) const;
 
 protected:
 	Vector2		m_pos;
 
-	Texture*	m_pTexture;
+	std::weak_ptr<Texture>	m_pTexture;
 
 	int	m_nWidth;
 	int	m_nHeight;
@@ -64,7 +64,7 @@ private:
 };
 
 
-typedef	std::vector<Sprite*>	Sprites;
+using Sprites = std::vector<Sprite*>;
 
 
 #endif	// #ifndef __SPRITE_H

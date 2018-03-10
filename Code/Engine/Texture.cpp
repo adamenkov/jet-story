@@ -24,13 +24,13 @@ void Texture::LoadFromFile(const std::string& fileName, D3DCOLOR colorTransparen
 {
 	if (D3DXGetImageInfoFromFile(fileName.c_str(), &m_info) != D3D_OK)
 	{
-		Engine::LogError("Couldn't get image information from file %s.");
+		Engine::LogError("Couldn't get image information from file: %s.");
 		assert(false);
 		return;
 	}
 
 	D3DXCreateTextureFromFileEx( 
-		g_pD3DDevice,			// Direct3D device object
+		g_pDirect3DDevice,			// Direct3D device object
 		fileName.c_str(),		// bitmap filename
 		m_info.Width,			// bitmap image width
 		m_info.Height,			// bitmap image height

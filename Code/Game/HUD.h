@@ -33,7 +33,7 @@ private:
 		void Render() { Engine::Print(x, y, eColor, '#'); }
 	};
 	
-	typedef std::vector<Tile> Tiles;
+	using Tiles = std::vector<Tile>;
 	Tiles m_tiles;
 };
 

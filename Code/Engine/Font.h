@@ -3,17 +3,21 @@
 
 #pragma once
 
+#include <memory>
+
 #include "Sprite.h"
 
 
-class Font : public Sprite
+class Font
 {
 public:
 	Font(const char* szFontImageFileName, int nLetterWidth, int nLetterHeight, int nColumns);
-
 	virtual ~Font();
 
 	virtual void Render(int x, int y, Engine::EColor eColor, const std::string& text);
+
+private:
+	std::unique_ptr<Sprite> m_sprite;
 };
 
 

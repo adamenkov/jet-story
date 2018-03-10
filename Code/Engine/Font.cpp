@@ -10,21 +10,21 @@
 
 Font::Font(const char* szFontImageFileName, int nLetterWidth, int nLetterHeight, int nColumns) 
 {
-	m_pTexture = new Texture(szFontImageFileName);
+	Texture* pTexture = new Texture(szFontImageFileName);
 
-	if (!m_pTexture->GetD3DTexture()) {
+	if (!pTexture->GetDirect3DTexture()) {
 		Engine::LogError("Error loading font image file: %s.", szFontImageFileName);
 		assert(false);
 		return;
 	}
 
-	SetTexture(m_pTexture, nLetterWidth, nLetterHeight, nColumns);
+	m_fontSprite.SetTexture(pTexture, nLetterWidth, nLetterHeight, nColumns);
 }
 
 
 Font::~Font()
 {
-	delete m_pTexture;
+	delete pTexture;
 }
 
 

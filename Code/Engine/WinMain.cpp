@@ -7,8 +7,8 @@
 #include "Stopwatch.h"
 
 
-LPDIRECT3DDEVICE9	g_pD3DDevice;
-LPD3DXSPRITE		g_pD3DXSprite;
+LPDIRECT3DDEVICE9	g_pDirect3DDevice;		// the video card
+LPD3DXSPRITE		g_pDirect3DXSprite;
 
 Font* g_pFont;
 
@@ -17,7 +17,7 @@ long int g_nFrameID = 0;
 
 namespace
 {
-	LPDIRECT3D9			pD3D;
+	LPDIRECT3D9			pDirect3D;
 	LPDIRECT3DSURFACE9	pBackBuffer;
 
 	bool bAppWindowDestroyed;
@@ -32,18 +32,25 @@ namespace
 	
 	void ClearScene()
 	{
-		g_pD3DDevice->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.f, 0);
+		g_pDirect3DDevice->Clear(
+			0,			// no rectangles
+			nullptr,	// rectangles
+			D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,		// Clear the render target surface and the depth (z) buffer
+			D3DCOLOR_XRGB(0, 0, 0),					// Clear with the black color
+			1.f,		// new Z-buffer value
+			0			// new stencil buffer value
+		);
 	}
 
 
 	bool InitEngine()
 	{
-		pD3D = Direct3DCreate9(D3D_SDK_VERSION);
-		if (!pD3D)
+		pDirect3D = Direct3DCreate9(D3D_SDK_VERSION);
+		if (pDirect3D == nullptr)
 			return false;
 
 		D3DDISPLAYMODE displayMode;
-		if (pD3D->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &displayMode) != D3D_OK)
+		if (pDirect3D->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &displayMode) != D3D_OK)
 			return false;
 
 		D3DPRESENT_PARAMETERS d3dpp;
@@ -60,28 +67,28 @@ namespace
 		d3dpp.AutoDepthStencilFormat	= D3DFMT_D16;
 		d3dpp.PresentationInterval		= D3DPRESENT_INTERVAL_IMMEDIATE;
 
-		if ((pD3D->CreateDevice(
-				D3DADAPTER_DEFAULT,
-				D3DDEVTYPE_HAL,
-				g_hWnd,
+		if ((pDirect3D->CreateDevice(
+				D3DADAPTER_DEFAULT,	// use the default video card
+				D3DDEVTYPE_HAL,		// use the hardware renderer
+				g_hWnd,				// use the main window
 				D3DCREATE_HARDWARE_VERTEXPROCESSING,
 				&d3dpp,
-				&g_pD3DDevice) != D3D_OK)
-			|| !g_pD3DDevice)
+				&g_pDirect3DDevice) != D3D_OK)
+			|| !g_pDirect3DDevice)
 		{
 			return false;
 		}
 
 		ClearScene();
 
-		g_pD3DDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer);
+		g_pDirect3DDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer);
 
-		g_pD3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
-		g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-		g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
-		g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(0, 0, 0));
+		g_pDirect3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+		g_pDirect3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+		g_pDirect3DDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+		g_pDirect3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(0, 0, 0));
 
-		if (D3DXCreateSprite(g_pD3DDevice, &g_pD3DXSprite) != D3D_OK)
+		if (D3DXCreateSprite(g_pDirect3DDevice, &g_pDirect3DXSprite) != D3D_OK)
 		{
 			return false;
 		}
@@ -107,7 +114,7 @@ namespace
 		material.Ambient.g = 0.f;
 		material.Ambient.b = 0.f;
 		material.Ambient.a = 1.f;
-		g_pD3DDevice->SetMaterial(&material);
+		g_pDirect3DDevice->SetMaterial(&material);
 
 		g_pFont = new Font("Font.bmp", 8, 8, 16);
 		if (!g_pFont->IsOK())
@@ -121,22 +128,22 @@ namespace
 
 	void RenderFrame()
 	{
-		g_pD3DDevice->BeginScene();
+		g_pDirect3DDevice->BeginScene();
 
 		ClearScene();
 
 		D3DXMATRIX matrixWorld;
 		D3DXMatrixIdentity(&matrixWorld);
-		g_pD3DDevice->SetTransform(D3DTS_WORLD, &matrixWorld);
+		g_pDirect3DDevice->SetTransform(D3DTS_WORLD, &matrixWorld);
 
 		{
-			g_pD3DXSprite->Begin(D3DXSPRITE_ALPHABLEND);
+			g_pDirect3DXSprite->Begin(D3DXSPRITE_ALPHABLEND);
 			Game::Render();
-			g_pD3DXSprite->End();
+			g_pDirect3DXSprite->End();
 		}
 
-		g_pD3DDevice->EndScene();
-		g_pD3DDevice->Present(nullptr, nullptr, NULL, nullptr);
+		g_pDirect3DDevice->EndScene();
+		g_pDirect3DDevice->Present(nullptr, nullptr, NULL, nullptr);
 	}
 
 
@@ -165,25 +172,26 @@ namespace
 
 		Audio::ShutDown();
 
-		if (g_pD3DXSprite != nullptr)
+		if (g_pDirect3DXSprite != nullptr)
 		{
-			g_pD3DXSprite->Release();
+			g_pDirect3DXSprite->Release();
 		}
 
-		if (g_pD3DDevice != nullptr)
+		if (g_pDirect3DDevice != nullptr)
 		{
-			g_pD3DDevice->Release();
+			g_pDirect3DDevice->Release();
 		}
 
-		if (pD3D != nullptr)
+		if (pDirect3D != nullptr)
 		{
-			pD3D->Release();
+			pDirect3D->Release();
 		}
 	}
 
 }	// namespace
 
 
+// The window event callback function
 LRESULT CALLBACK WinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
@@ -199,7 +207,7 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		int nWindowWidth = rect.right - rect.left;
 		int nWindowHeight = rect.bottom - rect.top;
 
-		int nMinClientWidth = GetSystemMetrics(SM_CXMIN) - nClientToWindowWidthDelta;
+		int nMinClientWidth = GetSystemMetrics(SM_CXMIN) - nClientToWindowWidthDelta;	// SM_CXMIN - minimum window width
 		int nMinClientHeight = nMinClientWidth * Engine::eScreenHeightInCharacters / Engine::eScreenWidthInCharacters;
 
 		bool sizeNeedsCorrection = false;
@@ -333,12 +341,14 @@ bool ApplicationWindowHasFocus()
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
 	HINSTANCE UNUSED_PARAM(hPrevInstance),
-	LPSTR UNUSED_PARAM(lpCmdLine),
+	LPSTR UNUSED_PARAM(lpszCmdLine),
 	int nCmdShow)
 {
 	srand(static_cast<unsigned int>(time(nullptr)));
 
 	const char* szWindowCaption = Game::GetName();
+
+	// Register the class of the main window
 
 	WNDCLASSEX wc;
 	wc.cbSize        = sizeof wc;
@@ -360,8 +370,10 @@ int CALLBACK WinMain(
 		return 0;
 	}
 
-	const DWORD dwStyle = WS_OVERLAPPEDWINDOW;
-	const DWORD dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
+	// Create the main window
+
+	const DWORD dwStyle = WS_OVERLAPPEDWINDOW;		// i.e. not dialog or child
+	const DWORD dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;		// a border with a raised edge
 
 	int nClientWidth  = Engine::eScreenScale * Engine::eScreenWidthInPixels;
 	int nClientHeight = Engine::eScreenScale * Engine::eScreenHeightInPixels;
@@ -375,12 +387,15 @@ int CALLBACK WinMain(
 	nClientToWindowHeightDelta = nWindowHeight - nClientHeight;
 
 	HWND hWnd = CreateWindowEx(
-		0,
+		0,						// extended style
 		szWindowCaption,		// window class
 		szWindowCaption,		// title bar
 		dwStyle | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,	// window style
+
+		// Center the main window
 		(GetSystemMetrics(SM_CXSCREEN) - nWindowWidth)  / 2,	// x coordinate
 		(GetSystemMetrics(SM_CYSCREEN) - nWindowHeight) / 2,	// y coordinate
+
 		nWindowWidth,			// width of the window
 		nWindowHeight,			// height of the window
 		NULL,					// parent window
@@ -407,6 +422,7 @@ int CALLBACK WinMain(
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
+	// Main message loop
 	MSG msg;
 	while (!bAppWindowDestroyed)
 	{

@@ -80,7 +80,7 @@ private:
 	Entities m_entities;
 	Entities m_entitiesToAdd;
 	
-	typedef std::vector<RECT>	Obstacles;
+	using Obstacles = std::vector<RECT>;
 	Obstacles	m_obstacles;
 };
 

@@ -11,8 +11,8 @@ void DestroyWindow();
 bool ApplicationWindowHasFocus();
 
 
-extern LPDIRECT3DDEVICE9	g_pD3DDevice;
-extern LPD3DXSPRITE			g_pD3DXSprite;
+extern LPDIRECT3DDEVICE9	g_pDirect3DDevice;
+extern LPD3DXSPRITE			g_pDirect3DXSprite;
 
 extern long int g_nFrameID;
 

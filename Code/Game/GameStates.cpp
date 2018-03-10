@@ -13,10 +13,10 @@
 
 namespace
 {
-	typedef std::map<std::string, GameState*> States;
-	States states;
+	using GameStates = std::map<std::string, GameState*>;
+	GameStates gameStates;
 
-	GameState* pCurrentState;
+	GameState* pCurrentGameState;
 
 }	// namespace
 
@@ -25,15 +25,15 @@ namespace GameStates
 {
 	bool Init()
 	{
-		states["intro"]        = new Intro;
-		states["menu"]         = new Menu;
-		states["session"]      = new Session;
-		states["game_over"]    = new GameOver;
-		states["accomplished"] = new Accomplished;
-		states["score"]        = new Score;
+		gameStates["intro"]        = new Intro;
+		gameStates["menu"]         = new Menu;
+		gameStates["session"]      = new Session;
+		gameStates["game_over"]    = new GameOver;
+		gameStates["accomplished"] = new Accomplished;
+		gameStates["score"]        = new Score;
 
-		pCurrentState = states["session"];
-		pCurrentState->OnEnter();
+		pCurrentGameState = gameStates["session"];
+		pCurrentGameState->OnEnter();
 
 		return true;
 	}
@@ -43,22 +43,22 @@ namespace GameStates
 	{
 		struct DeleteFunctor
 		{
-			void operator()(const States::value_type& it) const
+			void operator()(const GameStates::value_type& it) const
 			{
 				delete it.second;
 			}
 		};
 
-		std::for_each(states.rbegin(), states.rend(), DeleteFunctor());
+		std::for_each(gameStates.rbegin(), gameStates.rend(), DeleteFunctor());
 	}
 
 
 	void KeyPressed(char key)
 	{
-		assert(pCurrentState);
-		if (pCurrentState)
+		assert(pCurrentGameState);
+		if (pCurrentGameState)
 		{
-			pCurrentState->KeyPressed(key);
+			pCurrentGameState->KeyPressed(key);
 		}
 
 		Debug::KeyPressed(key);
@@ -67,31 +67,31 @@ namespace GameStates
 
 	void Render()
 	{
-		assert(pCurrentState);
-		if (pCurrentState)
+		assert(pCurrentGameState);
+		if (pCurrentGameState)
 		{
-			pCurrentState->Render();
+			pCurrentGameState->Render();
 		}
 	}
 
 
 	void Update()
 	{
-		assert(pCurrentState);
-		if (pCurrentState)
+		assert(pCurrentGameState);
+		if (pCurrentGameState)
 		{
-			pCurrentState->Update();
+			pCurrentGameState->Update();
 		}
 	}
 
 
 	void SwitchTo(const char* szNewState)
 	{
-		pCurrentState = states[szNewState];
-		assert(pCurrentState);
-		if (pCurrentState)
+		pCurrentGameState = gameStates[szNewState];
+		assert(pCurrentGameState);
+		if (pCurrentGameState)
 		{
-			pCurrentState->OnEnter();
+			pCurrentGameState->OnEnter();
 		}
 	}
 

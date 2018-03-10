@@ -12,7 +12,7 @@ class Enemy;
 class Player;
 
 
-class Entity : public Sprite
+class Entity
 {
 public:
 	Entity(const Vector2& vInitialPos);
@@ -72,6 +72,8 @@ public:
 	virtual int GetScore() const { return 0; }
 
 protected:
+	Sprite		m_sprite;
+
 	ELifeTime	m_eLifeTime;
 
 	Vector2		m_vInitialPos;
@@ -86,7 +88,7 @@ protected:
 };
 
 
-typedef	std::vector<Entity*>	Entities;
+using Entities = std::vector<Entity*>;
 
 
 #endif	// #ifndef __ENTITY_H

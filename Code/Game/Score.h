@@ -32,7 +32,7 @@ private:
 	};
 	EState m_eState;
 
-	typedef std::map<int, std::string, std::greater<int> > BestScores;
+	using BestScores =std::map<int, std::string, std::greater<int>>;
 	BestScores m_BestScores;
 
 	char m_cPlayerFirstInitial;

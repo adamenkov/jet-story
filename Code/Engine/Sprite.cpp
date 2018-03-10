@@ -57,9 +57,9 @@ void Sprite::Render() const
 	D3DXVECTOR2 trans(FLOAT(int(m_pos.x)), FLOAT(int(m_pos.y)));
 
 	D3DXMatrixTransformation2D(&matrix, nullptr, 0, &scale, &center, 0.f, &trans);
-	g_pD3DXSprite->SetTransform(&matrix);
+	g_pDirect3DXSprite->SetTransform(&matrix);
 
-	g_pD3DXSprite->Draw(m_pTexture->GetD3DTexture(), &srcRect, nullptr, nullptr, m_color);
+	g_pDirect3DXSprite->Draw(m_pTexture->GetDirect3DTexture(), &srcRect, nullptr, nullptr, m_color);
 }
 
 
@@ -95,10 +95,10 @@ void Sprite::SetTexture(Texture* pTexture, int nWidth, int nHeight, int nColumns
 {
 	m_pTexture = pTexture;
 
-	m_nWidth  = nWidth  ? nWidth  : m_pTexture->GetWidth();
-	m_nHeight = nHeight ? nHeight : m_pTexture->GetHeight();
+	m_nWidth  = (nWidth  > 0) ? nWidth  : m_pTexture->GetWidth();
+	m_nHeight = (nHeight > 0) ? nHeight : m_pTexture->GetHeight();
 
-	m_nAnimationColumns = nColumns ? nColumns : m_pTexture->GetWidth() / m_nWidth;
+	m_nAnimationColumns = (nColumns > 0) ? nColumns : m_pTexture->GetWidth() / m_nWidth;
 	m_nAnimationFrames = m_nAnimationColumns * (m_pTexture->GetHeight() / m_nHeight);
 }
 
@@ -115,6 +115,5 @@ bool Sprite::Overlaps(const Sprite* pSpriteOther) const
 	RECT rectOther = { left, top, left + pSpriteOther->GetWidth(), top + pSpriteOther->GetHeight() };
 
 	RECT rectCollision;
-
 	return (IntersectRect(&rectCollision, &rect, &rectOther) != FALSE);
 }

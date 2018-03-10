@@ -8,7 +8,7 @@
 
 namespace
 {
-	typedef std::map<std::string, Sound*> Sounds;
+	using Sounds = std::map<std::string, Sound*>;
 	Sounds sounds;
 
 }	// namespace
