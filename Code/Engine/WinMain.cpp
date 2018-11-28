@@ -117,7 +117,7 @@ namespace
 		g_pDirect3DDevice->SetMaterial(&material);
 
 		g_pFont = new Font("Font.bmp", 8, 8, 16);
-		if (!g_pFont->IsOK())
+		if (g_pFont->IsEmpty())
 		{
 			return false;
 		}

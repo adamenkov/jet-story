@@ -84,7 +84,7 @@ namespace Audio
 
 
 // Don't move this.
-#include "../Engine/Sprite.h"
+//#include "../Engine/Sprite.h"
 
 
 #define UNUSED_PARAM(x)

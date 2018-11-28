@@ -8,36 +8,31 @@
 #include "Vector2.h"
 
 
-Font::Font(const char* szFontImageFileName, int nLetterWidth, int nLetterHeight, int nColumns) 
+Font::Font(const std::string& sFontImageFileName, int nLetterWidth, int nLetterHeight, int nColumns)
 {
-	Texture* pTexture = new Texture(szFontImageFileName);
+	std::shared_ptr<Texture> pTexture = std::make_shared<Texture>(sFontImageFileName);
 
-	if (!pTexture->GetDirect3DTexture()) {
-		Engine::LogError("Error loading font image file: %s.", szFontImageFileName);
+	if (!pTexture->GetDirect3DTexture())
+	{
+		Engine::LogError("Error loading font image file: %s.", sFontImageFileName.c_str());
 		assert(false);
 		return;
 	}
 
-	m_fontSprite.SetTexture(pTexture, nLetterWidth, nLetterHeight, nColumns);
-}
-
-
-Font::~Font()
-{
-	delete pTexture;
+	m_fontSprite->SetTexture(pTexture, nLetterWidth, nLetterHeight, nColumns);
 }
 
 
 void Font::Render(int x, int y, Engine::EColor eColor, const std::string& text)
 {
-	SetColor(eColor);
+	m_fontSprite->SetColor(eColor);
 	Vector2 pos(static_cast<float>(x), static_cast<float>(y));
 
-	for (std::string::const_iterator it = text.begin(), itEnd = text.end(); it != itEnd; ++it)
+	for (char c : text)
 	{
-		SetAnimationFrame(*it);
-		SetPos(pos);
-		Sprite::Render();
-		pos.x += m_nWidth;
+		m_fontSprite->SetAnimationFrame(c);
+		m_fontSprite->SetPos(pos);
+		m_fontSprite->Render();
+		pos.x += m_fontSprite->GetWidth();
 	}
 }

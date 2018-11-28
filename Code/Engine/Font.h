@@ -1,24 +1,19 @@
-#ifndef __FONT_H
-#define __FONT_H
-
 #pragma once
 
-#include <memory>
+#include <string>
 
 #include "Sprite.h"
 
 
-class Font
+class Font final
 {
 public:
-	Font(const char* szFontImageFileName, int nLetterWidth, int nLetterHeight, int nColumns);
-	virtual ~Font();
+	Font(const std::string& sFontImageFileName, int nLetterWidth, int nLetterHeight, int nColumns);
 
-	virtual void Render(int x, int y, Engine::EColor eColor, const std::string& text);
+	bool IsEmpty() const { return m_fontSprite->HasTexture(); }
+
+	void Render(int x, int y, Engine::EColor eColor, const std::string& text);
 
 private:
-	std::unique_ptr<Sprite> m_sprite;
+	std::unique_ptr<Sprite> m_fontSprite;
 };
-
-
-#endif	// #ifndef __FONT_H

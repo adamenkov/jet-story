@@ -1,6 +1,3 @@
-#ifndef __SPRITE_H
-#define __SPRITE_H
-
 #pragma once
 
 // Don't change the order
@@ -11,16 +8,15 @@
 #include <vector>
 
 
-class Sprite
+class Sprite final
 {
 public:
 	Sprite();
-	virtual ~Sprite() {}
 
 	virtual void Reset();
 
-	virtual void Animate();
-	virtual void Render() const;
+	void Animate();
+	void Render() const;
 
 	Vector2 GetPos() const			{ return m_pos; }
 	void SetPos(const Vector2& pos)	{ m_pos = pos; }
@@ -28,26 +24,26 @@ public:
 
 	void SetFrameTimer(int nFrameTimer)	{ m_nFrameTimer = nFrameTimer; }
 	
-	int  GetAnimationFrames() const { return m_nAnimationFrames; }
+	int  GetAnimationFrames() const { return m_numAnimationFrames; }
 	void SetAnimationFrame(int nAnimationFrame)	{ m_nAnimationFrame = nAnimationFrame; }
 
 	void SetColor(Engine::EColor eColor);
 	void SetAlpha(unsigned char alpha) { m_color &= 0xFFFFFF; m_color |= ((alpha & 0xFF) << 24); }
 
-	Texture* GetTexture() const { return m_pTexture; }
-	void     SetTexture(Texture* pTexture, int nWidth = 0, int nHeight = 0, int nColumns = 0);
+	std::shared_ptr<Texture> GetTexture() const { return m_pTexture; }
+	void SetTexture(std::shared_ptr<Texture> pTexture, int nWidth = 0, int nHeight = 0, int nColumns = 0);
 
 	int	GetWidth()  const { return m_nWidth; }
 	int	GetHeight() const { return m_nHeight; }
 
-	bool IsOK() const { return m_pTexture->IsOK(); }
+	bool HasTexture() const { return !m_pTexture->IsEmpty(); }
 
 	bool Overlaps(const Sprite* pSpriteOther) const;
 
 protected:
 	Vector2		m_pos;
 
-	std::weak_ptr<Texture>	m_pTexture;
+	std::shared_ptr<Texture>	m_pTexture;
 
 	int	m_nWidth;
 	int	m_nHeight;
@@ -55,16 +51,10 @@ protected:
 	// Animation
 	long int	m_nFrameIDStart;
 	int			m_nFrameTimer;
-	int			m_nAnimationColumns;
+	int			m_numAnimationColumns;
 	int			m_nAnimationFrame;
-	int			m_nAnimationFrames;
+	int			m_numAnimationFrames;
 
 private:
 	D3DCOLOR	m_color;
 };
-
-
-using Sprites = std::vector<Sprite*>;
-
-
-#endif	// #ifndef __SPRITE_H

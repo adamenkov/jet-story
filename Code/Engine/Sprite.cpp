@@ -9,9 +9,9 @@ Sprite::Sprite() :
 	m_nHeight(0),
 	m_nFrameIDStart(0),
 	m_nFrameTimer(0),
-	m_nAnimationColumns(1),
+	m_numAnimationColumns(1),
 	m_nAnimationFrame(0),
-	m_nAnimationFrames(0),
+	m_numAnimationFrames(0),
 	m_color(0xFFFFFFFF)
 {
 }
@@ -34,7 +34,7 @@ void Sprite::Animate()
 			m_nFrameIDStart = nFrameID;
 
 			++m_nAnimationFrame;
-			if (m_nAnimationFrame >= m_nAnimationFrames)
+			if (m_nAnimationFrame >= m_numAnimationFrames)
 			{
 				m_nAnimationFrame = 0;
 			}
@@ -45,8 +45,8 @@ void Sprite::Animate()
 
 void Sprite::Render() const
 {
-	int x = (m_nAnimationFrame % m_nAnimationColumns) * m_nWidth;
-	int y = (m_nAnimationFrame / m_nAnimationColumns) * m_nHeight;
+	int x = (m_nAnimationFrame % m_numAnimationColumns) * m_nWidth;
+	int y = (m_nAnimationFrame / m_numAnimationColumns) * m_nHeight;
 	RECT srcRect = { x, y, x + m_nWidth, y + m_nHeight };
 
 	D3DXMATRIX matrix;
@@ -54,7 +54,7 @@ void Sprite::Render() const
 	D3DXVECTOR2 center(.5f * m_nWidth, .5f * m_nHeight);
 
 	// To avoid brightness artifacts, draw only at integer coordinates
-	D3DXVECTOR2 trans(FLOAT(int(m_pos.x)), FLOAT(int(m_pos.y)));
+	D3DXVECTOR2 trans(static_cast<FLOAT>(static_cast<int>(m_pos.x)), static_cast<FLOAT>(static_cast<int>(m_pos.y)));
 
 	D3DXMatrixTransformation2D(&matrix, nullptr, 0, &scale, &center, 0.f, &trans);
 	g_pDirect3DXSprite->SetTransform(&matrix);
@@ -65,7 +65,7 @@ void Sprite::Render() const
 
 void Sprite::SetColor(Engine::EColor eColor)
 {
-	static D3DCOLOR aZXColors[] = {
+	static const D3DCOLOR aZXColors[] = {
 		D3DCOLOR_XRGB(  0,   0,   0),	// Black
 		D3DCOLOR_XRGB(  0,   0, 200),	// Blue
 		D3DCOLOR_XRGB(200,   0,   0),	// Red
@@ -91,15 +91,15 @@ void Sprite::SetColor(Engine::EColor eColor)
 }
 
 
-void Sprite::SetTexture(Texture* pTexture, int nWidth, int nHeight, int nColumns)
+void Sprite::SetTexture(std::shared_ptr<Texture> pTexture, int nWidth /*= 0*/, int nHeight /*= 0*/, int nColumns /*= 0*/)
 {
 	m_pTexture = pTexture;
 
 	m_nWidth  = (nWidth  > 0) ? nWidth  : m_pTexture->GetWidth();
 	m_nHeight = (nHeight > 0) ? nHeight : m_pTexture->GetHeight();
 
-	m_nAnimationColumns = (nColumns > 0) ? nColumns : m_pTexture->GetWidth() / m_nWidth;
-	m_nAnimationFrames = m_nAnimationColumns * (m_pTexture->GetHeight() / m_nHeight);
+	m_numAnimationColumns = (nColumns > 0) ? nColumns : m_pTexture->GetWidth() / m_nWidth;
+	m_numAnimationFrames = m_numAnimationColumns * (m_pTexture->GetHeight() / m_nHeight);
 }
 
 
