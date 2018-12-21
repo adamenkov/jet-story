@@ -22,5 +22,7 @@ public:
 
 private:
 	FMOD_SOUND*		m_pFMOD_sound;
+	FMOD::Sound*	m_pFMOD_sound2;
 	FMOD_CHANNEL*	m_pFMOD_channel;
+	FMOD::Channel*	m_pFMOD_channel2;
 };

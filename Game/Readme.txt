@@ -1,4 +1,4 @@
-Original game:
+﻿Original game:
 --------------
 
 Full title: Jet-Story
@@ -20,6 +20,6 @@ Author of code: Evgeny Adamenkov (engine code inspired by book "Advanced 2D Game
 
 Assets: Extracted from the original game using Spectaculator (Copyright (C) 2001-2008 Jonathan Needle).
 
-Year of release: 2012.
+Year of release: (not yet released).
 
-The game uses FMOD Sound System by Firelight Technologies (Copyright (C) Firelight Technologies Pty, Ltd., 1994-2015).
+The game uses FMOD Sound System by Firelight Technologies (Copyright (C) Firelight Technologies Pty, Ltd., 1994-2018).

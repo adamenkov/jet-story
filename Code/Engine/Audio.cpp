@@ -9,15 +9,17 @@
 
 namespace
 {
-	FMOD_SYSTEM* g_pFMOD_system;
-
 	std::map<std::string, std::unique_ptr<Sound>> s_mapSounds;
 }	// namespace
 
 
 namespace Audio
 {
-	bool Init()
+	FMOD_SYSTEM* g_pFMOD_system;
+	FMOD::System* g_pFMOD_system2;
+
+
+	bool Init2()
 	{
 		if (g_pFMOD_system != nullptr)
 		{
@@ -49,6 +51,25 @@ namespace Audio
 	}
 
 
+	bool Init()
+	{
+		if (FMOD::System_Create(&g_pFMOD_system2) != FMOD_OK)
+			return false;
+
+		unsigned int version;
+		if (g_pFMOD_system2->getVersion(&version) != FMOD_OK)
+			return false;
+
+		if (version < FMOD_VERSION)
+			return false;
+
+		if (g_pFMOD_system2->init(32, FMOD_INIT_NORMAL, nullptr) != FMOD_OK)
+			return false;
+
+		return true;
+	}
+
+
 	void ShutDown()
 	{
 		for (auto& soundPair : s_mapSounds)
@@ -58,7 +79,11 @@ namespace Audio
 
 		if (g_pFMOD_system != nullptr)
 		{
-			FMOD_System_Release(g_pFMOD_system);
+			//FMOD_System_Release(g_pFMOD_system);
+			if (g_pFMOD_system2->close() == FMOD_OK) {
+				g_pFMOD_system2->release();
+			}
+
 			g_pFMOD_system = nullptr;
 		}
 	}
@@ -66,7 +91,8 @@ namespace Audio
 
 	void Update()
 	{
-		FMOD_System_Update(g_pFMOD_system);
+		//FMOD_System_Update(g_pFMOD_system);
+		g_pFMOD_system2->update();
 	}
 
 

@@ -102,7 +102,7 @@ bool Maze::Init()
 
 	m_room[0][0].AddGameEntity(Player::GetPlayer());
 
-	m_textureBlankScreen->LoadFromFile("Assets/BlankScreen.png", D3DCOLOR_RGBA(1, 2, 3, 4));	// opaque black screen
+	m_textureBlankScreen = std::make_shared<Texture>("Assets/BlankScreen.png", D3DCOLOR_RGBA(1, 2, 3, 4));	// opaque black screen
 	m_spriteBlankScreen.SetTexture(m_textureBlankScreen);
 
 	return true;

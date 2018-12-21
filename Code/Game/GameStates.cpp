@@ -13,10 +13,10 @@
 
 namespace
 {
-	using GameStates = std::map<std::string, std::unique_ptr<GameState>>;
+	using GameStates = std::map<std::string, std::shared_ptr<GameState>>;
 	GameStates gameStates;
 
-	GameState* pCurrentGameState;
+	std::shared_ptr<GameState> pCurrentGameState;
 
 }	// namespace
 
@@ -25,14 +25,15 @@ namespace GameStates
 {
 	bool Init()
 	{
-		gameStates["intro"]        = std::make_unique<Intro>();
-		gameStates["menu"]         = std::make_unique<Menu>();
-		gameStates["session"]      = std::make_unique<Session>();
-		gameStates["game_over"]    = std::make_unique<GameOver>();
-		gameStates["accomplished"] = std::make_unique<Accomplished>();
-		gameStates["score"]        = std::make_unique<Score>();
+		gameStates["intro"]        = std::make_shared<Intro>();
+		gameStates["menu"]         = std::make_shared<Menu>();
+		gameStates["session"]      = std::make_shared<Session>();
+		gameStates["game_over"]    = std::make_shared<GameOver>();
+		gameStates["accomplished"] = std::make_shared<Accomplished>();
+		gameStates["score"]        = std::make_shared<Score>();
 
-		gameStates["session"]->OnEnter();
+		pCurrentGameState = gameStates["intro"];
+		pCurrentGameState->OnEnter();
 
 		return true;
 	}
@@ -77,7 +78,7 @@ namespace GameStates
 
 	void SwitchTo(const char* szNewState)
 	{
-		pCurrentGameState = gameStates[szNewState].get();
+		pCurrentGameState = gameStates[szNewState];
 		assert(pCurrentGameState);
 		if (pCurrentGameState)
 		{

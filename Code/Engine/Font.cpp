@@ -19,6 +19,7 @@ Font::Font(const std::string& sFontImageFileName, int nLetterWidth, int nLetterH
 		return;
 	}
 
+	m_fontSprite = std::make_unique<Sprite>();
 	m_fontSprite->SetTexture(pTexture, nLetterWidth, nLetterHeight, nColumns);
 }
 
