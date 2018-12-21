@@ -20,8 +20,8 @@ void GameOver::Update()
 {
 	++m_nFrameID;
 
-	Maze& maze = Maze::GetMaze();
-	Player& player = Player::GetPlayer();
+	std::shared_ptr<Maze> maze = Maze::GetMaze();
+	std::shared_ptr<Player> player = Player::GetPlayer();
 
 	if (m_nFrameID >= 128)
 	{
@@ -29,7 +29,7 @@ void GameOver::Update()
 		{
 			if ((rand() % 40) == 0)
 			{
-				maze.AddDebrisFor(player.GetPos() + Vector2(float(rand() % (player.GetWidth() - 8)), float(rand() % (player.GetHeight() - 8))));
+				maze->AddDebrisFor(player->GetPos() + Vector2(float(rand() % (player->GetWidth() - 8)), float(rand() % (player->GetHeight() - 8))));
 				Audio::Play(Sounds::EXPLOSION);	// present even if sounds are off
 			}
 		}
@@ -37,18 +37,18 @@ void GameOver::Update()
 		{
 			if (m_nFrameID == 280)
 			{
-				player.Explode();
+				player->Explode();
 			}
 		}
 
-		maze.Update();
+		maze->Update();
 	}
 }
 
 
 void GameOver::Render() const
 {
-	Maze& maze = Maze::GetMaze();
+	std::shared_ptr<Maze> maze = Maze::GetMaze();
 
 	if (m_nFrameID < 128)
 	{
@@ -71,10 +71,10 @@ void GameOver::Render() const
 			Audio::ResumeAll();
 		}
 
-		maze.SetBrightness(static_cast<unsigned char>(255 - (m_nFrameID - 128)));
+		maze->SetBrightness(static_cast<unsigned char>(255 - (m_nFrameID - 128)));
 	}
 
-	maze.Render();
+	maze->Render();
 	
 	if (255 - (m_nFrameID - 128) <= 0)
 	{

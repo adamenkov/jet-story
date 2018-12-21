@@ -14,9 +14,9 @@
 #include "Sounds.h"
 
 
-Maze& Maze::GetMaze()
+std::shared_ptr<Maze> Maze::GetMaze()
 {
-	static Maze maze;
+	static std::shared_ptr<Maze> maze(new Maze);
 	return maze;
 }
 
@@ -25,7 +25,7 @@ bool Maze::Init()
 {
 	for (int i = 0; i < OBJECTS; ++i)
 	{
-		Texture* pObjectTexture = nullptr;
+		std::shared_ptr<Texture> pObjectTexture;
 
 		switch (i)
 		{
@@ -40,26 +40,26 @@ bool Maze::Init()
 			{
 				std::ostringstream os;
 				os << "Assets/Objects/Object" << i << ".bmp";
-				pObjectTexture = new Texture(os.str());
+				pObjectTexture.reset(new Texture(os.str()));
 			}
 		}
 
-		m_objectTextures.push_back(pObjectTexture);
+		m_objectTextures.emplace_back(pObjectTexture);
 	}
 
 
 	for (int i = 0; i < BLOCKS; ++i)
 	{
-		Sprite* pBlockSprite = new Sprite;
+		std::shared_ptr<Sprite> pBlockSprite = std::make_shared<Sprite>();
 		
 		std::ostringstream os;
 		os << "Assets/Maze/Block" << i << ".bmp";
 
-		Texture* pBlockTexture = new Texture(os.str());
+		std::shared_ptr<Texture> pBlockTexture = std::make_shared<Texture>(os.str());
 		pBlockSprite->SetTexture(pBlockTexture);
 
-		m_blockSprites .push_back(pBlockSprite);
-		m_blockTextures.push_back(pBlockTexture);
+		m_blockSprites .emplace_back(pBlockSprite);
+		m_blockTextures.emplace_back(pBlockTexture);
 	}
 
 
@@ -100,10 +100,10 @@ bool Maze::Init()
 		assert(false);
 	}
 
-	m_room[0][0].AddGameEntity(&Player::GetPlayer());
+	m_room[0][0].AddGameEntity(Player::GetPlayer());
 
-	m_textureBlankScreen.LoadFromFile("Assets/BlankScreen.png", D3DCOLOR_RGBA(1, 2, 3, 4));	// opaque black screen
-	m_spriteBlankScreen.SetTexture(&m_textureBlankScreen);
+	m_textureBlankScreen->LoadFromFile("Assets/BlankScreen.png", D3DCOLOR_RGBA(1, 2, 3, 4));	// opaque black screen
+	m_spriteBlankScreen.SetTexture(m_textureBlankScreen);
 
 	return true;
 }
@@ -111,9 +111,9 @@ bool Maze::Init()
 
 void Maze::ShutDown()
 {
-	std::for_each(m_blockSprites  .begin(), m_blockSprites  .end(), DeleteFunctor());
-	std::for_each(m_blockTextures .begin(), m_blockTextures .end(), DeleteFunctor());
-	std::for_each(m_objectTextures.begin(), m_objectTextures.end(), DeleteFunctor());
+	m_blockSprites.clear();
+	m_blockTextures.clear();
+	m_objectTextures.clear();
 }
 
 
@@ -179,19 +179,19 @@ void Maze::SetBrightness(unsigned char cBrightness)
 
 void Maze::UpdateCurrentRowAndColumn()
 {
-	Player& player = Player::GetPlayer();
-	Vector2 pos = player.GetPos();
+	std::shared_ptr<Player> player = Player::GetPlayer();
+	Vector2 pos = player->GetPos();
 
 	float x = pos.x;
 	float y = pos.y;
 	
-	int width  = player.GetWidth();
-	int height = player.GetHeight();
+	int width  = player->GetWidth();
+	int height = player->GetHeight();
 
 	if (x > 0.999f + static_cast<float>(Engine::eScreenWidthInPixels - width))
 	{
 		x = 0.f;
-		player.SetPos(x, y);
+		player->SetPos(x, y);
 		SetCurrentRoom(m_curRow, m_curColumn + 1);
 	}
 	else
@@ -199,7 +199,7 @@ void Maze::UpdateCurrentRowAndColumn()
 		if (x < 0.f)
 		{
 			x = 0.999f + static_cast<float>(Engine::eScreenWidthInPixels - width);
-			player.SetPos(x, y);
+			player->SetPos(x, y);
 			SetCurrentRoom(m_curRow, m_curColumn - 1);
 		}
 	}
@@ -207,7 +207,7 @@ void Maze::UpdateCurrentRowAndColumn()
 	if (y > 0.999f + static_cast<float>(Engine::eScreenHeightInPixels - height))
 	{
 		y = 32.f;
-		player.SetPos(x, y);
+		player->SetPos(x, y);
 		SetCurrentRoom(m_curRow + 1, m_curColumn);
 	}
 	else
@@ -215,7 +215,7 @@ void Maze::UpdateCurrentRowAndColumn()
 		if (y < 32.f)
 		{
 			y = 0.999f + static_cast<float>(Engine::eScreenHeightInPixels - height);
-			player.SetPos(x, y);
+			player->SetPos(x, y);
 			SetCurrentRoom(m_curRow - 1, m_curColumn);
 		}
 	}
@@ -232,5 +232,5 @@ void Maze::SetCurrentRoom(int row, int column)
 	m_curColumn = column;
 	m_room[m_curRow][m_curColumn].OnPlayerEnter();
 
-	Player::GetPlayer().OnRoomChanged();
+	Player::GetPlayer()->OnRoomChanged();
 }

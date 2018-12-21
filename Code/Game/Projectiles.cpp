@@ -12,10 +12,10 @@ const float PI = 3.141592659f;
 
 Explosion::Explosion(const Vector2& vInitialPos) :
 	Entity(vInitialPos),
-	m_texture("Assets/Projectiles/Explosion.png")
+	m_texture(std::make_shared<Texture>("Assets/Projectiles/Explosion.png"))
 {
 	SetFrameTimer(2);
-	SetTexture(&m_texture, 16);
+	SetTexture(m_texture, 16);
 	m_eLifeTime = eLT_Animation;
 	Audio::Play(Sounds::EXPLOSION);	// present even if sounds are off
 }
@@ -27,8 +27,8 @@ Debris::Debris(const Vector2& vInitialPos) : Entity(vInitialPos)
 	m_nHeight = 8;
 
 	SetFrameTimer(1);
-	m_nAnimationFrames = 10;
-	m_nAnimationFrame = rand() % m_nAnimationFrames;
+	m_numAnimationFrames = 10;
+	m_iAnimationFrame = rand() % m_numAnimationFrames;
 	
 	m_eLifeTime = eLT_Collision;
 
@@ -41,7 +41,7 @@ Debris::Debris(const Vector2& vInitialPos) : Entity(vInitialPos)
 
 void Debris::Render() const
 {
-	Engine::DrawText(m_pos, Engine::eC_White, char(117 + m_nAnimationFrame));
+	Engine::DrawText(m_pos, Engine::eC_White, char(117 + m_iAnimationFrame));
 }
 
 
@@ -142,10 +142,10 @@ void Wave::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertic
 
 Radiation::Radiation(const Vector2& vInitialPos, bool bLeft) :
 	Entity(vInitialPos),
-	m_texture("Assets/Projectiles/Radiation.png")
+	m_texture(std::make_shared<Texture>("Assets/Projectiles/Radiation.png"))
 {
 	SetFrameTimer(4);
-	SetTexture(&m_texture, 16);
+	SetTexture(m_texture, 16);
 	m_vel.x = bLeft ? -2.f : 2.f;
 }
 
@@ -165,16 +165,16 @@ void Radiation::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bV
 
 VerticalRocket::VerticalRocket(const Vector2& vInitialPos) :
 	Entity(vInitialPos),
-	m_texture("Assets/Projectiles/VerticalRocket.bmp")
+	m_texture(std::make_shared<Texture>("Assets/Projectiles/VerticalRocket.bmp"))
 {
 	SetFrameTimer(4);
-	SetTexture(&m_texture, 16);
+	SetTexture(m_texture, 16);
 	m_vel.y = -2.f;
 }
 
 void VerticalRocket::OnCollision(Player& player)
 {
-	Maze::GetMaze().AddEntity(new Explosion(m_pos));
+	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos));
 	SetGarbage();
 	player.ConsumeShield(10);
 }
@@ -182,22 +182,22 @@ void VerticalRocket::OnCollision(Player& player)
 
 void VerticalRocket::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical))
 {
-	Maze::GetMaze().AddEntity(new Explosion(m_pos));
+	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos));
 	SetGarbage();
 }
 
 
 Bomb::Bomb(const Vector2& vInitialPos) :
 	Entity(vInitialPos),
-	m_texture("Assets/Projectiles/Bomb.bmp")
+	m_texture(std::make_shared<Texture>("Assets/Projectiles/Bomb.bmp"))
 {
 	SetFrameTimer(2);
-	SetTexture(&m_texture, 16);
+	SetTexture(m_texture, 16);
 }
 
 void Bomb::OnCollision(Player& player)
 {
-	Maze::GetMaze().AddEntity(new Explosion(m_pos));
+	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos));
 	SetGarbage();
 	player.ConsumeShield(10);
 }
@@ -205,7 +205,7 @@ void Bomb::OnCollision(Player& player)
 
 void Bomb::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical))
 {
-	Maze::GetMaze().AddEntity(new Explosion(m_pos));
+	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos));
 	SetGarbage();
 }
 
@@ -235,7 +235,7 @@ PlayerBall::PlayerBall()
 {
 	SetTimer(512);
 	SetFrameTimer(2);
-	m_nAnimationFrames = Engine::eC_White - Engine::eC_LightBlack;
+	m_numAnimationFrames = Engine::eC_White - Engine::eC_LightBlack;
 }
 
 
@@ -245,7 +245,7 @@ void PlayerBall::Render() const
 		m_pos,
 		(m_timer > 100)
 			? Engine::eC_White
-			: static_cast<Engine::EColor>(Engine::eC_White - m_nAnimationFrame),
+			: static_cast<Engine::EColor>(Engine::eC_White - m_iAnimationFrame),
 		"l");
 }
 
@@ -317,7 +317,7 @@ PlayerStar::PlayerStar()
 {
 	SetTimer(512);
 	SetFrameTimer(2);
-	m_nAnimationFrames = Engine::eC_White - Engine::eC_LightBlack;
+	m_numAnimationFrames = Engine::eC_White - Engine::eC_LightBlack;
 }
 
 
@@ -327,7 +327,7 @@ void PlayerStar::Render() const
 		m_pos,
 		(m_timer > 100)
 			? Engine::eC_LightYellow
-			: static_cast<Engine::EColor>(Engine::eC_White - m_nAnimationFrame),
+			: static_cast<Engine::EColor>(Engine::eC_White - m_iAnimationFrame),
 		"f");
 }
 
@@ -336,8 +336,8 @@ void PlayerStar::Update()
 {
 	PlayerBomb::Update();
 
-	Player& player = Player::GetPlayer();
-	Vector2 playerPos = player.GetPos();
+	std::shared_ptr<Player> player = Player::GetPlayer();
+	Vector2 playerPos = player->GetPos();
 	playerPos += Vector2(16.f, 8.f);
 	Vector2 vToPlayer = playerPos - m_pos;
 	m_vel += (1.f / 1024.f) * vToPlayer;

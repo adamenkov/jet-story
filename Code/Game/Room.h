@@ -15,17 +15,15 @@ class Texture;
 class Room
 {
 public:
-	~Room();
-
-	void Init(const unsigned char* pRoomInitSequence, const unsigned char* pEntitiesInitSequence, const Textures& textures);
+	void Init(const unsigned char* pRoomInitSequence, const unsigned char* pEntitiesInitSequence, const std::vector<std::shared_ptr<Texture>>& textures);
 	void Reset();
 
-	void Render(const Sprites& blocks) const;
+	void Render(const std::vector<std::shared_ptr<Sprite>>& blocks) const;
 	void Update();
 
 	//TODO Replace with more specific (lifetime-aware) versions
-	void AddEntity(Entity* pEntity);
-	void AddGameEntity(Entity* pEntity);
+	void AddEntity(std::shared_ptr<Entity> pEntity);
+	void AddGameEntity(std::shared_ptr<Entity> pEntity);
 	
 	void AddDebris(const Vector2& pos);
 	
@@ -38,14 +36,14 @@ public:
 	void AddExplosion();
 
 #ifdef _DEBUG
-	Entities& GetEntities() { return m_entities; }
+	std::vector<std::shared_ptr<Entity>>& GetEntities() { return m_entities; }
 #endif	// #ifdef _DEBUG
 
 private:
 	void AddObstacle(int row, int column, int left, int top, int right, int bottom);
-	bool OverlapsObstacles(const Entity* pEntity, float x, float y) const;
+	bool OverlapsObstacles(std::shared_ptr<Entity> pEntity, float x, float y) const;
 	
-	Entity* CreateEntity(int type, const Vector2& vInitialPos, const Textures& textures);
+	std::shared_ptr<Entity> CreateEntity(int type, const Vector2& vInitialPos, const std::vector<std::shared_ptr<Texture>>& textures);
 
 	int GetBlock(int row, int column) const { return m_block[row][column]; }
 
@@ -65,20 +63,11 @@ private:
 		eMaxEntitiesPerRoom = 8
 	};
 
-	struct DeleteFunctor
-	{
-		template<typename T>
-		void operator()(const T* ptr) const
-		{
-			delete ptr;
-		}
-	};
-
 	//////////////////////////////////////////////////////////////////////////
 	int m_block[ROWS][COLUMNS];
 
-	Entities m_entities;
-	Entities m_entitiesToAdd;
+	std::vector<std::shared_ptr<Entity>>	m_entities;
+	std::vector<std::shared_ptr<Entity>>	m_entitiesToAdd;
 	
 	using Obstacles = std::vector<RECT>;
 	Obstacles	m_obstacles;

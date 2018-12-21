@@ -1,6 +1,3 @@
-#ifndef __SOUNDS_H
-#define __SOUNDS_H
-
 #pragma once
 
 
@@ -25,6 +22,3 @@ namespace Sounds
 
 	extern bool Init();
 }
-
-
-#endif	// #ifndef __SOUNDS_H

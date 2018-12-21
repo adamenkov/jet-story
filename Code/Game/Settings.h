@@ -1,6 +1,3 @@
-#ifndef __SETTINGS_H
-#define __SETTINGS_H
-
 #pragma once
 
 
@@ -18,6 +15,3 @@ namespace Settings
 	extern	char	cKeyFire;
 
 }	// namespace Settings
-
-
-#endif	// #ifndef __SETTINGS_H

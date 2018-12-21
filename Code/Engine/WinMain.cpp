@@ -2,6 +2,7 @@
 #include "../Shared/Game.h"
 #include <cstdlib>
 #include <ctime>
+#include "Audio.h"
 #include "Font.h"
 #include "Sound.h"
 #include "Stopwatch.h"

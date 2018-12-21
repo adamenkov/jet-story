@@ -1,6 +1,7 @@
 #include "Sounds.h"
 #include "../Shared/Engine.h"
 #include <algorithm>
+#include <vector>
 
 
 namespace Sounds
@@ -47,15 +48,10 @@ namespace Sounds
 			SHHH,
 		};
 
-		struct Loader
+		for (const std::string& sound : sounds)
 		{
-			void operator()(const std::string& name)
-			{
-				Audio::Load("Assets/Sounds/" + name, name);
-			}
-		};
-
-		std::for_each(sounds.begin(), sounds.end(), Loader());
+			Audio::Load("Assets/Sounds/" + sound, sound);
+		}
 
 		return true;
 	}

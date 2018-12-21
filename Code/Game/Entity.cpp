@@ -29,12 +29,12 @@ void Entity::Reset()
 
 void Entity::Animate()
 {
-	int oldFrame = m_nAnimationFrame;
+	int oldFrame = m_iAnimationFrame;
 	Sprite::Animate();
 
 	if (m_eLifeTime == eLT_Animation)
 	{
-		if ((oldFrame > 0) && (m_nAnimationFrame == 0))
+		if ((oldFrame > 0) && (m_iAnimationFrame == 0))
 		{
 			SetGarbage();
 		}
@@ -57,9 +57,9 @@ void Entity::Update()
 void Entity::Explode()
 {
 	m_bEnabled = false;
-	Player::GetPlayer().AddScore(GetScore());
+	Player::GetPlayer()->AddScore(GetScore());
 	
-	Maze& maze = Maze::GetMaze();
+	std::shared_ptr<Maze> maze = Maze::GetMaze();
 	
 	for (int row = 0; row < m_nHeight; row += 16)
 	{
@@ -68,8 +68,8 @@ void Entity::Explode()
 			Vector2 pos = m_pos;
 			pos.x += col;
 			pos.y += row;
-			maze.AddEntity(new Explosion(pos));
-			maze.AddDebrisFor(pos + Vector2(4, 4));
+			maze->AddEntity(std::make_shared<Explosion>(pos));
+			maze->AddDebrisFor(pos + Vector2(4, 4));
 		}
 	}
 

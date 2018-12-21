@@ -9,7 +9,7 @@
 class Texture final
 {
 public:
-	Texture(const std::string& fileName, D3DCOLOR colorTransparent = D3DCOLOR_XRGB(0, 0, 0));
+	Texture(std::string fileName = std::string(), D3DCOLOR colorTransparent = D3DCOLOR_XRGB(0, 0, 0));
 	~Texture();
 
 	LPDIRECT3DTEXTURE9 GetDirect3DTexture() const { return m_pTexture; }

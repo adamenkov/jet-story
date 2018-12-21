@@ -1,6 +1,3 @@
-#ifndef __SOUND_H
-#define __SOUND_H
-
 #pragma once
 
 #define _USING_V110_SDK71_ 1
@@ -8,19 +5,7 @@
 #include "fmod.hpp"
 
 
-// This is not exposed to Game
-namespace Audio
-{
-	extern FMOD_SYSTEM* g_pFMOD_system;
-
-	bool Init();
-	void ShutDown();
-
-	void Update();
-}	// namespace Audio
-
-
-class Sound
+class Sound final
 {
 public:
 	Sound(const std::string& fileName);
@@ -39,6 +24,3 @@ private:
 	FMOD_SOUND*		m_pFMOD_sound;
 	FMOD_CHANNEL*	m_pFMOD_channel;
 };
-
-
-#endif	// #ifndef __SOUND_H

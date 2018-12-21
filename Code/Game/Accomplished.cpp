@@ -11,8 +11,8 @@
 
 void Accomplished::OnEnter()
 {
-	Maze& maze = Maze::GetMaze();
-	maze.ExplodeAllEntititiesExceptPlayer();
+	std::shared_ptr<Maze> maze = Maze::GetMaze();
+	maze->ExplodeAllEntititiesExceptPlayer();
 
 	Audio::Play(Sounds::ALL_BASES_DESTROYED);
 
@@ -26,7 +26,7 @@ void Accomplished::OnEnter()
 
 void Accomplished::Update()
 {
-	Maze& maze = Maze::GetMaze();
+	std::shared_ptr<Maze> maze = Maze::GetMaze();
 
 	switch (m_eState)
 	{
@@ -34,7 +34,7 @@ void Accomplished::Update()
 		--m_cBrightness;
 		if (m_cBrightness == 0)
 		{
-			Player::GetPlayer().Disable();
+			Player::GetPlayer()->Disable();
 			m_eState = eS_FadeIn;
 		}
 		break;
@@ -52,7 +52,7 @@ void Accomplished::Update()
 		++m_nFrameID;
 		if ((m_nFrameID % 16) == (rand() % 16))
 		{
-			maze.AddRoomExplosion();
+			maze->AddRoomExplosion();
 		}
 		if (m_nFrameID >= 500)
 		{
@@ -82,16 +82,16 @@ void Accomplished::Update()
 		assert(!"Should not be here!");
 	}
 
-	maze.Update();
+	maze->Update();
 }
 
 
 void Accomplished::Render() const
 {
-	Maze& maze = Maze::GetMaze();
+	std::shared_ptr<Maze> maze = Maze::GetMaze();
 
-	maze.SetBrightness(m_cBrightness);
-	maze.Render();
+	maze->SetBrightness(m_cBrightness);
+	maze->Render();
 
 	if (m_nFrameID >= 500)
 	{

@@ -15,33 +15,32 @@ Player::Player() :
 	//TODO temporary for Mission Accomplished
 	//Entity(Vector2(48.f, 72.f)),
 	Entity(Vector2(80.f, 72.f)),
-	m_texture("Assets/Player/Player.png"),
+	m_texture(std::make_shared<Texture>("Assets/Player/Player.png")),
 
-	m_textureJetDownBigLeft ("Assets/Player/JetDownBigLeft.png"),
-	m_textureJetDownBigRight("Assets/Player/JetDownBigRight.png"),
+	m_textureJetDownBigLeft(std::make_shared<Texture>("Assets/Player/JetDownBigLeft.png")),
+	m_textureJetDownBigRight(std::make_shared<Texture>("Assets/Player/JetDownBigRight.png")),
 	
-	m_textureJetDownSmallLeft ("Assets/Player/JetDownSmallLeft.png"),
-	m_textureJetDownSmallRight("Assets/Player/JetDownSmallRight.png"),
+	m_textureJetDownSmallLeft (std::make_shared<Texture>("Assets/Player/JetDownSmallLeft.png")),
+	m_textureJetDownSmallRight(std::make_shared<Texture>("Assets/Player/JetDownSmallRight.png")),
 	
-	m_textureJetLeft ("Assets/Player/JetLeft.png"),
-	m_textureJetRight("Assets/Player/JetRight.png"),
+	m_textureJetLeft (std::make_shared<Texture>("Assets/Player/JetLeft.png")),
+	m_textureJetRight(std::make_shared<Texture>("Assets/Player/JetRight.png")),
 
 	m_frameIDBulletSpawned(0),
 	m_frameIDBombSpawned(0),
 
-	m_pPlayerBomb(nullptr),
 	m_nPlayerBullets(0)
 {
-	SetTexture(&m_texture, 32);
+	SetTexture(m_texture, 32);
 
-	m_spriteJetDownBigLeft .SetTexture(&m_textureJetDownBigLeft,  16);
-	m_spriteJetDownBigRight.SetTexture(&m_textureJetDownBigRight, 16);
+	m_spriteJetDownBigLeft .SetTexture(m_textureJetDownBigLeft,  16);
+	m_spriteJetDownBigRight.SetTexture(m_textureJetDownBigRight, 16);
 
-	m_spriteJetDownSmallLeft .SetTexture(&m_textureJetDownSmallLeft,  16);
-	m_spriteJetDownSmallRight.SetTexture(&m_textureJetDownSmallRight, 16);
+	m_spriteJetDownSmallLeft .SetTexture(m_textureJetDownSmallLeft,  16);
+	m_spriteJetDownSmallRight.SetTexture(m_textureJetDownSmallRight, 16);
 
-	m_spriteJetLeft .SetTexture(&m_textureJetLeft,  16);
-	m_spriteJetRight.SetTexture(&m_textureJetRight, 16);
+	m_spriteJetLeft .SetTexture(m_textureJetLeft,  16);
+	m_spriteJetRight.SetTexture(m_textureJetRight, 16);
 
 
 	m_spriteJetDownBigLeft .SetFrameTimer(2);
@@ -57,10 +56,10 @@ Player::Player() :
 }
 
 
-Player& Player::GetPlayer()
+std::shared_ptr<Player> Player::GetPlayer()
 {
-	static Player* player = new Player;	// It will be deleted by Room::~Room
-	return *player;
+	static std::shared_ptr<Player> player(new Player);
+	return player;
 }
 
 
@@ -96,17 +95,17 @@ void Player::Animate()
 
 	if (bKeyLeftPressed)
 	{
-		m_nAnimationFrame = 1;
+		m_iAnimationFrame = 1;
 	}
 
 	if (bKeyRightPressed)
 	{
-		m_nAnimationFrame = 0;
+		m_iAnimationFrame = 0;
 	}
 
 	if (m_nFuel > 0)
 	{
-		if (m_nAnimationFrame == 0)
+		if (m_iAnimationFrame == 0)
 		{
 			if (bKeyRightPressed && !bKeyLeftPressed)
 			{
@@ -146,7 +145,7 @@ void Player::Render() const
 		bool bKeyRightPressed = Engine::IsKeyDown(VK_RIGHT) || Engine::IsKeyDown(Settings::cKeyRight);
 		bool bKeyUpPressed = Engine::IsKeyDown(VK_UP) || Engine::IsKeyDown(Settings::cKeyUp);
 	
-		if (m_nAnimationFrame == 0)
+		if (m_iAnimationFrame == 0)
 		{
 			if (bKeyRightPressed && !bKeyLeftPressed)
 			{
@@ -254,30 +253,30 @@ void Player::Update()
 		bool bKeyDownPressed = Engine::IsKeyDown(VK_DOWN) || Engine::IsKeyDown(Settings::cKeyDown);
 		if (bKeyDownPressed)
 		{
-			bool bLeft = (m_nAnimationFrame == 1);
+			bool bLeft = (m_iAnimationFrame == 1);
 			switch (m_cBombsType)
 			{
 			case 'c':	// Vertical bomb
-				m_pPlayerBomb = new PlayerVerticalBomb;
+				m_pPlayerBomb = std::make_shared<PlayerVerticalBomb>();
 				m_pPlayerBomb->SetVelocity(m_vel.x, 1.f);
 				m_pPlayerBomb->SetLifeTime(Entity::eLT_Room);
 				break;
 
 			case 'a':	// Horizontal bomb
-				m_pPlayerBomb = new PlayerHorizontalBomb(bLeft);
+				m_pPlayerBomb = std::make_shared<PlayerHorizontalBomb>(bLeft);
 				m_pPlayerBomb->SetVelocity(bLeft ? -.5f : .5f, 1.5f);
 				m_pPlayerBomb->SetLifeTime(Entity::eLT_Room);
 				break;
 
 			case 'l':	// Ball
-				m_pPlayerBomb = new PlayerBall;
+				m_pPlayerBomb = std::make_shared<PlayerBall>();
 				m_pPlayerBomb->SetVelocity(bLeft ? -1.6f : 1.6f, 2.f + ((rand() % 400) / 1000.f));
 				m_pPlayerBomb->SetLifeTime(Entity::eLT_FollowPlayer);
 				break;
 
 			case 'f':	// Star
 			{
-				m_pPlayerBomb = new PlayerStar;
+				m_pPlayerBomb = std::make_shared<PlayerStar>();
 				float r = float(rand()) / RAND_MAX;
 				float angle = (bLeft ? PIover2 : -PIover2) + PI * r;
 				m_pPlayerBomb->SetVelocity(cosf(angle), sinf(angle));
@@ -292,7 +291,7 @@ void Player::Update()
 			if (m_pPlayerBomb)
 			{
 				m_pPlayerBomb->SetPosNearPlayer();
-				Maze::GetMaze().AddEntity(m_pPlayerBomb);
+				Maze::GetMaze()->AddEntity(m_pPlayerBomb);
 				Audio::Play(Sounds::PLAYER_BOMB_LAUNCH);
 
 				--m_nBombs;
@@ -306,12 +305,12 @@ void Player::Update()
 		bool bKeyFirePressed = Engine::IsKeyDown(VK_SPACE) || Engine::IsKeyDown(Settings::cKeyFire);
 		if (bKeyFirePressed)
 		{
-			bool bLeft = (m_nAnimationFrame == 1);
-			PlayerBullet* pBullet = new PlayerBullet(m_pos + Vector2(bLeft ? 0.f : 24.f, 7.f));
+			bool bLeft = (m_iAnimationFrame == 1);
+			std::shared_ptr<PlayerBullet> pBullet = std::make_shared<PlayerBullet>(m_pos + Vector2(bLeft ? 0.f : 24.f, 7.f));
 			pBullet->SetVelocity(bLeft ? -6.f : 6.f, 0.f);
 			pBullet->SetLifeTime(Entity::eLT_Room);
 
-			Maze::GetMaze().AddEntity(pBullet);
+			Maze::GetMaze()->AddEntity(pBullet);
 			Audio::Play(Sounds::FIRE);
 
 			--m_nAmmo;
@@ -391,6 +390,6 @@ void Player::OnRoomChanged()
 	if (m_pPlayerBomb && (m_pPlayerBomb->GetLifeTime() == eLT_FollowPlayer))
 	{
 		m_pPlayerBomb->SetPosNearPlayer();
-		Maze::GetMaze().AddEntity(m_pPlayerBomb);
+		Maze::GetMaze()->AddEntity(m_pPlayerBomb);
 	}
 }

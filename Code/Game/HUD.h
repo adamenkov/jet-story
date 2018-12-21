@@ -1,6 +1,3 @@
-#ifndef __HUD_H
-#define __HUD_H
-
 #pragma once
 
 #include "../Shared/Engine.h"
@@ -33,9 +30,5 @@ private:
 		void Render() { Engine::Print(x, y, eColor, '#'); }
 	};
 	
-	using Tiles = std::vector<Tile>;
-	Tiles m_tiles;
+	std::vector<std::shared_ptr<Tile>> m_tiles;
 };
-
-
-#endif	// #ifndef __HUD_H

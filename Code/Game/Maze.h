@@ -17,7 +17,7 @@ class Maze
 	Maze& operator=(const Maze&);
 
 public:
-	static Maze& GetMaze();
+	static std::shared_ptr<Maze> GetMaze();
 
 	bool Init();
 	void ShutDown();
@@ -28,7 +28,7 @@ public:
 	void Render() const;
 
 	void AddDebrisFor(const Vector2& pos)		{ m_room[m_curRow][m_curColumn].AddDebris(pos); }
-	void AddEntity(Entity* pEntity)			{ m_room[m_curRow][m_curColumn].AddEntity(pEntity); }
+	void AddEntity(std::shared_ptr<Entity> pEntity)			{ m_room[m_curRow][m_curColumn].AddEntity(pEntity); }
 
 	int  GetBasesLeft() const { return m_nBasesLeft; }
 
@@ -41,7 +41,7 @@ public:
 	void AddRoomExplosion()					{ m_room[m_curRow][m_curColumn].AddExplosion(); }
 
 #ifdef _DEBUG
-	Entities& GetRoomEntities()				{ return m_room[m_curRow][m_curColumn].GetEntities(); }
+	std::vector<std::shared_ptr<Entity>>& GetRoomEntities()				{ return m_room[m_curRow][m_curColumn].GetEntities(); }
 #endif	// #ifdef _DEBUG
 
 	//////////////////////////////////////////////////////////////////////////
@@ -83,12 +83,12 @@ private:
 	int		m_nBasesLeft;
 
 	// Shared across all rooms
-	Sprites		m_blockSprites;
-	Textures	m_blockTextures;
-	Textures	m_objectTextures;
+	std::vector<std::shared_ptr<Sprite>>	m_blockSprites;
+	std::vector<std::shared_ptr<Texture>>	m_blockTextures;
+	std::vector<std::shared_ptr<Texture>>	m_objectTextures;
 
 	Sprite	m_spriteBlankScreen;
-	Texture m_textureBlankScreen;
+	std::shared_ptr<Texture> m_textureBlankScreen;
 };
 
 

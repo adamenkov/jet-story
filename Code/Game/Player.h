@@ -15,7 +15,7 @@ class Player : public Entity
 	Player& operator=(const Player&);
 
 public:
-	static Player& GetPlayer();
+	static std::shared_ptr<Player> GetPlayer();
 
 	virtual void Reset();
 
@@ -59,7 +59,7 @@ public:
 	void	OnRoomChanged();
 
 private:
-	Texture m_texture;
+	std::shared_ptr<Texture>	m_texture;
 
 	Sprite	m_spriteJetDownBigLeft;
 	Sprite	m_spriteJetDownBigRight;
@@ -68,12 +68,12 @@ private:
 	Sprite	m_spriteJetLeft;
 	Sprite	m_spriteJetRight;
 
-	Texture	m_textureJetDownBigLeft;
-	Texture m_textureJetDownBigRight;
-	Texture m_textureJetDownSmallLeft;
-	Texture m_textureJetDownSmallRight;
-	Texture m_textureJetLeft;
-	Texture m_textureJetRight;
+	std::shared_ptr<Texture>	m_textureJetDownBigLeft;
+	std::shared_ptr<Texture>	m_textureJetDownBigRight;
+	std::shared_ptr<Texture>	m_textureJetDownSmallLeft;
+	std::shared_ptr<Texture>	m_textureJetDownSmallRight;
+	std::shared_ptr<Texture>	m_textureJetLeft;
+	std::shared_ptr<Texture>	m_textureJetRight;
 
 	int		m_nFuel;
 	int		m_nAmmo;
@@ -87,7 +87,7 @@ private:
 	long int m_frameIDBulletSpawned;
 	long int m_frameIDBombSpawned;
 
-	PlayerBomb*	m_pPlayerBomb;
+	std::shared_ptr<PlayerBomb>	m_pPlayerBomb;
 	int		m_nPlayerBullets;
 };
 

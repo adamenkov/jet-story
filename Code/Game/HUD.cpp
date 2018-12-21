@@ -12,24 +12,24 @@ HUD::HUD()
 {
 	for (int x = 0; x < Engine::eScreenWidthInCharacters; ++x)
 	{
-		m_tiles.push_back(Tile(x, 0));
-		m_tiles.push_back(Tile(x, 3));
+		m_tiles.emplace_back(std::make_shared<Tile>(x, 0));
+		m_tiles.emplace_back(std::make_shared<Tile>(x, 3));
 	}
 
 	for (int y = 1; y < 3; ++y)
 	{
-		m_tiles.push_back(Tile(0,  y));
-		m_tiles.push_back(Tile(10, y));
-		m_tiles.push_back(Tile(13, y));
-		m_tiles.push_back(Tile(20, y));
-		m_tiles.push_back(Tile(21, y));
-		m_tiles.push_back(Tile(28, y));
-		m_tiles.push_back(Tile(31, y));
+		m_tiles.emplace_back(std::make_shared<Tile>( 0, y));
+		m_tiles.emplace_back(std::make_shared<Tile>(10, y));
+		m_tiles.emplace_back(std::make_shared<Tile>(13, y));
+		m_tiles.emplace_back(std::make_shared<Tile>(20, y));
+		m_tiles.emplace_back(std::make_shared<Tile>(21, y));
+		m_tiles.emplace_back(std::make_shared<Tile>(28, y));
+		m_tiles.emplace_back(std::make_shared<Tile>(31, y));
 	}
 
 	for (int x = 22; x < 28; ++x)
 	{
-		m_tiles.push_back(Tile(x, 2));
+		m_tiles.emplace_back(std::make_shared<Tile>(x, 2));
 	}
 }
 
@@ -43,35 +43,35 @@ HUD& HUD::GetHUD()
 
 void HUD::Render()
 {
-	Player& player = Player::GetPlayer();
+	std::shared_ptr<Player> player = Player::GetPlayer();
 
 	Engine::Print(1, 1, Engine::eC_White, "FUEL");
-	RenderBar(5, 1, player.GetFuel(), player.GetMaxFuel());
+	RenderBar(5, 1, player->GetFuel(), player->GetMaxFuel());
 
 	Engine::Print(1, 2, Engine::eC_White, "AMMO");
-	RenderBar(5, 2, player.GetAmmo(), player.GetMaxAmmo());
+	RenderBar(5, 2, player->GetAmmo(), player->GetMaxAmmo());
 
 
-	int shield = player.GetShield();
+	int shield = player->GetShield();
 	if (shield >= 0)
 	{
 		Engine::Print(14, 1, Engine::eC_White, "SHIELD");
-		RenderBar(14, 2, player.GetShield(), player.GetMaxShield());
+		RenderBar(14, 2, player->GetShield(), player->GetMaxShield());
 	}
 	Engine::Print(14, 2, Engine::eC_White, ">    <");
 
-	RenderInt(22, 1, player.GetScore(), 6);
+	RenderInt(22, 1, player->GetScore(), 6);
 
 	Engine::Print(29, 1, Engine::eC_White, "++");
-	RenderInt(29, 2, Maze::GetMaze().GetBasesLeft(), 2);
+	RenderInt(29, 2, Maze::GetMaze()->GetBasesLeft(), 2);
 
-	char cBombsType = player.GetBombsType();
+	char cBombsType = player->GetBombsType();
 	char sz[3];
 	sz[0] = cBombsType;
 	sz[1] = cBombsType;
 	sz[2] = 0;
 	Engine::Print(11, 1, Engine::eC_White, sz);
-	RenderInt(11, 2, player.GetBombs(), 2);
+	RenderInt(11, 2, player->GetBombs(), 2);
 
 #ifdef DEBUG_MAZE
 	{
@@ -82,7 +82,10 @@ void HUD::Render()
 	}
 #endif	// #ifdef DEBUG_MAZE
 
-	for_each(m_tiles.begin(), m_tiles.end(), std::mem_fun_ref(&Tile::Render));
+	for (std::shared_ptr<Tile>& tile : m_tiles)
+	{
+		tile->Render();
+	}
 }
 
 
@@ -90,7 +93,7 @@ void HUD::Update()
 {
 	if (rand() % 2)
 	{
-		m_tiles[rand() % m_tiles.size()].eColor = Engine::eC_LightCyan;
+		m_tiles[rand() % m_tiles.size()]->eColor = Engine::eC_LightCyan;
 	}
 	else
 	{
@@ -104,7 +107,7 @@ void HUD::Update()
 				 (eNewColor == Engine::eC_LightBlack) ||
 				 (eNewColor == Engine::eC_White));
 
-		m_tiles[rand() % m_tiles.size()].eColor = eNewColor;
+		m_tiles[rand() % m_tiles.size()]->eColor = eNewColor;
 	}
 }
 

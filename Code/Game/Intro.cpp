@@ -5,8 +5,8 @@
 
 Intro::Intro() : m_eIntroState(eIS_FirstScreen)
 {
-	m_pScreenSprite = new Sprite;
-	m_pScreenSprite->SetTexture(new Texture("Assets/Intro1.png"));
+	m_pScreenSprite = std::make_unique<Sprite>();
+	m_pScreenSprite->SetTexture(std::make_shared<Texture>("Assets/Intro1.png"));
 }
 
 
@@ -43,8 +43,6 @@ void Intro::KeyPressed(char UNUSED_PARAM(key))
 		break;
 
 	case eIS_SecondScreen:
-		delete m_pScreenSprite->GetTexture();
-		delete m_pScreenSprite;
 		m_eIntroState = eIS_ThirdScreen;
 		break;
 

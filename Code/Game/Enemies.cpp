@@ -77,8 +77,8 @@ void Platform::Reset()
 void Platform::Explode()
 {
 	m_bEnabled = false;
-	Player::GetPlayer().AddScore(GetScore());
-	Maze::GetMaze().AddEntity(new Explosion(m_pos + Vector2(0.f, 16.f)));
+	Player::GetPlayer()->AddScore(GetScore());
+	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos + Vector2(0.f, 16.f)));
 }
 
 
@@ -111,8 +111,8 @@ void Platform2::Reset()
 void Platform2::Explode()
 {
 	m_bEnabled = false;
-	Player::GetPlayer().AddScore(GetScore());
-	Maze::GetMaze().AddEntity(new Explosion(m_pos + Vector2(0.f, 16.f)));
+	Player::GetPlayer()->AddScore(GetScore());
+	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos + Vector2(0.f, 16.f)));
 }
 
 
@@ -234,7 +234,7 @@ void BigZ::Reset()
 void BigZ::Animate()
 {
 	Enemy::Animate();
-	SetAnimationFrame((Player::GetPlayer().GetPos().x >= m_pos.x) ? 0 : 1);
+	SetAnimationFrame((Player::GetPlayer()->GetPos().x >= m_pos.x) ? 0 : 1);
 }
 
 
@@ -260,7 +260,7 @@ void Cannon::Animate()
 {
 	Enemy::Animate();
 
-	bool bLeft = Player::GetPlayer().GetPos().x < m_pos.x;
+	bool bLeft = Player::GetPlayer()->GetPos().x < m_pos.x;
 	SetAnimationFrame(bLeft ? 1 : 0);
 }
 
@@ -289,7 +289,7 @@ void Cannon::Update()
 				pos += Vector2(16.f, 6.f);
 			}
 
-			Maze::GetMaze().AddEntity(new HorizontalWave(this, pos, bLeft));
+			Maze::GetMaze()->AddEntity(new HorizontalWave(this, pos, bLeft));
 		}
 		*/
 	}
@@ -313,16 +313,16 @@ void FlyingCannon::Animate()
 {
 	Enemy::Animate();
 
-	if ((Player::GetPlayer().GetPos().x >= m_pos.x))
+	if ((Player::GetPlayer()->GetPos().x >= m_pos.x))
 	{
-		if (m_nAnimationFrame == 2)
+		if (m_iAnimationFrame == 2)
 		{
 			SetAnimationFrame(0);
 		}
 	}
 	else
 	{
-		if (m_nAnimationFrame == 0)
+		if (m_iAnimationFrame == 0)
 		{
 			SetAnimationFrame(2);
 		}
@@ -358,16 +358,16 @@ void Flier::Animate()
 {
 	Enemy::Animate();
 
-	if ((Player::GetPlayer().GetPos().x >= m_pos.x))
+	if ((Player::GetPlayer()->GetPos().x >= m_pos.x))
 	{
-		if (m_nAnimationFrame == 2)
+		if (m_iAnimationFrame == 2)
 		{
 			SetAnimationFrame(0);
 		}
 	}
 	else
 	{
-		if (m_nAnimationFrame == 0)
+		if (m_iAnimationFrame == 0)
 		{
 			SetAnimationFrame(2);
 		}
@@ -403,16 +403,16 @@ void Flier2::Animate()
 {
 	Enemy::Animate();
 
-	if ((Player::GetPlayer().GetPos().x >= m_pos.x))
+	if ((Player::GetPlayer()->GetPos().x >= m_pos.x))
 	{
-		if (m_nAnimationFrame == 2)
+		if (m_iAnimationFrame == 2)
 		{
 			SetAnimationFrame(0);
 		}
 	}
 	else
 	{
-		if (m_nAnimationFrame == 0)
+		if (m_iAnimationFrame == 0)
 		{
 			SetAnimationFrame(2);
 		}
@@ -458,11 +458,11 @@ void RocketLauncher::Update()
 	if ((rand() % 80) == 0)
 	{
 		/*
-		if (Player::GetPlayer().OverlapsVertically(this))
+		if (Player::GetPlayer()->OverlapsVertically(make shared from this))
 		{
 			Vector2 pos = m_pos;
 			pos.y -= 12.f;
-			Maze::GetMaze().AddEntity(new VerticalRocket(pos));
+			Maze::GetMaze()->AddEntity(std::make_shared<VerticalRocket>(pos));
 		}
 		*/
 	}
@@ -511,11 +511,11 @@ void Bomber::Update()
 	if ((rand() % 80) == 0)
 	{
 		/*
-		if (Player::GetPlayer().OverlapsVertically(this))
+		if (Player::GetPlayer()->OverlapsVertically(make shared from this))
 		{
 			Vector2 pos = m_pos;
 			pos.y += 16.f;
-			Maze::GetMaze().AddEntity(new Bomb(pos));
+			Maze::GetMaze()->AddEntity(std::make_shared<Bomb>(pos));
 		}
 		*/
 	}
@@ -554,7 +554,7 @@ void Radiator::Update()
 		{
 			Vector2 pos = m_pos;
 			pos.x += m_bLeft ? -16.f : 16.f;
-			Maze::GetMaze().AddEntity(new Radiation(pos, m_bLeft));
+			Maze::GetMaze()->AddEntity(new Radiation(pos, m_bLeft));
 		}
 		*/
 	}
@@ -585,14 +585,14 @@ void Radar::Update()
 		if (player.OverlapsHorizontally(this) && ((rand() % 5) == 0))
 		{
 			bool bLeft = player.GetPos().x < m_pos.x;
-			Maze::GetMaze().AddEntity(new HorizontalWave(this, m_pos + Vector2(4.f, 4.f), bLeft));
+			Maze::GetMaze()->AddEntity(new HorizontalWave(this, m_pos + Vector2(4.f, 4.f), bLeft));
 		}
 		else
 		{
 			Vector2 posPredicted = player.GetPos() + Vector2(16.f, 2.f) + float(rand() % 50) * player.GetVelocity();
 			Vector2 vel = posPredicted - m_pos;
 			vel.SetLength(1.f + .3f * float(rand()) / RAND_MAX);
-			Maze::GetMaze().AddEntity(new Wave(this, m_pos + Vector2(4.f, 2.f), vel));
+			Maze::GetMaze()->AddEntity(new Wave(this, m_pos + Vector2(4.f, 2.f), vel));
 		}
 		*/
 	}
@@ -609,7 +609,7 @@ void Base::Reset()
 void Base::Explode()
 {
 	Enemy::Explode();
-	Maze::GetMaze().OnBaseDestroyed();
+	Maze::GetMaze()->OnBaseDestroyed();
 }
 
 

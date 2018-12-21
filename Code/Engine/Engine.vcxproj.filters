@@ -55,5 +55,8 @@
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Stopwatch.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Audio.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

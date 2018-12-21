@@ -3,7 +3,7 @@
 #include <cassert>
 
 
-Texture::Texture(const std::string& fileName, D3DCOLOR colorTransparent) : m_pTexture(nullptr)
+Texture::Texture(std::string fileName, D3DCOLOR colorTransparent) : m_pTexture(nullptr)
 {
 	if (!fileName.empty())
 	{

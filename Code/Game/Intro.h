@@ -24,7 +24,7 @@ private:
 	};
 	EIntroState m_eIntroState;
 
-	Sprite* m_pScreenSprite;
+	std::unique_ptr<Sprite> m_pScreenSprite;
 };
 
 

@@ -29,7 +29,7 @@ void Score::OnEnter()
 	BestScores::iterator leastScore = m_BestScores.begin();
 	std::advance(leastScore, m_BestScores.size() - 1);
 
-	if (leastScore->first >= Player::GetPlayer().GetScore())
+	if (leastScore->first >= Player::GetPlayer()->GetScore())
 	{
 		m_eState = eS_ShowingBestScores;
 		m_waitFrames = 50;
@@ -132,7 +132,7 @@ void Score::KeyPressed(char key)
 	{
 		m_cPlayerThirdInitial = key;
 		Audio::Play(Sounds::KEY_DEFINED);
-		m_BestScores[ Player::GetPlayer().GetScore() ] = std::string() + m_cPlayerFirstInitial + m_cPlayerSecondInitial + m_cPlayerThirdInitial;
+		m_BestScores[ Player::GetPlayer()->GetScore() ] = std::string() + m_cPlayerFirstInitial + m_cPlayerSecondInitial + m_cPlayerThirdInitial;
 		BestScores::iterator leastScore = m_BestScores.begin();
 		std::advance(leastScore, m_BestScores.size() - 1);
 		m_BestScores.erase(leastScore);

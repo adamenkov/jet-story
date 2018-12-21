@@ -8,9 +8,9 @@ Sprite::Sprite() :
 	m_nWidth(0),
 	m_nHeight(0),
 	m_nFrameIDStart(0),
-	m_nFrameTimer(0),
+	m_iFrameTimer(0),
 	m_numAnimationColumns(1),
-	m_nAnimationFrame(0),
+	m_iAnimationFrame(0),
 	m_numAnimationFrames(0),
 	m_color(0xFFFFFFFF)
 {
@@ -19,24 +19,24 @@ Sprite::Sprite() :
 
 void Sprite::Reset()
 {
-	m_nAnimationFrame = 0;
+	m_iAnimationFrame = 0;
 }
 
 
 void Sprite::Animate()
 {
-	if (m_nFrameTimer > 0)
+	if (m_iFrameTimer > 0)
 	{
 		long int nFrameID = Engine::GetFrameID();
 
-		if (nFrameID >= m_nFrameIDStart + m_nFrameTimer)
+		if (nFrameID >= m_nFrameIDStart + m_iFrameTimer)
 		{
 			m_nFrameIDStart = nFrameID;
 
-			++m_nAnimationFrame;
-			if (m_nAnimationFrame >= m_numAnimationFrames)
+			++m_iAnimationFrame;
+			if (m_iAnimationFrame >= m_numAnimationFrames)
 			{
-				m_nAnimationFrame = 0;
+				m_iAnimationFrame = 0;
 			}
 		}
 	}
@@ -45,8 +45,8 @@ void Sprite::Animate()
 
 void Sprite::Render() const
 {
-	int x = (m_nAnimationFrame % m_numAnimationColumns) * m_nWidth;
-	int y = (m_nAnimationFrame / m_numAnimationColumns) * m_nHeight;
+	int x = (m_iAnimationFrame % m_numAnimationColumns) * m_nWidth;
+	int y = (m_iAnimationFrame / m_numAnimationColumns) * m_nHeight;
 	RECT srcRect = { x, y, x + m_nWidth, y + m_nHeight };
 
 	D3DXMATRIX matrix;
@@ -103,7 +103,7 @@ void Sprite::SetTexture(std::shared_ptr<Texture> pTexture, int nWidth /*= 0*/, i
 }
 
 
-bool Sprite::Overlaps(const Sprite* pSpriteOther) const
+bool Sprite::Overlaps(std::shared_ptr<Sprite> pSpriteOther) const
 {
 	LONG left = static_cast<LONG>(m_pos.x);
 	LONG top  = static_cast<LONG>(m_pos.y);

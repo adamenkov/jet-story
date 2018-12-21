@@ -1,6 +1,3 @@
-#ifndef __ENGINE_SHARED_H
-#define __ENGINE_SHARED_H
-
 #pragma once
 
 #define _USING_V110_SDK71_ 1
@@ -83,11 +80,7 @@ namespace Audio
 }	// namespace Audio
 
 
-// Don't move this.
-//#include "../Engine/Sprite.h"
+#include "../Engine/Sprite.h"
 
 
 #define UNUSED_PARAM(x)
-
-
-#endif	// #ifndef __ENGINE_SHARED_H

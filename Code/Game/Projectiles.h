@@ -16,7 +16,7 @@ public:
 	Explosion(const Vector2& vInitialPos);
 
 private:
-	Texture m_texture;
+	std::shared_ptr<Texture> m_texture;
 };
 
 
@@ -74,7 +74,7 @@ public:
 	virtual void OnCollision(bool bHorizontal, bool bVertical);
 
 private:
-	Texture m_texture;
+	std::shared_ptr<Texture> m_texture;
 };
 
 
@@ -88,7 +88,7 @@ public:
 	virtual void OnCollision(bool bHorizontal, bool bVertical);
 
 private:
-	Texture m_texture;
+	std::shared_ptr<Texture> m_texture;
 };
 
 
@@ -104,7 +104,7 @@ public:
 
 private:
 	Bomber* m_pBomber;
-	Texture m_texture;
+	std::shared_ptr<Texture> m_texture;
 };
 
 
@@ -113,8 +113,8 @@ class PlayerBullet : public Entity
 public:
 	PlayerBullet(const Vector2& vInitialPosition);
 
-	virtual void Render() const { Engine::DrawText(m_pos + Vector2(0.f, -3.f), Engine::eC_White, "`"); }
-	virtual void SetGarbage() { Entity::SetGarbage(); Player::GetPlayer().OnNoPlayerBullet(); }
+	virtual void Render() const { Engine::DrawText(GetPos() + Vector2(0.f, -3.f), Engine::eC_White, "`"); }
+	virtual void SetGarbage() { Entity::SetGarbage(); Player::GetPlayer()->OnNoPlayerBullet(); }
 	virtual bool IsMovable() const { return true; }
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) { SetGarbage(); }
 	virtual bool CollidesWithEnemy() const { return true; }
@@ -127,7 +127,7 @@ class PlayerBomb : public Entity
 public:
 	PlayerBomb();
 	
-	virtual void SetGarbage() { Entity::SetGarbage(); Player::GetPlayer().OnNoPlayerBomb(); }
+	virtual void SetGarbage() { Entity::SetGarbage(); Player::GetPlayer()->OnNoPlayerBomb(); }
 	virtual bool IsMovable() const { return true; }
 	virtual bool CollidesWithEnemy() const { return true; }
 	virtual void SetPosNearPlayer() = 0;
@@ -143,18 +143,18 @@ public:
 	virtual void OnCollision(bool bHorizontal, bool bVertical);
 	virtual void OnCollision(Enemy& enemy) { enemy.Explode(); }
 	virtual void OnTimer() { SetGarbage(); }
-	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vector2(12.f, 0.f)); }
+	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer()->GetPos() + Vector2(12.f, 0.f)); }
 };
 
 
 class PlayerVerticalBomb : public PlayerBomb
 {
 public:
-	virtual void Render() const { Engine::DrawText(m_pos, Engine::eC_LightCyan, "c"); }
+	virtual void Render() const { Engine::DrawText(GetPos(), Engine::eC_LightCyan, "c"); }
 	virtual void Update();
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) { SetGarbage(); }
 	virtual void OnCollision(Enemy& enemy);
-	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vector2(12.f, 8.f)); }
+	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer()->GetPos() + Vector2(12.f, 8.f)); }
 };
 
 
@@ -163,11 +163,11 @@ class PlayerHorizontalBomb : public PlayerBomb
 public:
 	PlayerHorizontalBomb(bool bLeft) : m_bLeft(bLeft) {}
 
-	virtual void Render() const { Engine::DrawText(m_pos, Engine::eC_LightCyan, m_bLeft ? "b" : "a"); }
+	virtual void Render() const { Engine::DrawText(GetPos(), Engine::eC_LightCyan, m_bLeft ? "b" : "a"); }
 	virtual void Update();
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) { SetGarbage(); }
 	virtual void OnCollision(Enemy& enemy);
-	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vector2(12.f, 8.f)); }
+	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer()->GetPos() + Vector2(12.f, 8.f)); }
 
 private:
 	bool m_bLeft;
@@ -184,7 +184,7 @@ public:
 	virtual void OnCollision(bool bHorizontal, bool bVertical);
 	virtual void OnCollision(Enemy& enemy) { enemy.Explode(); }
 	virtual void OnTimer() { SetGarbage(); }
-	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer().GetPos() + Vector2(12.f, 0.f)); }
+	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer()->GetPos() + Vector2(12.f, 0.f)); }
 };
 
 

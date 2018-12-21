@@ -12,7 +12,7 @@ class Enemy;
 class Player;
 
 
-class Entity
+class Entity : public Sprite
 {
 public:
 	Entity(const Vector2& vInitialPos);
@@ -56,18 +56,18 @@ public:
 	bool		IsTime() const { return m_timer <= 0; }
 	virtual void OnTimer() {}
 
-	Entity*		GetPlatform() const { return m_pPlatform; }
-	void		SetPlatform(Entity* pPlatform) { m_pPlatform = pPlatform; }
+	std::shared_ptr<Entity>	GetPlatform() const { return m_pPlatform; }
+	void		SetPlatform(std::shared_ptr<Entity> pPlatform) { m_pPlatform = pPlatform; }
 
 	//////////////////////////////////////////////////////////////////////////
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) {}
 
 	virtual	bool IsEnemy() const { return false; }
 	virtual bool CollidesWithEnemy() const { return false; }
-	virtual void OnCollision(Enemy& UNUSED_PARAM(enemy)) {}
+	virtual void OnCollision(std::shared_ptr<Enemy> UNUSED_PARAM(enemy)) {}
 
 	virtual bool CollidesWithPlayer() const { return false; }
-	virtual void OnCollision(Player& UNUSED_PARAM(player)) {}
+	virtual void OnCollision(std::shared_ptr<Player> UNUSED_PARAM(player)) {}
 
 	virtual int GetScore() const { return 0; }
 
@@ -84,11 +84,8 @@ protected:
 
 	int			m_timer;
 
-	Entity*		m_pPlatform;
+	std::shared_ptr<Entity>		m_pPlatform;
 };
-
-
-using Entities = std::vector<Entity*>;
 
 
 #endif	// #ifndef __ENTITY_H

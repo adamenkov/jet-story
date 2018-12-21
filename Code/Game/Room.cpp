@@ -15,13 +15,7 @@
 #include "Sounds.h"
 
 
-Room::~Room()
-{
-	for_each(m_entities.begin(), m_entities.end(), DeleteFunctor());
-}
-
-
-void Room::Init(const unsigned char* pRoomInitSequence, const unsigned char* pEntitiesInitSequence, const Textures& textures)
+void Room::Init(const unsigned char* pRoomInitSequence, const unsigned char* pEntitiesInitSequence, const std::vector<std::shared_ptr<Texture>>& textures)
 {
 	// This function uses binary data extracted from the original game to build the maze and place the entities
 
@@ -91,7 +85,7 @@ void Room::Init(const unsigned char* pRoomInitSequence, const unsigned char* pEn
 	assert(row == ROWS);
 	assert(column == 0);
 
-	Entity* pPlatform = nullptr;
+	std::shared_ptr<Entity> pPlatform;
 
 	m_entities.reserve(eMaxEntitiesPerRoom);
 
@@ -109,8 +103,8 @@ void Room::Init(const unsigned char* pRoomInitSequence, const unsigned char* pEn
 
 		if (type != 0)
 		{
-			Entity* pEntity = CreateEntity(type, Vector2(float(x), float(y)), textures);
-			if (pEntity)
+			std::shared_ptr<Entity> pEntity = CreateEntity(type, Vector2(float(x), float(y)), textures);
+			if (pEntity.get() != nullptr)
 			{
 				AddGameEntity(pEntity);
 
@@ -156,7 +150,7 @@ void Room::AddObstacle(int row, int column, int left, int top, int right, int bo
 }
 
 
-bool Room::OverlapsObstacles(const Entity* pEntity, float x, float y) const
+bool Room::OverlapsObstacles(std::shared_ptr<Entity> pEntity, float x, float y) const
 {
 	LONG left = static_cast<LONG>(x);
 	LONG top  = static_cast<LONG>(y);
@@ -177,9 +171,9 @@ bool Room::OverlapsObstacles(const Entity* pEntity, float x, float y) const
 }
 
 
-Entity* Room::CreateEntity(int type, const Vector2& vInitialPos, const Textures& textures)
+std::shared_ptr<Entity> Room::CreateEntity(int type, const Vector2& vInitialPos, const std::vector<std::shared_ptr<Texture>>& textures)
 {
-	Entity* pEntity = nullptr;
+	std::shared_ptr<Entity> pEntity;
 
 	switch (type)
 	{
@@ -190,41 +184,41 @@ Entity* Room::CreateEntity(int type, const Vector2& vInitialPos, const Textures&
 	case 8:
 		return 0;
 
-	case 1:			pEntity = new DualCannon    (vInitialPos);		break;
-	case 2:			pEntity = new Platform      (vInitialPos);		break;
-	case 3:			pEntity = new Platform2     (vInitialPos);		break;
-	case 4:			pEntity = new BigBall       (vInitialPos);		break;
-	case 10:		pEntity = new Globe         (vInitialPos);		break;
-	case 11:		pEntity = new Medusa        (vInitialPos);		break;
-	case 13:		pEntity = new Revolver      (vInitialPos);		break;
-	case 14:		pEntity = new BigZ          (vInitialPos);		break;
-	case 15:		pEntity = new Cannon        (vInitialPos);		break;
-	case 16:		pEntity = new FlyingCannon  (vInitialPos);		break;
-	case 17:		pEntity = new Flier         (vInitialPos);		break;
-	case 18:		pEntity = new Flier2        (vInitialPos);		break;
-	case 19:		pEntity = new RevolvingRadar(vInitialPos);		break;
-	case 20:		pEntity = new RocketLauncher(vInitialPos);		break;
-	case 21:		pEntity = new LeftRocket    (vInitialPos);		break;
-	case 22:		pEntity = new RightRocket   (vInitialPos);		break;
-	case 23:		pEntity = new Brick         (vInitialPos);		break;
-	case 24:		pEntity = new Factory       (vInitialPos);		break;
-	case 25:		pEntity = new Bomber        (vInitialPos);		break;
-	case 26:		pEntity = new Rocket        (vInitialPos);		break;
-	case 27:		pEntity = new Radiator    (vInitialPos, true);	break;	// Left Radiator
-	case 28:		pEntity = new Radiator    (vInitialPos, false);	break;	// Right Radiator
-	case 29:		pEntity = new Radar         (vInitialPos);		break;
-	case 30:		pEntity = new Base          (vInitialPos);		break;
+	case 1:			pEntity = std::make_shared<DualCannon>    (vInitialPos);		break;
+	case 2:			pEntity = std::make_shared<Platform>      (vInitialPos);		break;
+	case 3:			pEntity = std::make_shared<Platform2>     (vInitialPos);		break;
+	case 4:			pEntity = std::make_shared<BigBall>       (vInitialPos);		break;
+	case 10:		pEntity = std::make_shared<Globe>         (vInitialPos);		break;
+	case 11:		pEntity = std::make_shared<Medusa>        (vInitialPos);		break;
+	case 13:		pEntity = std::make_shared<Revolver>      (vInitialPos);		break;
+	case 14:		pEntity = std::make_shared<BigZ>          (vInitialPos);		break;
+	case 15:		pEntity = std::make_shared<Cannon>        (vInitialPos);		break;
+	case 16:		pEntity = std::make_shared<FlyingCannon>  (vInitialPos);		break;
+	case 17:		pEntity = std::make_shared<Flier>         (vInitialPos);		break;
+	case 18:		pEntity = std::make_shared<Flier2>        (vInitialPos);		break;
+	case 19:		pEntity = std::make_shared<RevolvingRadar>(vInitialPos);		break;
+	case 20:		pEntity = std::make_shared<RocketLauncher>(vInitialPos);		break;
+	case 21:		pEntity = std::make_shared<LeftRocket>    (vInitialPos);		break;
+	case 22:		pEntity = std::make_shared<RightRocket>   (vInitialPos);		break;
+	case 23:		pEntity = std::make_shared<Brick>         (vInitialPos);		break;
+	case 24:		pEntity = std::make_shared<Factory>       (vInitialPos);		break;
+	case 25:		pEntity = std::make_shared<Bomber>        (vInitialPos);		break;
+	case 26:		pEntity = std::make_shared<Rocket>        (vInitialPos);		break;
+	case 27:		pEntity = std::make_shared<Radiator>      (vInitialPos, true);	break;	// Left Radiator
+	case 28:		pEntity = std::make_shared<Radiator>      (vInitialPos, false);	break;	// Right Radiator
+	case 29:		pEntity = std::make_shared<Radar>         (vInitialPos);		break;
+	case 30:		pEntity = std::make_shared<Base>          (vInitialPos);		break;
 
-	case 31:		pEntity = new Fuel       (vInitialPos);		break;
-	case 32:		pEntity = new Ammo       (vInitialPos);		break;
-	case 33:		pEntity = new Bombs      (vInitialPos);		break;
-	case 34:		pEntity = new Missiles   (vInitialPos);		break;
-	case 35:		pEntity = new Balls      (vInitialPos);		break;
-	case 36:		pEntity = new Shield     (vInitialPos);		break;
-	case 37:		pEntity = new RandomCollectible(vInitialPos);break;
-	case 38:		pEntity = new Stars      (vInitialPos);		break;
+	case 31:		pEntity = std::make_shared<Fuel>       (vInitialPos);		break;
+	case 32:		pEntity = std::make_shared<Ammo>       (vInitialPos);		break;
+	case 33:		pEntity = std::make_shared<Bombs>      (vInitialPos);		break;
+	case 34:		pEntity = std::make_shared<Missiles>   (vInitialPos);		break;
+	case 35:		pEntity = std::make_shared<Balls>      (vInitialPos);		break;
+	case 36:		pEntity = std::make_shared<Shield>     (vInitialPos);		break;
+	case 37:		pEntity = std::make_shared<RandomCollectible>(vInitialPos); break;
+	case 38:		pEntity = std::make_shared<Stars>      (vInitialPos);		break;
 
-	default:		pEntity = new Entity(vInitialPos);
+	default:		pEntity = std::make_shared<Entity>(vInitialPos);
 	}
 
 	int width = (type == 1) ? 32 : (type == 4) ? 0 : 16;
@@ -237,11 +231,15 @@ Entity* Room::CreateEntity(int type, const Vector2& vInitialPos, const Textures&
 void Room::Reset()
 {
 	RemoveEntities(Entity::eLT_Session);
-	for_each(m_entities.begin(), m_entities.end(), std::mem_fun(&Entity::Reset));
+	
+	for (std::shared_ptr<Entity>& pEntity : m_entities)
+	{
+		pEntity->Reset();
+	}
 }
 
 
-void Room::Render(const Sprites& blockSprites) const
+void Room::Render(const std::vector<std::shared_ptr<Sprite>>& blockSprites) const
 {
 	for (int row = 0; row < ROWS; ++row)
 	{
@@ -255,17 +253,15 @@ void Room::Render(const Sprites& blockSprites) const
 				return;
 			}
 
-			Sprite* pBlock = blockSprites[block];
+			std::shared_ptr<Sprite> pBlock = blockSprites[block];
 			pBlock->SetPos(32.f * column, 32.f * (row + 1));
 			pBlock->Render();
 		}
 	}
 
 
-	for (Entities::const_iterator it = m_entities.begin(); it != m_entities.end(); ++it)
+	for (const std::shared_ptr<Entity>& pEntity : m_entities)
 	{
-		Entity* pEntity = *it;
-		
 		if (pEntity->IsEnabled())
 		{
 			pEntity->Render();
@@ -289,12 +285,12 @@ void Room::Update()
 
 void Room::MoveEntitiesAndResolveCollisions()
 {
-	Player& player = Player::GetPlayer();
+	std::shared_ptr<Player> player = Player::GetPlayer();
 
 	// Detect collision with maze walls
-	for (Entities::iterator it = m_entities.begin(); it != m_entities.end(); )
+	for (std::vector<std::shared_ptr<Entity>>::iterator it = m_entities.begin(); it != m_entities.end(); )
 	{
-		Entity* pEntity = *it;
+		std::shared_ptr<Entity> pEntity = *it;
 		assert(pEntity);
 
 		if (!pEntity->IsEnabled() || !pEntity->IsMovable())
@@ -313,11 +309,11 @@ void Room::MoveEntitiesAndResolveCollisions()
 		Vector2 newPos = pEntity->GetPos() + vel + 0.5f * acc;
 
 		bool bHorizonalCollision = (int(newPos.x) < 0) || (int(newPos.x) + pEntity->GetWidth() > Engine::eScreenWidthInPixels)
-			? (pEntity != &player)	// Only player may leave the room
+			? (pEntity != player)	// Only player may leave the room
 			: OverlapsObstacles(pEntity, newPos.x, pos.y);
 
 		bool bVerticalCollision = (int(newPos.y) < 4 * 8) || (int(newPos.y) + pEntity->GetHeight() > Engine::eScreenHeightInPixels)
-			? (pEntity != &player)	// Only player may leave the room
+			? (pEntity != player)	// Only player may leave the room
 			: bVerticalCollision = OverlapsObstacles(pEntity, pos.x, newPos.y);
 
 		// Detect diagonal collision
@@ -330,7 +326,6 @@ void Room::MoveEntitiesAndResolveCollisions()
 		{
 			if (pEntity->GetLifeTime() == Entity::eLT_Collision)
 			{
-				delete pEntity;
 				it = m_entities.erase(it);
 				continue;
 			}
@@ -361,25 +356,25 @@ void Room::MoveEntitiesAndResolveCollisions()
 	bool bPlayerVsEnemyCollision = false;
 
 	// Detect collisions with each other
-	for (Entities::iterator it1 = m_entities.begin(); it1 != m_entities.end(); ++it1)
+	for (std::vector<std::shared_ptr<Entity>>::iterator it1 = m_entities.begin(); it1 != m_entities.end(); ++it1)
 	{
-		Entity* pEntity1 = *it1;
+		std::shared_ptr<Entity> pEntity1 = *it1;
 
 		if (!pEntity1->IsEnabled())
 			continue;
 
-		if (pEntity1 == &player)
+		if (pEntity1 == player)
 		{
-			if (player.GetShield() >= 0)
+			if (player->GetShield() >= 0)
 			{
-				for (Entities::iterator it2 = m_entities.begin(); it2 != m_entities.end(); ++it2)
+				for (std::vector<std::shared_ptr<Entity>>::iterator it2 = m_entities.begin(); it2 != m_entities.end(); ++it2)
 				{
-					Entity* pEntity2 = *it2;
+					std::shared_ptr<Entity> pEntity2 = *it2;
 
 					if (!pEntity2->IsEnabled())
 						continue;
 
-					if ((pEntity2 != &player) && pEntity2->CollidesWithPlayer() && pEntity2->Overlaps(&player))
+					if ((pEntity2 != player) && pEntity2->CollidesWithPlayer() && pEntity2->Overlaps(player))
 					{
 						pEntity2->OnCollision(player);
 
@@ -395,25 +390,25 @@ void Room::MoveEntitiesAndResolveCollisions()
 		{
 			if (pEntity1->IsEnemy())
 			{
-				Enemy* pEnemy = static_cast<Enemy*>(pEntity1);
+				std::shared_ptr<Enemy> pEnemy = std::static_pointer_cast<Enemy>(pEntity1);
 
-				for (Entities::iterator it2 = m_entities.begin(); it2 != m_entities.end(); ++it2)
+				for (std::vector<std::shared_ptr<Entity>>::iterator it2 = m_entities.begin(); it2 != m_entities.end(); ++it2)
 				{
-					Entity* pEntity2 = *it2;
+					std::shared_ptr<Entity> pEntity2 = *it2;
 
 					if (!pEntity2->IsEnabled())
 						continue;
 
 					if ((pEntity1 != pEntity2) && pEntity2->CollidesWithEnemy() && pEntity2->Overlaps(pEntity1))
 					{
-						pEntity2->OnCollision(*pEnemy);
+						pEntity2->OnCollision(pEnemy);
 					}
 				}
 			}
 		}
 	}
 
-	if (bPlayerVsEnemyCollision && (player.GetShield() >= 0) && (Maze::GetMaze().GetBasesLeft() > 0))
+	if (bPlayerVsEnemyCollision && (player->GetShield() >= 0) && (Maze::GetMaze()->GetBasesLeft() > 0))
 	{
 		if (!Audio::IsPlaying(Sounds::LESS_SHIELD))
 		{
@@ -432,9 +427,9 @@ void Room::MoveEntitiesAndResolveCollisions()
 
 void Room::UpdateEntities()
 {
-	for (Entities::iterator it = m_entities.begin(); it != m_entities.end(); )
+	for (std::vector<std::shared_ptr<Entity>>::iterator it = m_entities.begin(); it != m_entities.end(); )
 	{
-		Entity* pEntity = *it;
+		Entity* pEntity = it->get();
 
 		if (!pEntity->IsGarbage() && pEntity->IsEnabled())
 		{
@@ -457,9 +452,9 @@ void Room::CollectGarbageEntities()
 {
 	bool bCurrentRoomIsEmpty = true;
 
-	for (Entities::iterator it = m_entities.begin(); it != m_entities.end(); )
+	for (std::vector<std::shared_ptr<Entity>>::iterator it = m_entities.begin(); it != m_entities.end(); )
 	{
-		Entity* pEntity = *it;
+		Entity* pEntity = it->get();
 
 		if (pEntity->IsGarbage())
 		{
@@ -499,19 +494,18 @@ void Room::CollectGarbageEntities()
 
 void Room::OnPlayerEnter()
 {
-	Player& player = Player::GetPlayer();
-	AddEntity(&player);
+	AddEntity(Player::GetPlayer());
 }
 
 
 void Room::OnPlayerExit()
 {
-	Player& player = Player::GetPlayer();
+	std::shared_ptr<Player> player = Player::GetPlayer();
 
-	for (Entities::iterator it = m_entities.begin(); it != m_entities.end(); )
+	for (std::vector<std::shared_ptr<Entity>>::iterator it = m_entities.begin(); it != m_entities.end(); )
 	{
-		Entity* pEntity = *it;
-		if ((pEntity == &player) || (pEntity->GetLifeTime() == Entity::eLT_FollowPlayer))
+		std::shared_ptr<Entity> pEntity = *it;
+		if ((pEntity == player) || (pEntity->GetLifeTime() == Entity::eLT_FollowPlayer))
 		{
 			it = m_entities.erase(it);
 		}
@@ -525,19 +519,19 @@ void Room::OnPlayerExit()
 }
 
 
-void Room::AddEntity(Entity* pEntity)
+void Room::AddEntity(std::shared_ptr<Entity> pEntity)
 {
-	m_entitiesToAdd.push_back(pEntity);
+	m_entitiesToAdd.emplace_back(pEntity);
 }
 
 
-void Room::AddGameEntity(Entity* pEntity)
+void Room::AddGameEntity(std::shared_ptr<Entity> pEntity)
 {
 	assert(pEntity && (m_entities.size() < eMaxEntitiesPerRoom));
 	if (pEntity && (m_entities.size() < eMaxEntitiesPerRoom))
 	{
 		pEntity->SetLifeTime(Entity::eLT_Game);
-		m_entities.push_back(pEntity);
+		m_entities.emplace_back(pEntity);
 	}
 }
 
@@ -546,18 +540,16 @@ void Room::AddDebris(const Vector2& pos)
 {
 	for (int i = 0; i < 8; ++i)
 	{
-		AddEntity(new Debris(pos));
+		AddEntity(std::make_shared<Debris>(pos));
 	}
 }
 
 
 void Room::ExplodeAllEntititiesExceptPlayer()
 {
-	for (Entities::iterator it = m_entities.begin(); it != m_entities.end(); ++it)
+	for (std::shared_ptr<Entity>& pEntity : m_entities)
 	{
-		Entity* pEntity = *it;
-
-		if (pEntity->IsEnabled() && (pEntity != &Player::GetPlayer()))
+		if (pEntity->IsEnabled() && (pEntity != Player::GetPlayer()))
 		{
 			// Don't explode explosions
 			Entity::ELifeTime eLifeTime = pEntity->GetLifeTime();
@@ -572,9 +564,9 @@ void Room::ExplodeAllEntititiesExceptPlayer()
 
 void Room::RemoveEntities(Entity::ELifeTime eMinimumLifeTimeToRemove)
 {
-	for (Entities::iterator it = m_entities.begin(); it != m_entities.end(); )
+	for (std::vector<std::shared_ptr<Entity>>::iterator it = m_entities.begin(); it != m_entities.end(); )
 	{
-		Entity* pEntity = *it;
+		Entity* pEntity = it->get();
 
 		if (pEntity->GetLifeTime() >= eMinimumLifeTimeToRemove)
 		{
@@ -592,7 +584,7 @@ void Room::RemoveEntities(Entity::ELifeTime eMinimumLifeTimeToRemove)
 void Room::AddExplosion()
 {
 	Vector2 pos(ZERO);
-	Explosion* pExplosion = new Explosion(pos);
+	std::shared_ptr<Explosion> pExplosion = std::make_shared<Explosion>(pos);
 	
 	// Adding explosion close to an obstacle, otherwise it may not look very plausible
 	do

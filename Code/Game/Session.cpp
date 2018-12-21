@@ -5,17 +5,17 @@
 
 void Session::OnEnter()
 {
-	Maze::GetMaze().Reset();
+	Maze::GetMaze()->Reset();
 }
 
 
 void Session::Update()
 {
-	Maze::GetMaze().Update();
+	Maze::GetMaze()->Update();
 }
 
 
 void Session::Render() const
 {
-	Maze::GetMaze().Render();
+	Maze::GetMaze()->Render();
 }

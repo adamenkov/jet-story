@@ -8,7 +8,7 @@
 #include <vector>
 
 
-class Sprite final
+class Sprite
 {
 public:
 	Sprite();
@@ -18,14 +18,17 @@ public:
 	void Animate();
 	void Render() const;
 
-	Vector2 GetPos() const			{ return m_pos; }
-	void SetPos(const Vector2& pos)	{ m_pos = pos; }
-	void SetPos(float x, float y)	{ m_pos.x = x; m_pos.y = y; }
+	Vector2 GetPos() const { return m_pos; }
+	void SetPos(const Vector2& pos) { m_pos = pos; }
+	void SetPos(float x, float y) { m_pos.x = x; m_pos.y = y; }
 
-	void SetFrameTimer(int nFrameTimer)	{ m_nFrameTimer = nFrameTimer; }
-	
+	void SetFrameTimer(int iFrameTimer) { m_iFrameTimer = iFrameTimer; }
+
 	int  GetAnimationFrames() const { return m_numAnimationFrames; }
-	void SetAnimationFrame(int nAnimationFrame)	{ m_nAnimationFrame = nAnimationFrame; }
+	void SetAnimationFrames(int numAnimationFrames) { m_numAnimationFrames = numAnimationFrames; }
+
+	int GetAnimationFrame() const { return m_iAnimationFrame; }
+	void SetAnimationFrame(int iAnimationFrame)	{ m_iAnimationFrame = iAnimationFrame; }
 
 	void SetColor(Engine::EColor eColor);
 	void SetAlpha(unsigned char alpha) { m_color &= 0xFFFFFF; m_color |= ((alpha & 0xFF) << 24); }
@@ -34,11 +37,14 @@ public:
 	void SetTexture(std::shared_ptr<Texture> pTexture, int nWidth = 0, int nHeight = 0, int nColumns = 0);
 
 	int	GetWidth()  const { return m_nWidth; }
+	void SetWidth(int nWidth) { m_nWidth = nWidth; }
+
 	int	GetHeight() const { return m_nHeight; }
+	void SetHeight(int nHeight) { m_nHeight = nHeight; }
 
 	bool HasTexture() const { return !m_pTexture->IsEmpty(); }
 
-	bool Overlaps(const Sprite* pSpriteOther) const;
+	bool Overlaps(std::shared_ptr<Sprite> pSpriteOther) const;
 
 protected:
 	Vector2		m_pos;
@@ -50,9 +56,9 @@ protected:
 
 	// Animation
 	long int	m_nFrameIDStart;
-	int			m_nFrameTimer;
+	int			m_iFrameTimer;
 	int			m_numAnimationColumns;
-	int			m_nAnimationFrame;
+	int			m_iAnimationFrame;
 	int			m_numAnimationFrames;
 
 private:

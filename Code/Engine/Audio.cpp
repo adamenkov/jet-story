@@ -1,3 +1,4 @@
+#include "Audio.h"
 #include "../Shared/Engine.h"
 #include <cassert>
 #include <map>
@@ -8,116 +9,133 @@
 
 namespace
 {
-	using Sounds = std::map<std::string, Sound*>;
-	Sounds sounds;
+	FMOD_SYSTEM* g_pFMOD_system;
 
+	std::map<std::string, std::unique_ptr<Sound>> s_mapSounds;
 }	// namespace
 
 
 namespace Audio
 {
-	FMOD_SYSTEM* g_pFMOD_system;
-	
+	bool Init()
+	{
+		if (g_pFMOD_system != nullptr)
+		{
+			Engine::LogError("Calling Audio::Audio again!");
+			assert(false);
+			return false;
+		}
+
+		if (FMOD_System_Create(&g_pFMOD_system) == FMOD_OK)
+		{
+			if (FMOD_System_Init(g_pFMOD_system, 100, FMOD_INIT_NORMAL, nullptr) == FMOD_OK)
+			{
+				return true;
+			}
+			else
+			{
+				Engine::LogError("Couldn't initialize FMOD.");
+				assert(false);
+			}
+		}
+		else
+		{
+			Engine::LogError("Couldn't create FMOD.");
+			assert(false);
+		}
+
+		g_pFMOD_system = nullptr;
+		return false;
+	}
+
+
+	void ShutDown()
+	{
+		for (auto& soundPair : s_mapSounds)
+		{
+			soundPair.second->Stop();
+		}
+
+		if (g_pFMOD_system != nullptr)
+		{
+			FMOD_System_Release(g_pFMOD_system);
+			g_pFMOD_system = nullptr;
+		}
+	}
+
+
+	void Update()
+	{
+		FMOD_System_Update(g_pFMOD_system);
+	}
+
 
 	bool Load(const std::string& fileName, const std::string& name)
 	{
 		if (fileName.empty())
 			return false;
-		
-		Sound* pSound = new Sound(fileName);
+
+		std::unique_ptr<Sound> pSound = std::make_unique<Sound>(fileName);
 		assert(pSound->IsOK());
 		if (pSound->IsOK())
 		{
-			delete sounds[name];
-			sounds[name] = pSound;
+			s_mapSounds[name] = std::move(pSound);
 			return true;
 		}
 
-		delete pSound;
 		return false;
 	}
-	
+
+
 	bool IsPlaying(const std::string& name)
 	{
-		Sound* pSound = sounds[name];
-		return pSound ? pSound->IsPlaying() : false;
+		return (s_mapSounds.find(name) == s_mapSounds.end()) ? false : s_mapSounds[name]->IsPlaying();
 	}
+
 
 	bool Play(const std::string& name, int nLoopCount)
 	{
-		Sound* pSound = sounds[name];
-		return pSound ? pSound->Play(nLoopCount) : false;
+		if (s_mapSounds.find(name) != s_mapSounds.end())
+		{
+			return s_mapSounds[name]->Play(nLoopCount);
+		}
+
+		return false;
 	}
-	
+
+
 	void Stop(const std::string& name)
 	{
-		if (Sound* pSound = sounds[name])
+		if (s_mapSounds.find(name) != s_mapSounds.end())
 		{
-			pSound->Stop();
+			s_mapSounds[name]->Stop();
 		}
 	}
-	
+
+
 	void StopAll()
 	{
-		for (Sounds::iterator it = sounds.begin(), itEnd = sounds.end(); it != itEnd; ++it)
+		for (auto& soundPair : s_mapSounds)
 		{
-			if (Sound* pSound = it->second)
-			{
-				pSound->Stop();
-			}
+			soundPair.second->Stop();
 		}
 	}
 
-
-	//////////////////////////////////////////////////////////////////////////
-
-	bool Init()
-	{
-		return (FMOD_System_Create(&g_pFMOD_system) == FMOD_OK) &&
-			(FMOD_System_Init(g_pFMOD_system, 100, FMOD_INIT_NORMAL, nullptr) == FMOD_OK);
-	}
-
-	void ShutDown()
-	{
-		for (Sounds::iterator it = sounds.begin(), itEnd = sounds.end(); it != itEnd; ++it)
-		{
-			if (Sound* pSound = it->second)
-			{
-				pSound->Stop();
-				delete pSound;
-			}
-		}
-
-		sounds.clear();
-
-		FMOD_System_Release(g_pFMOD_system);
-	}
-
-	void Audio::Update()
-	{
-		FMOD_System_Update(g_pFMOD_system);
-	}
 
 	void PauseAll()
 	{
-		for (Sounds::iterator it = sounds.begin(), itEnd = sounds.end(); it != itEnd; ++it)
+		for (auto& soundPair : s_mapSounds)
 		{
-			if (Sound* pSound = it->second)
-			{
-				pSound->Pause();
-			}
+			soundPair.second->Pause();
 		}
 	}
+
 
 	void ResumeAll()
 	{
-		for (Sounds::iterator it = sounds.begin(), itEnd = sounds.end(); it != itEnd; ++it)
+		for (auto& soundPair : s_mapSounds)
 		{
-			if (Sound* pSound = it->second)
-			{
-				pSound->Resume();
-			}
+			soundPair.second->Resume();
 		}
 	}
-
-}	// namespace Audio
+}

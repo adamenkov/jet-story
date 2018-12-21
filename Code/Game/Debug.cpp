@@ -30,11 +30,8 @@ namespace Debug
 			Engine::Print(0, 3, Engine::eC_White, os.str());
 		}
 
-		Entities& entities = Maze::GetMaze().GetRoomEntities();
-		for (Entities::iterator it = entities.begin(), itEnd = entities.end(); it != itEnd; ++it)
+		for (std::shared_ptr<Entity>& pEntity : Maze::GetMaze()->GetRoomEntities())
 		{
-			Entity* pEntity = *it;
-			
 			if (!pEntity->IsEnabled())
 				continue;
 
