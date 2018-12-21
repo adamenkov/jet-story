@@ -11,7 +11,7 @@
 LPDIRECT3DDEVICE9	g_pDirect3DDevice;		// the video card
 LPD3DXSPRITE		g_pDirect3DXSprite;
 
-Font* g_pFont;
+std::unique_ptr<Font> g_pFont;
 
 long int g_nFrameID = 0;
 
@@ -117,7 +117,7 @@ namespace
 		material.Ambient.a = 1.f;
 		g_pDirect3DDevice->SetMaterial(&material);
 
-		g_pFont = new Font("Font.bmp", 8, 8, 16);
+		g_pFont = std::make_unique<Font>("Font.bmp", 8, 8, 16);
 		if (g_pFont->IsEmpty())
 		{
 			return false;
@@ -167,7 +167,7 @@ namespace
 
 	void ShutDownEngine()
 	{
-		delete g_pFont;
+		//delete g_pFont;
 
 		Game::ShutDown();
 

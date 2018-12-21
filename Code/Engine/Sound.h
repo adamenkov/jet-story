@@ -5,24 +5,23 @@
 #include "fmod.hpp"
 
 
-class Sound final
+class Sound
 {
 public:
 	Sound(const std::string& fileName);
 	~Sound();
 
-	bool IsOK() const { return m_pFMOD_sound != nullptr; }
+	bool IsOK() const { return m_pSound != nullptr; }
 
 	bool IsPlaying() const;
-	bool Play(int nLoopCount);
-	void Stop();
+	bool Play();
+	bool PlayLooped();
+	void Stop() { m_pChannel->stop(); }
 
-	void Pause();
-	void Resume();
+	void Pause() { m_pChannel->setPaused(true); }
+	void Resume() { m_pChannel->setPaused(false); }
 
 private:
-	FMOD_SOUND*		m_pFMOD_sound;
-	FMOD::Sound*	m_pFMOD_sound2;
-	FMOD_CHANNEL*	m_pFMOD_channel;
-	FMOD::Channel*	m_pFMOD_channel2;
+	FMOD::Sound*	m_pSound;
+	FMOD::Channel*	m_pChannel;
 };

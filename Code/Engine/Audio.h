@@ -10,7 +10,5 @@ namespace Audio
 
 	void Update();
 
-
-	extern FMOD_SYSTEM* g_pFMOD_system;
-	extern FMOD::System* g_pFMOD_system2;
+	extern FMOD::System* g_pFMOD_system;
 }

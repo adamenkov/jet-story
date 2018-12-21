@@ -478,7 +478,7 @@ void Room::CollectGarbageEntities()
 		{
 			if (!Audio::IsPlaying(Sounds::EMPTY_ROOM))
 			{
-				Audio::Play(Sounds::EMPTY_ROOM, -1);
+				Audio::PlayLooped(Sounds::EMPTY_ROOM);
 			}
 		}
 	}

@@ -71,7 +71,8 @@ namespace Audio
 	bool Load(const std::string& fileName, const std::string& name);
 
 	bool IsPlaying(const std::string& name);
-	bool Play(const std::string& name, int nLoopCount = 1);
+	bool Play(const std::string& name);
+	bool PlayLooped(const std::string& name);
 	void Stop(const std::string& name);
 	void StopAll();
 

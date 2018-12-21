@@ -17,7 +17,7 @@ extern LPD3DXSPRITE			g_pDirect3DXSprite;
 extern long int g_nFrameID;
 
 class Font;
-extern Font* g_pFont;
+extern std::unique_ptr<Font> g_pFont;
 
 
 #endif	// #ifndef __ENGINE_INTERNAL_H

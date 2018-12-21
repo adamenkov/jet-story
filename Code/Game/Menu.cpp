@@ -27,7 +27,7 @@ void Menu::OnEnter()
 	{
 		if (!Audio::IsPlaying(Sounds::MAIN_THEME))
 		{
-			Audio::Play(Sounds::MAIN_THEME, -1);
+			Audio::PlayLooped(Sounds::MAIN_THEME);
 		}
 	}
 	else
@@ -178,7 +178,7 @@ void Menu::KeyPressed(char key)
 			Settings::bMusic = !Settings::bMusic;
 			if (Settings::bMusic)
 			{
-				Audio::Play(Sounds::MAIN_THEME, -1);
+				Audio::PlayLooped(Sounds::MAIN_THEME);
 			}
 			else
 			{

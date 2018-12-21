@@ -15,55 +15,22 @@ namespace
 
 namespace Audio
 {
-	FMOD_SYSTEM* g_pFMOD_system;
-	FMOD::System* g_pFMOD_system2;
-
-
-	bool Init2()
-	{
-		if (g_pFMOD_system != nullptr)
-		{
-			Engine::LogError("Calling Audio::Audio again!");
-			assert(false);
-			return false;
-		}
-
-		if (FMOD_System_Create(&g_pFMOD_system) == FMOD_OK)
-		{
-			if (FMOD_System_Init(g_pFMOD_system, 100, FMOD_INIT_NORMAL, nullptr) == FMOD_OK)
-			{
-				return true;
-			}
-			else
-			{
-				Engine::LogError("Couldn't initialize FMOD.");
-				assert(false);
-			}
-		}
-		else
-		{
-			Engine::LogError("Couldn't create FMOD.");
-			assert(false);
-		}
-
-		g_pFMOD_system = nullptr;
-		return false;
-	}
+	FMOD::System* g_pFMOD_system;
 
 
 	bool Init()
 	{
-		if (FMOD::System_Create(&g_pFMOD_system2) != FMOD_OK)
+		if (FMOD::System_Create(&g_pFMOD_system) != FMOD_OK)
 			return false;
 
 		unsigned int version;
-		if (g_pFMOD_system2->getVersion(&version) != FMOD_OK)
+		if (g_pFMOD_system->getVersion(&version) != FMOD_OK)
 			return false;
 
 		if (version < FMOD_VERSION)
 			return false;
 
-		if (g_pFMOD_system2->init(32, FMOD_INIT_NORMAL, nullptr) != FMOD_OK)
+		if (g_pFMOD_system->init(32, FMOD_INIT_NORMAL, nullptr) != FMOD_OK)
 			return false;
 
 		return true;
@@ -79,9 +46,8 @@ namespace Audio
 
 		if (g_pFMOD_system != nullptr)
 		{
-			//FMOD_System_Release(g_pFMOD_system);
-			if (g_pFMOD_system2->close() == FMOD_OK) {
-				g_pFMOD_system2->release();
+			if (g_pFMOD_system->close() == FMOD_OK) {
+				g_pFMOD_system->release();
 			}
 
 			g_pFMOD_system = nullptr;
@@ -91,8 +57,7 @@ namespace Audio
 
 	void Update()
 	{
-		//FMOD_System_Update(g_pFMOD_system);
-		g_pFMOD_system2->update();
+		g_pFMOD_system->update();
 	}
 
 
@@ -119,11 +84,22 @@ namespace Audio
 	}
 
 
-	bool Play(const std::string& name, int nLoopCount)
+	bool Play(const std::string& name)
 	{
 		if (s_mapSounds.find(name) != s_mapSounds.end())
 		{
-			return s_mapSounds[name]->Play(nLoopCount);
+			return s_mapSounds[name]->Play();
+		}
+
+		return false;
+	}
+
+
+	bool PlayLooped(const std::string& name)
+	{
+		if (s_mapSounds.find(name) != s_mapSounds.end())
+		{
+			return s_mapSounds[name]->PlayLooped();
 		}
 
 		return false;
