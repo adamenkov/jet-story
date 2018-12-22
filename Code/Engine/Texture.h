@@ -6,7 +6,7 @@
 #include <string>
 
 
-class Texture final
+class Texture
 {
 public:
 	Texture(std::string fileName = std::string(), D3DCOLOR colorTransparent = D3DCOLOR_XRGB(0, 0, 0));

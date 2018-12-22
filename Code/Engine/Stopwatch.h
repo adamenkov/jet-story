@@ -1,6 +1,3 @@
-#ifndef __STOPWATCH_H
-#define __STOPWATCH_H
-
 #pragma once
 
 #include <Windows.h>
@@ -24,6 +21,3 @@ public:
 private:
 	DWORD m_start;
 };
-
-
-#endif	// #ifndef __STOPWATCH_H

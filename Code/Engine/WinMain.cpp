@@ -167,8 +167,6 @@ namespace
 
 	void ShutDownEngine()
 	{
-		//delete g_pFont;
-
 		Game::ShutDown();
 
 		Audio::ShutDown();

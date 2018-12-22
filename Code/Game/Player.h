@@ -11,8 +11,8 @@ class PlayerBomb;
 class Player : public Entity
 {
 	Player();
-	Player(const Player&);
-	Player& operator=(const Player&);
+	Player(const Player&) = delete;
+	Player& operator=(const Player&) = delete;
 
 public:
 	static std::shared_ptr<Player> GetPlayer();
@@ -24,9 +24,9 @@ public:
 	virtual void Animate();
 	virtual void Render() const;
 
-	virtual bool IsMovable() const { return true; }
-	virtual Vector2 GetSteering() const;
-	virtual void OnCollision(bool bHorizontal, bool bVertical);
+	virtual bool IsMovable() const override { return true; }
+	virtual Vector2 GetSteering() const override;
+	virtual void OnCollision(bool bHorizontal, bool bVertical) override;
 
 	
 	void	Refuel()		{ m_nFuel = GetMaxFuel(); }
@@ -41,7 +41,7 @@ public:
 
 	void	ResetScore()		{ m_nScore = 0; }
 	void	AddScore(int score)	{ m_nScore += score; }
-	int		GetScore() const	{ return m_nScore; }
+	virtual int GetScore() const override { return m_nScore; }
 
 	void	RestoreAmmo()		{ m_nAmmo = GetMaxAmmo(); }
 	int		GetAmmo() const		{ return m_nAmmo; }

@@ -1,6 +1,3 @@
-#ifndef __ENGINE_INTERNAL_H
-#define __ENGINE_INTERNAL_H
-
 #pragma once
 
 #include "../Shared/Engine.h"
@@ -18,6 +15,3 @@ extern long int g_nFrameID;
 
 class Font;
 extern std::unique_ptr<Font> g_pFont;
-
-
-#endif	// #ifndef __ENGINE_INTERNAL_H

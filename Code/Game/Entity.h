@@ -17,11 +17,10 @@ class Entity : public Sprite
 public:
 	Entity(const Vector2& vInitialPos);
 
-	virtual void Reset();
+	virtual void Reset() override;
+	virtual void Animate() override;
 
 	virtual void Update();
-
-	virtual void Animate();
 
 	enum ELifeTime	// From more to less persistent
 	{

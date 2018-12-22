@@ -1,11 +1,10 @@
 #pragma once
 
+#include "Sprite.h"
 #include <string>
 
-#include "Sprite.h"
 
-
-class Font final
+class Font
 {
 public:
 	Font(const std::string& sFontImageFileName, int nLetterWidth, int nLetterHeight, int nColumns);

@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include "Engine.h"
+#include "EngineInternal.h"
 #include <cassert>
 
 
@@ -10,6 +10,7 @@ Texture::Texture(std::string fileName, D3DCOLOR colorTransparent) : m_pTexture(n
 		LoadFromFile(fileName, colorTransparent);
 	}
 }
+
 
 Texture::~Texture()
 {

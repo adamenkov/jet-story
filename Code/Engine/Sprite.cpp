@@ -1,10 +1,9 @@
 #include "Sprite.h"
-#include "Engine.h"
+#include "EngineInternal.h"
 
 
 Sprite::Sprite() :
 	m_pos(ZERO),
-	m_pTexture(nullptr),
 	m_nWidth(0),
 	m_nHeight(0),
 	m_nFrameIDStart(0),

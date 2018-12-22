@@ -1,4 +1,4 @@
-#include "Engine.h"
+#include "EngineInternal.h"
 #include <cstdarg>
 #include <fstream>
 #include <d3d9.h>

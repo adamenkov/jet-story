@@ -15,7 +15,8 @@ public:
 
 	virtual void Reset();
 
-	void Animate();
+	virtual void Animate();
+
 	void Render() const;
 
 	Vector2 GetPos() const { return m_pos; }

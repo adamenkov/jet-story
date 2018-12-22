@@ -13,8 +13,8 @@
 class Maze
 {
 	Maze() {}
-	Maze(const Maze&);
-	Maze& operator=(const Maze&);
+	Maze(const Maze&) = delete;
+	Maze& operator=(const Maze&) = delete;
 
 public:
 	static std::shared_ptr<Maze> GetMaze();
@@ -63,15 +63,6 @@ private:
 		COLUMNS	= 16,
 
 		OBJECTS = 39
-	};
-
-	struct DeleteFunctor
-	{
-		template<typename T>
-		void operator()(const T* ptr) const
-		{
-			delete ptr;
-		}
 	};
 
 	//////////////////////////////////////////////////////////////////////////

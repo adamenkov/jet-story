@@ -1,6 +1,3 @@
-#ifndef __VECTOR2_H
-#define __VECTOR2_H
-
 #pragma once
 
 #include <cmath>
@@ -77,6 +74,3 @@ struct Vector2
 		return Vector2(coeff * rhs.x, coeff * rhs.y);
 	}
 };
-
-
-#endif	// #ifndef __VECTOR2_H

@@ -458,7 +458,6 @@ void Room::CollectGarbageEntities()
 
 		if (pEntity->IsGarbage())
 		{
-			delete pEntity;
 			it = m_entities.erase(it);
 		}
 		else
@@ -570,7 +569,6 @@ void Room::RemoveEntities(Entity::ELifeTime eMinimumLifeTimeToRemove)
 
 		if (pEntity->GetLifeTime() >= eMinimumLifeTimeToRemove)
 		{
-			delete pEntity;
 			it = m_entities.erase(it);
 		}
 		else
