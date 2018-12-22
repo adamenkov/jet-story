@@ -11,7 +11,7 @@ RandomCollectible::RandomCollectible(const Vector2& vInitialPos) :
 }
 
 
-void RandomCollectible::OnCollision(Player& player)
+void RandomCollectible::OnCollision(std::shared_ptr<Player> player)
 {
 	switch (rand() % 7)
 	{
@@ -26,107 +26,107 @@ void RandomCollectible::OnCollision(Player& player)
 }
 
 
-void RandomCollectible::CollectFuel(Player& player)
+void RandomCollectible::CollectFuel(std::shared_ptr<Player> player)
 {
-	player.Refuel();
+	player->Refuel();
 	m_bEnabled = false;
 	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
-void RandomCollectible::CollectAmmo(Player& player)
+void RandomCollectible::CollectAmmo(std::shared_ptr<Player> player)
 {
-	player.RestoreAmmo();
+	player->RestoreAmmo();
 	m_bEnabled = false;
 	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
-void RandomCollectible::CollectBombs(Player& player)
+void RandomCollectible::CollectBombs(std::shared_ptr<Player> player)
 {
-	player.SetBombsType('c');
-	player.SetBombs(50);
-	player.RestoreAmmo();
+	player->SetBombsType('c');
+	player->SetBombs(50);
+	player->RestoreAmmo();
 	m_bEnabled = false;
 	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
-void RandomCollectible::CollectMissiles(Player& player)
+void RandomCollectible::CollectMissiles(std::shared_ptr<Player> player)
 {
-	player.SetBombsType('a');
-	player.SetBombs(50);
-	player.RestoreAmmo();
+	player->SetBombsType('a');
+	player->SetBombs(50);
+	player->RestoreAmmo();
 	m_bEnabled = false;
 	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
-void RandomCollectible::CollectBalls(Player& player)
+void RandomCollectible::CollectBalls(std::shared_ptr<Player> player)
 {
-	player.SetBombsType('l');
-	player.SetBombs(20);
-	player.RestoreAmmo();
+	player->SetBombsType('l');
+	player->SetBombs(20);
+	player->RestoreAmmo();
 	m_bEnabled = false;
 	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
-void RandomCollectible::CollectShield(Player& player)
+void RandomCollectible::CollectShield(std::shared_ptr<Player> player)
 {
-	player.RestoreShield();
+	player->RestoreShield();
 	m_bEnabled = false;
 	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
-void RandomCollectible::CollectStars(Player& player)
+void RandomCollectible::CollectStars(std::shared_ptr<Player> player)
 {
-	player.SetBombsType('f');
-	player.SetBombs(20);
-	player.RestoreAmmo();
+	player->SetBombsType('f');
+	player->SetBombs(20);
+	player->RestoreAmmo();
 	m_bEnabled = false;
 	Audio::Play(Sounds::ITEM_COLLECTED);
 }
 
 
-void Fuel::OnCollision(Player& player)
+void Fuel::OnCollision(std::shared_ptr<Player> player)
 {
 	CollectFuel(player);
 }
 
 
-void Ammo::OnCollision(Player& player)
+void Ammo::OnCollision(std::shared_ptr<Player> player)
 {
 	CollectAmmo(player);
 }
 
 
-void Bombs::OnCollision(Player& player)
+void Bombs::OnCollision(std::shared_ptr<Player> player)
 {
 	CollectBombs(player);
 }
 
 
-void Missiles::OnCollision(Player& player)
+void Missiles::OnCollision(std::shared_ptr<Player> player)
 {
 	CollectMissiles(player);
 }
 
 
-void Balls::OnCollision(Player& player)
+void Balls::OnCollision(std::shared_ptr<Player> player)
 {
 	CollectBalls(player);
 }
 
 
-void Shield::OnCollision(Player& player)
+void Shield::OnCollision(std::shared_ptr<Player> player)
 {
 	CollectShield(player);
 }
 
 
-void Stars::OnCollision(Player& player)
+void Stars::OnCollision(std::shared_ptr<Player> player)
 {
 	CollectStars(player);
 }

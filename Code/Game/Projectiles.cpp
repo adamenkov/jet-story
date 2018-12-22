@@ -90,10 +90,10 @@ void HorizontalWave::SetGarbage()
 }
 
 
-void HorizontalWave::OnCollision(Player& player)
+void HorizontalWave::OnCollision(std::shared_ptr<Player> player)
 {
 	SetGarbage();
-	player.ConsumeShield(7);
+	player->ConsumeShield(7);
 }
 
 
@@ -127,10 +127,10 @@ void Wave::SetGarbage()
 }
 
 
-void Wave::OnCollision(Player& player)
+void Wave::OnCollision(std::shared_ptr<Player> player)
 {
 	SetGarbage();
-	player.ConsumeShield(7);
+	player->ConsumeShield(7);
 }
 
 
@@ -150,10 +150,10 @@ Radiation::Radiation(const Vector2& vInitialPos, bool bLeft) :
 }
 
 
-void Radiation::OnCollision(Player& player)
+void Radiation::OnCollision(std::shared_ptr<Player> player)
 {
 	SetGarbage();
-	player.ConsumeShield(10);
+	player->ConsumeShield(10);
 }
 
 
@@ -172,11 +172,11 @@ VerticalRocket::VerticalRocket(const Vector2& vInitialPos) :
 	m_vel.y = -2.f;
 }
 
-void VerticalRocket::OnCollision(Player& player)
+void VerticalRocket::OnCollision(std::shared_ptr<Player> player)
 {
 	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos));
 	SetGarbage();
-	player.ConsumeShield(10);
+	player->ConsumeShield(10);
 }
 
 
@@ -195,11 +195,11 @@ Bomb::Bomb(const Vector2& vInitialPos) :
 	SetTexture(m_texture, 16);
 }
 
-void Bomb::OnCollision(Player& player)
+void Bomb::OnCollision(std::shared_ptr<Player> player)
 {
 	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos));
 	SetGarbage();
-	player.ConsumeShield(10);
+	player->ConsumeShield(10);
 }
 
 
@@ -217,9 +217,9 @@ PlayerBullet::PlayerBullet(const Vector2& vInitialPosition) : Entity(vInitialPos
 }
 
 
-void PlayerBullet::OnCollision(Enemy& enemy)
+void PlayerBullet::OnCollision(std::shared_ptr<Enemy> enemy)
 {
-	enemy.OnBulletHit();
+	enemy->OnBulletHit();
 	SetGarbage();
 }
 
@@ -274,9 +274,9 @@ void PlayerVerticalBomb::Update()
 }
 
 
-void PlayerVerticalBomb::OnCollision(Enemy& enemy)
+void PlayerVerticalBomb::OnCollision(std::shared_ptr<Enemy> enemy)
 {
-	enemy.Explode();
+	enemy->Explode();
 	SetGarbage();
 }
 
@@ -306,9 +306,9 @@ void PlayerHorizontalBomb::Update()
 }
 
 
-void PlayerHorizontalBomb::OnCollision(Enemy& enemy)
+void PlayerHorizontalBomb::OnCollision(std::shared_ptr<Enemy> enemy)
 {
-	enemy.Explode();
+	enemy->Explode();
 	SetGarbage();
 }
 

@@ -40,7 +40,7 @@ public:
 	virtual void Render() const override;
 	virtual void SetGarbage() override;
 
-	virtual void OnCollision(Player& player);
+	virtual void OnCollision(std::shared_ptr<Player> player) override;
 	virtual void OnCollision(bool bHorizontal, bool bVertical) override;
 
 private:
@@ -57,7 +57,7 @@ public:
 	virtual void Render() const override;
 	virtual void SetGarbage();
 
-	virtual void OnCollision(Player& player);
+	virtual void OnCollision(std::shared_ptr<Player> player) override;
 	virtual void OnCollision(bool bHorizontal, bool bVertical) override;
 
 private:
@@ -70,7 +70,7 @@ class Radiation : public Entity
 public:
 	Radiation(const Vector2& vInitialPos, bool bLeft);
 
-	virtual void OnCollision(Player& player);
+	virtual void OnCollision(std::shared_ptr<Player> player) override;
 	virtual void OnCollision(bool bHorizontal, bool bVertical) override;
 
 private:
@@ -84,7 +84,7 @@ class VerticalRocket : public Entity
 public:
 	VerticalRocket(const Vector2& vInitialPos);
 
-	virtual void OnCollision(Player& player);
+	virtual void OnCollision(std::shared_ptr<Player> player) override;
 	virtual void OnCollision(bool bHorizontal, bool bVertical) override;
 
 private:
@@ -98,7 +98,7 @@ class Bomb : public Entity
 public:
 	Bomb(const Vector2& vInitialPos);
 
-	virtual void OnCollision(Player& player);
+	virtual void OnCollision(std::shared_ptr<Player> player) override;
 	virtual void OnCollision(bool bHorizontal, bool bVertical) override;
 	virtual void Update() { m_vel.y += 0.01f; }
 
@@ -118,7 +118,7 @@ public:
 	virtual bool IsMovable() const override { return true; }
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) override { SetGarbage(); }
 	virtual bool CollidesWithEnemy() const override { return true; }
-	virtual void OnCollision(Enemy& enemy);
+	virtual void OnCollision(std::shared_ptr<Enemy> enemy) override;
 };
 
 
@@ -141,7 +141,7 @@ public:
 	
 	virtual void Render() const override;
 	virtual void OnCollision(bool bHorizontal, bool bVertical) override;
-	virtual void OnCollision(Enemy& enemy) { enemy.Explode(); }
+	virtual void OnCollision(std::shared_ptr<Enemy> enemy) { enemy->Explode(); }
 	virtual void OnTimer() override { SetGarbage(); }
 	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer()->GetPos() + Vector2(12.f, 0.f)); }
 };
@@ -153,7 +153,7 @@ public:
 	virtual void Render() const { Engine::DrawText(GetPos(), EColor::LightCyan, "c"); }
 	virtual void Update();
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) override { SetGarbage(); }
-	virtual void OnCollision(Enemy& enemy);
+	virtual void OnCollision(std::shared_ptr<Enemy> enemy) override;
 	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer()->GetPos() + Vector2(12.f, 8.f)); }
 };
 
@@ -166,7 +166,7 @@ public:
 	virtual void Render() const { Engine::DrawText(GetPos(), EColor::LightCyan, m_bLeft ? "b" : "a"); }
 	virtual void Update();
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) override { SetGarbage(); }
-	virtual void OnCollision(Enemy& enemy);
+	virtual void OnCollision(std::shared_ptr<Enemy> enemy) override;
 	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer()->GetPos() + Vector2(12.f, 8.f)); }
 
 private:
@@ -182,7 +182,7 @@ public:
 	virtual void Render() const override;
 	virtual void Update();
 	virtual void OnCollision(bool bHorizontal, bool bVertical) override;
-	virtual void OnCollision(Enemy& enemy) { enemy.Explode(); }
+	virtual void OnCollision(std::shared_ptr<Enemy> enemy) { enemy->Explode(); }
 	virtual void OnTimer() override { SetGarbage(); }
 	virtual void SetPosNearPlayer() { SetPos(Player::GetPlayer()->GetPos() + Vector2(12.f, 0.f)); }
 };

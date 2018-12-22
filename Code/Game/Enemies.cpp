@@ -23,11 +23,11 @@ void Enemy::Reset()
 }
 
 
-void Enemy::OnCollision(Player& player)
+void Enemy::OnCollision(std::shared_ptr<Player> player)
 {
 	if ((Engine::GetFrameID() % 3) == 0)
 	{
-		player.ConsumeShield();
+		player->ConsumeShield();
 		OnBulletHit();
 	}
 }
@@ -82,9 +82,9 @@ void Platform::Explode()
 }
 
 
-void Platform::OnCollision(Player& player)
+void Platform::OnCollision(std::shared_ptr<Player> player)
 {
-	if (player.GetPos().y > m_pos.y)
+	if (player->GetPos().y > m_pos.y)
 	{
 		Enemy::OnCollision(player);
 	}
@@ -116,9 +116,9 @@ void Platform2::Explode()
 }
 
 
-void Platform2::OnCollision(Player& player)
+void Platform2::OnCollision(std::shared_ptr<Player> player)
 {
-	if (player.GetPos().y > m_pos.y)
+	if (player->GetPos().y > m_pos.y)
 	{
 		Enemy::OnCollision(player);
 	}

@@ -16,7 +16,7 @@ public:
 	virtual bool IsMovable() const override { return true; }
 	virtual bool IsEnemy() const override { return true; }
 	virtual bool CollidesWithPlayer() const override { return true; }
-	virtual void OnCollision(Player& player);
+	virtual void OnCollision(std::shared_ptr<Player> player) override;
 
 	virtual bool OnBulletHit();
 
@@ -43,7 +43,7 @@ public:
 
 	virtual void Reset() override;
 	virtual void Explode() override;
-	virtual void OnCollision(Player& player) override;
+	virtual void OnCollision(std::shared_ptr<Player> player) override;
 	virtual void Move();
 	virtual int GetScore() const override { return 90; }
 };
@@ -56,7 +56,7 @@ public:
 
 	virtual void Reset() override;
 	virtual void Explode() override;
-	virtual void OnCollision(Player& player) override;
+	virtual void OnCollision(std::shared_ptr<Player> player) override;
 	virtual void Move();
 	virtual int GetScore() const override { return 90; }
 };
