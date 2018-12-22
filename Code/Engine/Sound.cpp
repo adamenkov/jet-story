@@ -13,7 +13,7 @@ Sound::~Sound()
 {
 	if (m_pSound != nullptr)
 	{
-		m_pSound->release();
+		//m_pSound->release();
 	}
 }
 
