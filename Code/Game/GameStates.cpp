@@ -51,8 +51,6 @@ namespace GameStates
 		{
 			pCurrentGameState->KeyPressed(key);
 		}
-
-		Debug::KeyPressed(key);
 	}
 
 
