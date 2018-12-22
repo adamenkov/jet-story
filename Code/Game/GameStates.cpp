@@ -32,7 +32,7 @@ namespace GameStates
 		gameStates["accomplished"] = std::make_shared<Accomplished>();
 		gameStates["score"]        = std::make_shared<Score>();
 
-		pCurrentGameState = gameStates["session"];
+		pCurrentGameState = gameStates["menu"];
 		pCurrentGameState->OnEnter();
 
 		return true;

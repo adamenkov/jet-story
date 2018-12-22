@@ -463,7 +463,7 @@ void Room::CollectGarbageEntities()
 		}
 		else
 		{
-			if (pEntity->IsEnabled())
+			if (pEntity->IsEnabled() && ((pEntity->IsEnemy() || pEntity->IsCollectible())))
 			{
 				bCurrentRoomIsEmpty = false;
 			}

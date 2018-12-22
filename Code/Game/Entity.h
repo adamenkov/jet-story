@@ -68,6 +68,8 @@ public:
 	virtual bool CollidesWithPlayer() const { return false; }
 	virtual void OnCollision(std::shared_ptr<Player> UNUSED_PARAM(player)) {}
 
+	virtual bool IsCollectible() const { return false; }
+
 	virtual int GetScore() const { return 0; }
 
 protected:

@@ -12,9 +12,9 @@ class RandomCollectible : public Entity
 public:
 	RandomCollectible(const Vector2& vInitialPos);
 
-	virtual void OnCollision(std::shared_ptr<Player> player) override;
-
 	virtual bool CollidesWithPlayer() const override { return true; }
+	virtual void OnCollision(std::shared_ptr<Player> player) override;
+	virtual bool IsCollectible() const override { return true; }
 
 protected:
 	void CollectFuel    (std::shared_ptr<Player> player);

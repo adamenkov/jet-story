@@ -24,8 +24,8 @@ public:
 	void Update();
 	void Render() const;
 
-	void AddDebrisFor(const Vector2& pos)		{ m_room[m_curRow][m_curColumn].AddDebris(pos); }
-	void AddEntity(std::shared_ptr<Entity> pEntity)			{ m_room[m_curRow][m_curColumn].AddEntity(pEntity); }
+	void AddDebrisFor(const Vector2& pos)		{ m_room[m_currentRow][m_currentColumn].AddDebris(pos); }
+	void AddEntity(std::shared_ptr<Entity> pEntity)			{ m_room[m_currentRow][m_currentColumn].AddEntity(pEntity); }
 
 	int  GetBasesLeft() const { return m_nBasesLeft; }
 
@@ -34,11 +34,11 @@ public:
 	void SetBrightness(unsigned char cBrightness);
 
 	// For "Mission Accomplished"
-	void ExplodeAllEntititiesExceptPlayer()	{ m_room[m_curRow][m_curColumn].ExplodeAllEntititiesExceptPlayer(); }
-	void AddRoomExplosion()					{ m_room[m_curRow][m_curColumn].AddExplosion(); }
+	void ExplodeAllEntititiesExceptPlayer()	{ m_room[m_currentRow][m_currentColumn].ExplodeAllEntititiesExceptPlayer(); }
+	void AddRoomExplosion()					{ m_room[m_currentRow][m_currentColumn].AddExplosion(); }
 
 #ifdef _DEBUG
-	std::vector<std::shared_ptr<Entity>>& GetRoomEntities()				{ return m_room[m_curRow][m_curColumn].GetEntities(); }
+	std::vector<std::shared_ptr<Entity>>& GetRoomEntities()				{ return m_room[m_currentRow][m_currentColumn].GetEntities(); }
 #endif	// #ifdef _DEBUG
 
 	//////////////////////////////////////////////////////////////////////////
@@ -65,8 +65,8 @@ private:
 	//////////////////////////////////////////////////////////////////////////
 	Room	m_room[ROWS][COLUMNS];
 
-	int		m_curRow;
-	int		m_curColumn;
+	int		m_currentRow;
+	int		m_currentColumn;
 
 	int		m_nBasesLeft;
 

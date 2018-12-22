@@ -69,6 +69,7 @@ bool Maze::Init()
 	if (!ifs)
 	{
 		Engine::LogError("Could not load file %s.", MAZE_FILE);
+		return false;
 	}
 
 	const char* pByteStream = sComressedMap.c_str();
@@ -79,6 +80,7 @@ bool Maze::Init()
 	if (!ifs2)
 	{
 		Engine::LogError("Could not load file %s.", GAME_OBJECTS_FILE);
+		return false;
 	}
 
 	if (ifs && ifs2)
@@ -94,10 +96,6 @@ bool Maze::Init()
 				pByteStream += strlen(pByteStream) + 1;
 			}
 		}
-	}
-	else
-	{
-		assert(false);
 	}
 
 	m_room[0][0].AddGameEntity(Player::GetPlayer());
@@ -127,8 +125,8 @@ void Maze::Reset()
 		}
 	}
 
-	m_curRow = 0;
-	m_curColumn = 0;
+	m_currentRow = 0;
+	m_currentColumn = 0;
 	SetCurrentRoom(0, 0);
 
 	m_nBasesLeft = 47;
@@ -139,7 +137,7 @@ void Maze::Reset()
 
 void Maze::Update()
 {
-	m_room[m_curRow][m_curColumn].Update();
+	m_room[m_currentRow][m_currentColumn].Update();
 	
 	UpdateCurrentRowAndColumn();
 	
@@ -149,7 +147,7 @@ void Maze::Update()
 
 void Maze::Render() const
 {
-	m_room[m_curRow][m_curColumn].Render(m_blockSprites);
+	m_room[m_currentRow][m_currentColumn].Render(m_blockSprites);
 	
 	HUD::GetHUD().Render();
 
@@ -194,7 +192,7 @@ void Maze::UpdateCurrentRowAndColumn()
 	{
 		x = 0.f;
 		player->SetPos(x, y);
-		SetCurrentRoom(m_curRow, m_curColumn + 1);
+		SetCurrentRoom(m_currentRow, m_currentColumn + 1);
 	}
 	else
 	{
@@ -202,7 +200,7 @@ void Maze::UpdateCurrentRowAndColumn()
 		{
 			x = 0.999f + static_cast<float>(Engine::eScreenWidthInPixels - width);
 			player->SetPos(x, y);
-			SetCurrentRoom(m_curRow, m_curColumn - 1);
+			SetCurrentRoom(m_currentRow, m_currentColumn - 1);
 		}
 	}
 
@@ -210,7 +208,7 @@ void Maze::UpdateCurrentRowAndColumn()
 	{
 		y = 32.f;
 		player->SetPos(x, y);
-		SetCurrentRoom(m_curRow + 1, m_curColumn);
+		SetCurrentRoom(m_currentRow + 1, m_currentColumn);
 	}
 	else
 	{
@@ -218,7 +216,7 @@ void Maze::UpdateCurrentRowAndColumn()
 		{
 			y = 0.999f + static_cast<float>(Engine::eScreenHeightInPixels - height);
 			player->SetPos(x, y);
-			SetCurrentRoom(m_curRow - 1, m_curColumn);
+			SetCurrentRoom(m_currentRow - 1, m_currentColumn);
 		}
 	}
 }
@@ -229,10 +227,13 @@ void Maze::SetCurrentRoom(int row, int column)
 	assert((0 <= row) && (row < ROWS));
 	assert((0 <= column) && (column < COLUMNS));
 
-	m_room[m_curRow][m_curColumn].OnPlayerExit();
-	m_curRow = row;
-	m_curColumn = column;
-	m_room[m_curRow][m_curColumn].OnPlayerEnter();
+	if ((row == m_currentRow) && (column == m_currentColumn))
+		return;
+
+	m_room[m_currentRow][m_currentColumn].OnPlayerExit();
+	m_currentRow = row;
+	m_currentColumn = column;
+	m_room[m_currentRow][m_currentColumn].OnPlayerEnter();
 
 	Player::GetPlayer()->OnRoomChanged();
 }

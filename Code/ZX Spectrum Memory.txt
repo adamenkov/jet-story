@@ -1,42 +1,54 @@
 ZX Spectrum memory
 
-•	0000–3FFF	ROM
-•	11AA		Based on (x, y) in BC (y in B, x in C; y grows downwards), calculate address in screen memory (HL) and pixel position in the byte (C mod 8)
-•	4000–57FF	screen pixels (3 parts x 8 rows x32 columns x 8 pixels)
-•	5800–5AFF	attributes
-•	5DC0–6DBF	Initial map (128 x 8 x (y, x, 0, type)) of all game objects
-•	7213		Initialize game
-•	8F00–9EFF	32 (actually, 29) 32x32 labyrinth elements’ pixels
-•	9F00–A0FF	attributes for the above
-•	A100–A2FF	8 x 2 tables used to convert sprite byte to a pair of actual screen bytes based on sprite x (mod 8) coordinate
-•	B100–…		16 x 16 sprites (no attributes)
-•	C400–D3FF	Session-dependent (current) map (128 x 8 x (y, x, 0, type)) of all game objects
-•	D400–DFB7	Labyrinth (encoded;  in byte b7b6b5b4b3b2b1b0, (b4b3b2b1b0 – 1) or 0 is the number of labyrinth block, b7b6b5 is the number it is repeated)
-•	DEAB		Go to DF74
-•	DF49		Render a room
-•	DF74		Return (in HL) target address of the next pixel line of HUD
-•	E011		Get the address of sprite number A in DE, address of screen memory where to draw it in HL, pixel offset (a2a1a0) in A, 1010_a2_a1_a0_1 in B (see A100)
-•	E027		Draw a sprite
-•	E497		current room (1 byte)
-•	E7C8		Update the coordinates (?) and draw a sprite
-•	EE51		Go to FB91
-•	EE58		game objects of the current room (6 x 20 bytes)
-•	EED1		table of 8 bytes (of something) for each type
-•	F052		Prepare current room (copy objects from the map (C400) and draw HUD)
-•	F876		Number of bases left (in hexadecimal)
-•	FAD5		Draw HUD
-•	FAFA		Draw figures in HUD
-•	FB44		Print current scores
-•	FB91		Draw HUD and
-•	FBA4		draw objects
+*	0000–3FFF	ROM
+*	11AA		Based on (x, y) in BC (y in B, x in C; y grows downwards), calculate address in screen memory (HL) and pixel position in the byte (C mod 8)
+*	4000–57FF	screen pixels (3 parts x 8 rows x32 columns x 8 pixels)
+*	5800–5AFF	attributes
+*	5DC0–6DBF	Initial map (128 x 8 x (y, x, 0, type)) of all game objects
+
+
+
+*	6DEF-6E07	Clear the screen and border.
+*	7213		Initialize game
+*	8F00–9EFF	32 (actually, 29) 32x32 labyrinth elements’ pixels
+*	9F00–A0FF	attributes for the above
+*	A100–A2FF	8 x 2 tables used to convert sprite byte to a pair of actual screen bytes based on sprite x (mod 8) coordinate
+*	B100–…		16 x 16 sprites (no attributes)
+*	C400–D3FF	Session-dependent (current) map (128 x 8 x (y, x, 0, type)) of all game objects
+
+*	D400–DFB7	Labyrinth (encoded;  in byte b7b6b5b4b3b2b1b0, (b4b3b2b1b0 – 1) or 0 is the number of labyrinth block, b7b6b5 is the number it is repeated)
+*	DEAB		Go to DF74
+*	DF49		Render a room
+*	DF74		Return (in HL) target address of the next pixel line of HUD
+*	E011		Get the address of sprite number A in DE, address of screen memory where to draw it in HL, pixel offset (a2a1a0) in A, 1010_a2_a1_a0_1 in B (see A100)
+*	E027		Draw a sprite
+
+*	E1B8-E1E9	get key (Z=1 iff pressed). D = 5-group query mask, E = pressed key mask, B = group element counter, C = 5-key group counter
+*	E1EA-E211	key table.  (element at 8 * key_number_1_to_5 + group_number_1_to_8 gives the pressed key)
+*	E212-E21E	Wait for pressed key and play the sound "key assigned".
+*	E21F-E243	Actually play the sound "key assigned"
+*	E244-E24E	Play the sound "key assigned".
+
+*	E497		current room (1 byte)
+*	E7C8		Update the coordinates (?) and draw a sprite
+*	EE51		Go to FB91
+*	EE58		game objects of the current room (6 x 20 bytes)
+*	EED1		table of 8 bytes (of something) for each type
+*	F052		Prepare current room (copy objects from the map (C400) and draw HUD)
+*	F876		Number of bases left (in hexadecimal)
+*	FAD5		Draw HUD
+*	FAFA		Draw figures in HUD
+*	FB44		Print current scores
+*	FB91		Draw HUD and
+*	FBA4		draw objects
 
 Game object (IX)
 Each game object occupies 20 bytes of memory.  There are up to 6 16x16 objects in each room.
-•	IX	object type
-•	IX+1	old x coordinate
-•	IX+2	old y coordinate
-•	IX+3	old sprite number (in the catalog of all 16x16 sprites) / animation frame
-•	IX+4	new y coordinate
-•	IX+5	new x coordinate
-•	IX+6	new sprite number / animation frame
+*	IX	object type
+*	IX+1	old x coordinate
+*	IX+2	old y coordinate
+*	IX+3	old sprite number (in the catalog of all 16x16 sprites) / animation frame
+*	IX+4	new y coordinate
+*	IX+5	new x coordinate
+*	IX+6	new sprite number / animation frame
 
