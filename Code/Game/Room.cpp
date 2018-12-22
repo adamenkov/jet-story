@@ -301,6 +301,7 @@ void Room::MoveEntitiesAndResolveCollisions()
 
 		Vector2 pos = pEntity->GetPos();
 		//TODO Fix assertion failed when player is dying in room (2, 0) and flying into Base
+		//TODO Also fix when the player appears in room (2, 4) from below
 		assert(!OverlapsObstacles(pEntity, pos.x, pos.y));
 
 		Vector2 vel = pEntity->GetVelocity();

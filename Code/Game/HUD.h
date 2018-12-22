@@ -30,5 +30,5 @@ private:
 		void Render() { Engine::Print(x, y, eColor, '#'); }
 	};
 	
-	std::vector<std::shared_ptr<Tile>> m_tiles;
+	std::vector<Tile> m_tiles;
 };
