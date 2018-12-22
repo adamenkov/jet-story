@@ -41,7 +41,7 @@ Debris::Debris(const Vector2& vInitialPos) : Entity(vInitialPos)
 
 void Debris::Render() const
 {
-	Engine::DrawText(m_pos, EColor::eC_White, char(117 + m_iAnimationFrame));
+	Engine::DrawText(m_pos, EColor::White, char(117 + m_iAnimationFrame));
 }
 
 
@@ -71,7 +71,7 @@ HorizontalWave::HorizontalWave(Radar* pRadar, const Vector2& vInitialPos, bool b
 
 void HorizontalWave::Render() const
 {
-	Engine::DrawText(int(m_pos.x), int(m_pos.y) - 3, EColor::eC_Grey, "g");
+	Engine::DrawText(int(m_pos.x), int(m_pos.y) - 3, EColor::Grey, "g");
 }
 
 
@@ -116,7 +116,7 @@ Wave::Wave(Radar* pRadar, const Vector2& vInitialPos, const Vector2& vel) :
 
 void Wave::Render() const
 {
-	Engine::DrawText(int(m_pos.x), int(m_pos.y), EColor::eC_Grey, "d");
+	Engine::DrawText(int(m_pos.x), int(m_pos.y), EColor::Grey, "d");
 }
 
 
@@ -235,7 +235,7 @@ PlayerBall::PlayerBall()
 {
 	SetTimer(512);
 	SetFrameTimer(2);
-	m_numAnimationFrames = static_cast<int>(EColor::eC_White) - static_cast<int>(EColor::eC_LightBlack);
+	m_numAnimationFrames = static_cast<int>(EColor::White) - static_cast<int>(EColor::LightBlack);
 }
 
 
@@ -244,8 +244,8 @@ void PlayerBall::Render() const
 	Engine::DrawText(
 		m_pos,
 		(m_timer > 100)
-			? EColor::eC_White
-			: static_cast<EColor>(static_cast<int>(EColor::eC_White) - m_iAnimationFrame),
+			? EColor::White
+			: static_cast<EColor>(static_cast<int>(EColor::White) - m_iAnimationFrame),
 		"l");
 }
 
@@ -317,7 +317,7 @@ PlayerStar::PlayerStar()
 {
 	SetTimer(512);
 	SetFrameTimer(2);
-	m_numAnimationFrames = static_cast<int>(EColor::eC_White) - static_cast<int>(EColor::eC_LightBlack);
+	m_numAnimationFrames = static_cast<int>(EColor::White) - static_cast<int>(EColor::LightBlack);
 }
 
 
@@ -326,8 +326,8 @@ void PlayerStar::Render() const
 	Engine::DrawText(
 		m_pos,
 		(m_timer > 100)
-			? EColor::eC_LightYellow
-			: static_cast<EColor>(static_cast<int>(EColor::eC_White) - m_iAnimationFrame),
+			? EColor::LightYellow
+			: static_cast<EColor>(static_cast<int>(EColor::White) - m_iAnimationFrame),
 		"f");
 }
 

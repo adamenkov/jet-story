@@ -59,9 +59,6 @@ void Menu::Update()
 			
 			case EState::MainMenu:
 				break;
-
-			default:
-				assert(!"Should not be here!");
 			}
 		}
 	}
@@ -92,21 +89,21 @@ void Menu::Render() const
 	{
 	case EState::MainMenu:
 	case EState::GetReadyForSession:
-		Engine::Print(12,  5, EColor::eC_White, "JET-STORY");
+		Engine::Print(12,  5, EColor::White, "JET-STORY");
 
-		Engine::Print( 2, 13, EColor::eC_Grey,  "1.  REDEFINE KEYS");
+		Engine::Print( 2, 13, EColor::Grey,  "1.  REDEFINE KEYS");
 		
-		Engine::Print( 2, 15, EColor::eC_Grey,  "2.  SOUND EFFECTS");
-		Engine::Print(20, 15, Settings::bSoundEffects ? EColor::eC_White : EColor::eC_LightMagenta, "ON");
-		Engine::Print(22, 15, EColor::eC_Grey,  "/");
-		Engine::Print(23, 15, Settings::bSoundEffects ? EColor::eC_LightMagenta : EColor::eC_White, "OFF");
+		Engine::Print( 2, 15, EColor::Grey,  "2.  SOUND EFFECTS");
+		Engine::Print(20, 15, Settings::bSoundEffects ? EColor::White : EColor::LightMagenta, "ON");
+		Engine::Print(22, 15, EColor::Grey,  "/");
+		Engine::Print(23, 15, Settings::bSoundEffects ? EColor::LightMagenta : EColor::White, "OFF");
 
-		Engine::Print( 2, 17, EColor::eC_Grey,  "3.  MUSIC");
-		Engine::Print(12, 17, Settings::bMusic ? EColor::eC_White : EColor::eC_LightMagenta, "ON");
-		Engine::Print(14, 17, EColor::eC_Grey,  "/");
-		Engine::Print(15, 17, Settings::bMusic ? EColor::eC_LightMagenta : EColor::eC_White, "OFF");
+		Engine::Print( 2, 17, EColor::Grey,  "3.  MUSIC");
+		Engine::Print(12, 17, Settings::bMusic ? EColor::White : EColor::LightMagenta, "ON");
+		Engine::Print(14, 17, EColor::Grey,  "/");
+		Engine::Print(15, 17, Settings::bMusic ? EColor::LightMagenta : EColor::White, "OFF");
 
-		Engine::Print( 2, 19, EColor::eC_Grey,  "4.  START GAME");
+		Engine::Print( 2, 19, EColor::Grey,  "4.  START GAME");
 
 
 		enum { y = 8 * (Engine::eScreenHeightInCharacters - 1) };
@@ -114,7 +111,7 @@ void Menu::Render() const
 		Engine::DrawText(
 			-m_nFPSCounter % 8,
 			y,
-			EColor::eC_Cyan,
+			EColor::Cyan,
 			m_sRunningLine.substr(
 				(m_nFPSCounter / 8) % m_sRunningLine.length(), 
 				Engine::eScreenWidthInCharacters
@@ -122,27 +119,27 @@ void Menu::Render() const
 		);
 
 		Engine::Print(0,
-			Engine::eScreenHeightInCharacters - 1, EColor::eC_Black, '\x1F');
+			Engine::eScreenHeightInCharacters - 1, EColor::Black, '\x1F');
 		Engine::Print(Engine::eScreenWidthInCharacters - 1,
-			Engine::eScreenHeightInCharacters - 1, EColor::eC_Black, '\x1F');
+			Engine::eScreenHeightInCharacters - 1, EColor::Black, '\x1F');
 
 		break;
 		
 	case EState::AssigningKey_Fire:
-		Engine::Print(12,  17, EColor::eC_LightYellow, "FIRE");
-		Engine::Print(18,  17, EColor::eC_LightYellow, Settings::cKeyFire);
+		Engine::Print(12,  17, EColor::LightYellow, "FIRE");
+		Engine::Print(18,  17, EColor::LightYellow, Settings::cKeyFire);
 	case EState::AssigningKey_Up:
-		Engine::Print(12,  16, EColor::eC_LightYellow, "UP");
-		Engine::Print(18,  16, EColor::eC_LightYellow, Settings::cKeyUp);
+		Engine::Print(12,  16, EColor::LightYellow, "UP");
+		Engine::Print(18,  16, EColor::LightYellow, Settings::cKeyUp);
 	case EState::AssigningKey_Down:
-		Engine::Print(12,  15, EColor::eC_LightYellow, "DOWN");
-		Engine::Print(18,  15, EColor::eC_LightYellow, Settings::cKeyDown);
+		Engine::Print(12,  15, EColor::LightYellow, "DOWN");
+		Engine::Print(18,  15, EColor::LightYellow, Settings::cKeyDown);
 	case EState::AssigningKey_Right:
-		Engine::Print(12,  14, EColor::eC_LightYellow, "RIGHT");
-		Engine::Print(18,  14, EColor::eC_LightYellow, Settings::cKeyRight);
+		Engine::Print(12,  14, EColor::LightYellow, "RIGHT");
+		Engine::Print(18,  14, EColor::LightYellow, Settings::cKeyRight);
 	case EState::AssigningKey_Left:
-		Engine::Print(12,  13, EColor::eC_LightYellow, "LEFT");
-		Engine::Print(18,  13, EColor::eC_LightYellow, Settings::cKeyLeft);
+		Engine::Print(12,  13, EColor::LightYellow, "LEFT");
+		Engine::Print(18,  13, EColor::LightYellow, Settings::cKeyLeft);
 		break;
 	}
 }
@@ -235,9 +232,6 @@ void Menu::KeyPressed(char key)
 			 (Settings::cKeyFire  == 'L'))
 			? 50 : 20;
 		break;
-
-	default:
-		assert(!"Should not be here!");
 	}
 }
 

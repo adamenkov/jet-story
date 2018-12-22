@@ -59,46 +59,46 @@ void Score::Render() const
 {
 	if (m_eState == EState::ShowingBestScores)
 	{
-		Engine::Print(8, 2, EColor::eC_LightMagenta, "THE BEST GUNNERS");
+		Engine::Print(8, 2, EColor::LightMagenta, "THE BEST GUNNERS");
 
 		int place = 1;
 		for (BestScores::const_iterator it = m_BestScores.begin(); it != m_BestScores.end(); ++it)
 		{
 			std::ostringstream os;
 			os << place << ".  " << it->second << "   " << std::setw(6) << std::setfill('0') << it->first;
-			Engine::Print(8, 2 * place + 4, EColor::eC_LightYellow, os.str());
+			Engine::Print(8, 2 * place + 4, EColor::LightYellow, os.str());
 			++place;
 		}
 		return;
 	}
 
-	Engine::Print(10, 8, EColor::eC_LightYellow, "GREAT SCORE !");
-	Engine::Print(3, 12, EColor::eC_LightCyan, "PLEASE ENTER YOUR INITIALS");
+	Engine::Print(10, 8, EColor::LightYellow, "GREAT SCORE !");
+	Engine::Print(3, 12, EColor::LightCyan, "PLEASE ENTER YOUR INITIALS");
 
 	switch (m_eState)
 	{
 	case EState::WaitingForFirstInitial:
-		Engine::Print(14, 17, EColor::eC_LightCyan, "###");
-		Engine::Print(14, 17, EColor::eC_LightMagenta, "@@@");
+		Engine::Print(14, 17, EColor::LightCyan, "###");
+		Engine::Print(14, 17, EColor::LightMagenta, "@@@");
 		break;
 
 	case EState::WaitingForSecondInitial:
-		Engine::Print(14, 17, EColor::eC_White, m_cPlayerFirstInitial);
-		Engine::Print(15, 17, EColor::eC_LightCyan, "##");
-		Engine::Print(15, 17, EColor::eC_LightMagenta, "@@");
+		Engine::Print(14, 17, EColor::White, m_cPlayerFirstInitial);
+		Engine::Print(15, 17, EColor::LightCyan, "##");
+		Engine::Print(15, 17, EColor::LightMagenta, "@@");
 		break;
 
 	case EState::WaitingForThirdInitial:
-		Engine::Print(14, 17, EColor::eC_White, m_cPlayerFirstInitial);
-		Engine::Print(15, 17, EColor::eC_White, m_cPlayerSecondInitial);
-		Engine::Print(16, 17, EColor::eC_LightCyan, '#');
-		Engine::Print(16, 17, EColor::eC_LightMagenta, '@');
+		Engine::Print(14, 17, EColor::White, m_cPlayerFirstInitial);
+		Engine::Print(15, 17, EColor::White, m_cPlayerSecondInitial);
+		Engine::Print(16, 17, EColor::LightCyan, '#');
+		Engine::Print(16, 17, EColor::LightMagenta, '@');
 		break;
 
 	case EState::SmallDelayBeforeShowingBestScores:
-		Engine::Print(14, 17, EColor::eC_White, m_cPlayerFirstInitial);
-		Engine::Print(15, 17, EColor::eC_White, m_cPlayerSecondInitial);
-		Engine::Print(16, 17, EColor::eC_White, m_cPlayerThirdInitial);
+		Engine::Print(14, 17, EColor::White, m_cPlayerFirstInitial);
+		Engine::Print(15, 17, EColor::White, m_cPlayerSecondInitial);
+		Engine::Print(16, 17, EColor::White, m_cPlayerThirdInitial);
 		break;
 
 	default:

@@ -20,13 +20,13 @@ void Intro::Render() const
 		break;
 
 	case EIntroState::ThirdScreen:
-		Engine::Print(10,  8, EColor::eC_Grey, "PC REMAKE BY");
-		Engine::Print( 8, 11, EColor::eC_White, "EVGENY ADAMENKOV");
-		Engine::Print(14, 13, EColor::eC_White, "2019");
+		Engine::Print(10,  8, EColor::Grey, "PC REMAKE BY");
+		Engine::Print( 8, 11, EColor::White, "EVGENY ADAMENKOV");
+		Engine::Print(14, 13, EColor::White, "2019");
 		break;
 	}
 
-	Engine::Print(0, Engine::eScreenHeightInCharacters - 1, EColor::eC_Grey, "(PRESS ANY KEY TO CONTINUE)");
+	Engine::Print(0, Engine::eScreenHeightInCharacters - 1, EColor::Grey, "(PRESS ANY KEY TO CONTINUE)");
 }
 
 

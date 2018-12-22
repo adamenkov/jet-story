@@ -95,11 +95,11 @@ void Accomplished::Render() const
 
 	if (m_nFrameID >= 500)
 	{
-		Engine::Print(7, 7, EColor::eC_White, "MISSION");
+		Engine::Print(7, 7, EColor::White, "MISSION");
 		
 		if (m_nFrameID >= 1000)
 		{
-			Engine::Print(14, 14, EColor::eC_White, "ACCOMPLISHED");
+			Engine::Print(14, 14, EColor::White, "ACCOMPLISHED");
 		}
 	}
 }

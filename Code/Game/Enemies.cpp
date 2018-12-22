@@ -12,7 +12,7 @@ void Enemy::Reset()
 	Entity::Reset();
 
 	EColor eColor = static_cast<EColor>
-		(static_cast<int>(EColor::eC_LightBlue) + (rand() % (static_cast<int>(EColor::eC_White) - static_cast<int>(EColor::eC_LightBlue) + 1)));
+		(static_cast<int>(EColor::LightBlue) + (rand() % (static_cast<int>(EColor::White) - static_cast<int>(EColor::LightBlue) + 1)));
 
 	SetColor(eColor);
 	

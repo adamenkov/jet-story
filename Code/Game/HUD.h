@@ -25,7 +25,7 @@ private:
 		int y;
 		EColor eColor;
 
-		Tile(int x, int y) : x(x), y(y), eColor(EColor::eC_LightCyan) {}
+		Tile(int x, int y) : x(x), y(y), eColor(EColor::LightCyan) {}
 		
 		void Render() { Engine::Print(x, y, eColor, '#'); }
 	};

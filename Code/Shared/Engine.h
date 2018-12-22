@@ -8,25 +8,25 @@
 
 enum class EColor
 {
-	eC_Black,
-	eC_Blue,
-	eC_Red,
-	eC_Magenta,
-	eC_Green,
-	eC_Cyan,
-	eC_Yellow,
-	eC_Grey,
+	Black,
+	Blue,
+	Red,
+	Magenta,
+	Green,
+	Cyan,
+	Yellow,
+	Grey,
 
-	eC_LightBlack,
-	eC_LightBlue,
-	eC_LightRed,
-	eC_LightMagenta,
-	eC_LightGreen,
-	eC_LightCyan,
-	eC_LightYellow,
-	eC_White,
+	LightBlack,
+	LightBlue,
+	LightRed,
+	LightMagenta,
+	LightGreen,
+	LightCyan,
+	LightYellow,
+	White,
 
-	eC_TotalColors
+	TotalColors
 };
 
 

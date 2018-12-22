@@ -45,24 +45,24 @@ void HUD::Render()
 {
 	std::shared_ptr<Player> player = Player::GetPlayer();
 
-	Engine::Print(1, 1, EColor::eC_White, "FUEL");
+	Engine::Print(1, 1, EColor::White, "FUEL");
 	RenderBar(5, 1, player->GetFuel(), player->GetMaxFuel());
 
-	Engine::Print(1, 2, EColor::eC_White, "AMMO");
+	Engine::Print(1, 2, EColor::White, "AMMO");
 	RenderBar(5, 2, player->GetAmmo(), player->GetMaxAmmo());
 
 
 	int shield = player->GetShield();
 	if (shield >= 0)
 	{
-		Engine::Print(14, 1, EColor::eC_White, "SHIELD");
+		Engine::Print(14, 1, EColor::White, "SHIELD");
 		RenderBar(14, 2, player->GetShield(), player->GetMaxShield());
 	}
-	Engine::Print(14, 2, EColor::eC_White, ">    <");
+	Engine::Print(14, 2, EColor::White, ">    <");
 
 	RenderInt(22, 1, player->GetScore(), 6);
 
-	Engine::Print(29, 1, EColor::eC_White, "++");
+	Engine::Print(29, 1, EColor::White, "++");
 	RenderInt(29, 2, Maze::GetMaze()->GetBasesLeft(), 2);
 
 	char cBombsType = player->GetBombsType();
@@ -70,7 +70,7 @@ void HUD::Render()
 	sz[0] = cBombsType;
 	sz[1] = cBombsType;
 	sz[2] = 0;
-	Engine::Print(11, 1, EColor::eC_White, sz);
+	Engine::Print(11, 1, EColor::White, sz);
 	RenderInt(11, 2, player->GetBombs(), 2);
 
 #ifdef DEBUG_MAZE
@@ -78,7 +78,7 @@ void HUD::Render()
 		Vector2 pos = m_player.GetPos();
 		std::ostringstream os;
 		os << "X: " << int(pos.x) << ", Y: " << int(pos.y);
-		Engine::Print(1, 22, EColor::eC_White, os.str());
+		Engine::Print(1, 22, EColor::White, os.str());
 	}
 #endif	// #ifdef DEBUG_MAZE
 
@@ -93,19 +93,19 @@ void HUD::Update()
 {
 	if (rand() % 2)
 	{
-		m_tiles[rand() % m_tiles.size()]->eColor = EColor::eC_LightCyan;
+		m_tiles[rand() % m_tiles.size()]->eColor = EColor::LightCyan;
 	}
 	else
 	{
 		EColor eNewColor;
 		do
 		{
-			eNewColor = static_cast<EColor>(rand() % static_cast<int>(EColor::eC_TotalColors));
-		} while ((eNewColor == EColor::eC_LightCyan)  ||
-				 (eNewColor == EColor::eC_Black)      ||
-				 (eNewColor == EColor::eC_Grey)       ||
-				 (eNewColor == EColor::eC_LightBlack) ||
-				 (eNewColor == EColor::eC_White));
+			eNewColor = static_cast<EColor>(rand() % static_cast<int>(EColor::TotalColors));
+		} while ((eNewColor == EColor::LightCyan)  ||
+				 (eNewColor == EColor::Black)      ||
+				 (eNewColor == EColor::Grey)       ||
+				 (eNewColor == EColor::LightBlack) ||
+				 (eNewColor == EColor::White));
 
 		m_tiles[rand() % m_tiles.size()]->eColor = eNewColor;
 	}
@@ -116,10 +116,10 @@ void HUD::RenderBar(int x, int y, int value, int maxValue) const
 {
 	for (int i = 0; i < (value << 5) / maxValue; ++i)
 	{
-		Engine::DrawText(8 * x + i + 1, 8 * y, EColor::eC_White, "H");
+		Engine::DrawText(8 * x + i + 1, 8 * y, EColor::White, "H");
 	}
 
-	Engine::DrawText(8 * x + 1, 8 * y, EColor::eC_Black, "#");
+	Engine::DrawText(8 * x + 1, 8 * y, EColor::Black, "#");
 }
 
 
@@ -127,5 +127,5 @@ void HUD::RenderInt(int x, int y, int value, int width) const
 {
 	std::ostringstream os;
 	os << std::setw(width) << std::setfill('0') << value;
-	Engine::Print(x, y, EColor::eC_White, os.str());
+	Engine::Print(x, y, EColor::White, os.str());
 }
