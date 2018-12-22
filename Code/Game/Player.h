@@ -22,7 +22,7 @@ public:
 	virtual void Update();
 
 	virtual void Animate();
-	virtual void Render() const;
+	virtual void Render() const override;
 
 	virtual bool IsMovable() const override { return true; }
 	virtual Vector2 GetSteering() const override;

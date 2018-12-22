@@ -25,7 +25,7 @@ class Debris : public Entity
 public:
 	Debris(const Vector2& vInitialPos);
 
-	virtual void Render() const;
+	virtual void Render() const override;
 	virtual bool IsMovable() const override { return true; }
 	virtual Vector2 GetSteering() const	override { return Vector2(0.f, 0.16f); }
 };
@@ -37,7 +37,7 @@ public:
 	HorizontalWave(Cannon* pCannon, const Vector2& vInitialPos, bool bLeft);
 	HorizontalWave(Radar* pRadar, const Vector2& vInitialPos, bool bLeft);
 
-	virtual void Render() const;
+	virtual void Render() const override;
 	virtual void SetGarbage() override;
 
 	virtual void OnCollision(Player& player);
@@ -54,7 +54,7 @@ class Wave : public Entity
 public:
 	Wave(Radar* pRadar, const Vector2& vInitialPos, const Vector2& vel);
 
-	virtual void Render() const;
+	virtual void Render() const override;
 	virtual void SetGarbage();
 
 	virtual void OnCollision(Player& player);
@@ -113,7 +113,7 @@ class PlayerBullet : public Entity
 public:
 	PlayerBullet(const Vector2& vInitialPosition);
 
-	virtual void Render() const { Engine::DrawText(GetPos() + Vector2(0.f, -3.f), EColor::White, "`"); }
+	virtual void Render() const override { Engine::DrawText(GetPos() + Vector2(0.f, -3.f), EColor::White, "`"); }
 	virtual void SetGarbage() override { Entity::SetGarbage(); Player::GetPlayer()->OnNoPlayerBullet(); }
 	virtual bool IsMovable() const override { return true; }
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) override { SetGarbage(); }
@@ -139,7 +139,7 @@ class PlayerBall : public PlayerBomb
 public:
 	PlayerBall();
 	
-	virtual void Render() const;
+	virtual void Render() const override;
 	virtual void OnCollision(bool bHorizontal, bool bVertical) override;
 	virtual void OnCollision(Enemy& enemy) { enemy.Explode(); }
 	virtual void OnTimer() override { SetGarbage(); }
@@ -179,7 +179,7 @@ class PlayerStar : public PlayerBomb
 public:
 	PlayerStar();
 
-	virtual void Render() const;
+	virtual void Render() const override;
 	virtual void Update();
 	virtual void OnCollision(bool bHorizontal, bool bVertical) override;
 	virtual void OnCollision(Enemy& enemy) { enemy.Explode(); }
