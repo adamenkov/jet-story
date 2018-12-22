@@ -14,9 +14,9 @@
 #include "Sounds.h"
 
 
-std::shared_ptr<Maze> Maze::GetMaze()
+Maze& Maze::GetMaze()
 {
-	static std::shared_ptr<Maze> maze(new Maze);
+	static Maze maze;
 	return maze;
 }
 

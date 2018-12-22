@@ -291,7 +291,7 @@ void Player::Update()
 			if (m_pPlayerBomb)
 			{
 				m_pPlayerBomb->SetPosNearPlayer();
-				Maze::GetMaze()->AddEntity(m_pPlayerBomb);
+				Maze::GetMaze().AddEntity(m_pPlayerBomb);
 				Audio::Play(Sounds::PLAYER_BOMB_LAUNCH);
 
 				--m_nBombs;
@@ -310,7 +310,7 @@ void Player::Update()
 			pBullet->SetVelocity(bLeft ? -6.f : 6.f, 0.f);
 			pBullet->SetLifeTime(ELifeTime::Room);
 
-			Maze::GetMaze()->AddEntity(pBullet);
+			Maze::GetMaze().AddEntity(pBullet);
 			Audio::Play(Sounds::FIRE);
 
 			--m_nAmmo;
@@ -390,6 +390,6 @@ void Player::OnRoomChanged()
 	if (m_pPlayerBomb && (m_pPlayerBomb->GetLifeTime() == ELifeTime::FollowPlayer))
 	{
 		m_pPlayerBomb->SetPosNearPlayer();
-		Maze::GetMaze()->AddEntity(m_pPlayerBomb);
+		Maze::GetMaze().AddEntity(m_pPlayerBomb);
 	}
 }

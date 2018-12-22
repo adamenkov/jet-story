@@ -23,14 +23,14 @@ namespace Game
 	
 	bool Init()
 	{
-		return Sounds::Init() && Maze::GetMaze()->Init() && GameStates::Init();
+		return Sounds::Init() && Maze::GetMaze().Init() && GameStates::Init();
 	}
 
 
 	void ShutDown()
 	{
 		GameStates::ShutDown();
-		Maze::GetMaze()->ShutDown();
+		Maze::GetMaze().ShutDown();
 	}
 
 

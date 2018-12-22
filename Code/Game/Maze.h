@@ -14,7 +14,7 @@ class Maze
 	Maze& operator=(const Maze&) = delete;
 
 public:
-	static std::shared_ptr<Maze> GetMaze();
+	static Maze& GetMaze();
 
 	bool Init();
 	void ShutDown();

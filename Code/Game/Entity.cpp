@@ -59,7 +59,7 @@ void Entity::Explode()
 	m_bEnabled = false;
 	Player::GetPlayer()->AddScore(GetScore());
 	
-	std::shared_ptr<Maze> maze = Maze::GetMaze();
+	Maze& maze = Maze::GetMaze();
 	
 	for (int row = 0; row < m_nHeight; row += 16)
 	{
@@ -68,8 +68,8 @@ void Entity::Explode()
 			Vector2 pos = m_pos;
 			pos.x += col;
 			pos.y += row;
-			maze->AddEntity(std::make_shared<Explosion>(pos));
-			maze->AddDebrisFor(pos + Vector2(4, 4));
+			maze.AddEntity(std::make_shared<Explosion>(pos));
+			maze.AddDebrisFor(pos + Vector2(4, 4));
 		}
 	}
 

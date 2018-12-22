@@ -78,7 +78,7 @@ void Platform::Explode()
 {
 	m_bEnabled = false;
 	Player::GetPlayer()->AddScore(GetScore());
-	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos + Vector2(0.f, 16.f)));
+	Maze::GetMaze().AddEntity(std::make_shared<Explosion>(m_pos + Vector2(0.f, 16.f)));
 }
 
 
@@ -112,7 +112,7 @@ void Platform2::Explode()
 {
 	m_bEnabled = false;
 	Player::GetPlayer()->AddScore(GetScore());
-	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos + Vector2(0.f, 16.f)));
+	Maze::GetMaze().AddEntity(std::make_shared<Explosion>(m_pos + Vector2(0.f, 16.f)));
 }
 
 
@@ -288,7 +288,7 @@ void Cannon::Update()
 				pos += Vector2(16.f, 6.f);
 			}
 
-			Maze::GetMaze()->AddEntity(std::make_shared<HorizontalWave>(this, pos, bLeft));
+			Maze::GetMaze().AddEntity(std::make_shared<HorizontalWave>(this, pos, bLeft));
 		}
 	}
 }
@@ -459,7 +459,7 @@ void RocketLauncher::Update()
 		{
 			Vector2 pos = m_pos;
 			pos.y -= 12.f;
-			Maze::GetMaze()->AddEntity(std::make_shared<VerticalRocket>(pos));
+			Maze::GetMaze().AddEntity(std::make_shared<VerticalRocket>(pos));
 		}
 	}
 }
@@ -510,7 +510,7 @@ void Bomber::Update()
 		{
 			Vector2 pos = m_pos;
 			pos.y += 16.f;
-			Maze::GetMaze()->AddEntity(std::make_shared<Bomb>(pos));
+			Maze::GetMaze().AddEntity(std::make_shared<Bomb>(pos));
 		}
 	}
 }
@@ -547,7 +547,7 @@ void Radiator::Update()
 		{
 			Vector2 pos = m_pos;
 			pos.x += m_bLeft ? -16.f : 16.f;
-			Maze::GetMaze()->AddEntity(std::make_shared<Radiation>(pos, m_bLeft));
+			Maze::GetMaze().AddEntity(std::make_shared<Radiation>(pos, m_bLeft));
 		}
 	}
 }
@@ -570,20 +570,21 @@ void Radar::Update()
 
 	if (!m_bBusy && ((rand() % 32) == 0))
 	{
+		Maze& maze = Maze::GetMaze();
 
 		m_bBusy = true;
 
 		if (player->OverlapsHorizontally(this) && ((rand() % 5) == 0))
 		{
 			bool bLeft = player->GetPos().x < m_pos.x;
-			Maze::GetMaze()->AddEntity(std::make_shared<HorizontalWave>(this, m_pos + Vector2(4.f, 4.f), bLeft));
+			maze.AddEntity(std::make_shared<HorizontalWave>(this, m_pos + Vector2(4.f, 4.f), bLeft));
 		}
 		else
 		{
 			Vector2 posPredicted = player->GetPos() + Vector2(16.f, 2.f) + float(rand() % 50) * player->GetVelocity();
 			Vector2 vel = posPredicted - m_pos;
 			vel.SetLength(1.f + .3f * float(rand()) / RAND_MAX);
-			Maze::GetMaze()->AddEntity(std::make_shared<Wave>(this, m_pos + Vector2(4.f, 2.f), vel));
+			maze.AddEntity(std::make_shared<Wave>(this, m_pos + Vector2(4.f, 2.f), vel));
 		}
 	}
 }
@@ -599,7 +600,7 @@ void Base::Reset()
 void Base::Explode()
 {
 	Enemy::Explode();
-	Maze::GetMaze()->OnBaseDestroyed();
+	Maze::GetMaze().OnBaseDestroyed();
 }
 
 

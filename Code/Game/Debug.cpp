@@ -30,7 +30,7 @@ namespace Debug
 			Engine::Print(0, 3, EColor::White, os.str());
 		}
 
-		for (std::shared_ptr<Entity>& pEntity : Maze::GetMaze()->GetRoomEntities())
+		for (std::shared_ptr<Entity>& pEntity : Maze::GetMaze().GetRoomEntities())
 		{
 			if (!pEntity->IsEnabled())
 				continue;

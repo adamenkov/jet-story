@@ -409,7 +409,7 @@ void Room::MoveEntitiesAndResolveCollisions()
 		}
 	}
 
-	if (bPlayerVsEnemyCollision && (player->GetShield() >= 0) && (Maze::GetMaze()->GetBasesLeft() > 0))
+	if (bPlayerVsEnemyCollision && (player->GetShield() >= 0) && (Maze::GetMaze().GetBasesLeft() > 0))
 	{
 		if (!Audio::IsPlaying(Sounds::LESS_SHIELD))
 		{

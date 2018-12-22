@@ -63,7 +63,7 @@ void HUD::Render()
 	RenderInt(22, 1, player->GetScore(), 6);
 
 	Engine::Print(29, 1, EColor::White, "++");
-	RenderInt(29, 2, Maze::GetMaze()->GetBasesLeft(), 2);
+	RenderInt(29, 2, Maze::GetMaze().GetBasesLeft(), 2);
 
 	char cBombsType = player->GetBombsType();
 	char sz[3];

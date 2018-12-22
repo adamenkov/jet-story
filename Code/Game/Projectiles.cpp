@@ -174,7 +174,7 @@ VerticalRocket::VerticalRocket(const Vector2& vInitialPos) :
 
 void VerticalRocket::OnCollision(std::shared_ptr<Player> player)
 {
-	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos));
+	Maze::GetMaze().AddEntity(std::make_shared<Explosion>(m_pos));
 	SetGarbage();
 	player->ConsumeShield(10);
 }
@@ -182,7 +182,7 @@ void VerticalRocket::OnCollision(std::shared_ptr<Player> player)
 
 void VerticalRocket::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical))
 {
-	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos));
+	Maze::GetMaze().AddEntity(std::make_shared<Explosion>(m_pos));
 	SetGarbage();
 }
 
@@ -197,7 +197,7 @@ Bomb::Bomb(const Vector2& vInitialPos) :
 
 void Bomb::OnCollision(std::shared_ptr<Player> player)
 {
-	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos));
+	Maze::GetMaze().AddEntity(std::make_shared<Explosion>(m_pos));
 	SetGarbage();
 	player->ConsumeShield(10);
 }
@@ -205,7 +205,7 @@ void Bomb::OnCollision(std::shared_ptr<Player> player)
 
 void Bomb::OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical))
 {
-	Maze::GetMaze()->AddEntity(std::make_shared<Explosion>(m_pos));
+	Maze::GetMaze().AddEntity(std::make_shared<Explosion>(m_pos));
 	SetGarbage();
 }
 
