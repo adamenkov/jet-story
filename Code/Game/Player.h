@@ -58,6 +58,10 @@ public:
 
 	void	OnRoomChanged();
 
+	bool OverlapsHorizontally(Entity* pEntity);
+	bool OverlapsVertically(Entity* pEntity);
+
+
 private:
 	std::shared_ptr<Texture>	m_texture;
 

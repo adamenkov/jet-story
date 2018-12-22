@@ -269,13 +269,12 @@ void Cannon::Update()
 {
 	Enemy::Update();
 
-	//Player& player = Player::GetPlayer();
-	//bool bLeft = player.GetPos().x < m_pos.x;
+	std::shared_ptr<Player> player = Player::GetPlayer();
+	bool bLeft = player->GetPos().x < m_pos.x;
 
 	if (!m_bBusy && ((rand() % 200) == 0))
 	{
-		/*
-		if (player.OverlapsHorizontally(this))
+		if (player->OverlapsHorizontally(this))
 		{
 			m_bBusy = true;
 
@@ -289,9 +288,8 @@ void Cannon::Update()
 				pos += Vector2(16.f, 6.f);
 			}
 
-			Maze::GetMaze()->AddEntity(new HorizontalWave(this, pos, bLeft));
+			Maze::GetMaze()->AddEntity(std::make_shared<HorizontalWave>(this, pos, bLeft));
 		}
-		*/
 	}
 }
 
@@ -457,14 +455,12 @@ void RocketLauncher::Update()
 
 	if ((rand() % 80) == 0)
 	{
-		/*
-		if (Player::GetPlayer()->OverlapsVertically(make shared from this))
+		if (Player::GetPlayer()->OverlapsVertically(this))
 		{
 			Vector2 pos = m_pos;
 			pos.y -= 12.f;
 			Maze::GetMaze()->AddEntity(std::make_shared<VerticalRocket>(pos));
 		}
-		*/
 	}
 }
 
@@ -510,14 +506,12 @@ void Bomber::Update()
 
 	if ((rand() % 80) == 0)
 	{
-		/*
-		if (Player::GetPlayer()->OverlapsVertically(make shared from this))
+		if (Player::GetPlayer()->OverlapsVertically(this))
 		{
 			Vector2 pos = m_pos;
 			pos.y += 16.f;
 			Maze::GetMaze()->AddEntity(std::make_shared<Bomb>(pos));
 		}
-		*/
 	}
 }
 
@@ -549,14 +543,12 @@ void Radiator::Update()
 
 	if ((rand() % 50) == 0)
 	{
-		/*
-		if (Player::GetPlayer().OverlapsHorizontally(this))
+		if (Player::GetPlayer()->OverlapsHorizontally(this))
 		{
 			Vector2 pos = m_pos;
 			pos.x += m_bLeft ? -16.f : 16.f;
-			Maze::GetMaze()->AddEntity(new Radiation(pos, m_bLeft));
+			Maze::GetMaze()->AddEntity(std::make_shared<Radiation>(pos, m_bLeft));
 		}
-		*/
 	}
 }
 
@@ -573,28 +565,26 @@ void Radar::Update()
 {
 	Enemy::Update();
 
-	//Player& player = Player::GetPlayer();
-	//bool bLeft = player.GetPos().x < m_pos.x;
+	std::shared_ptr<Player> player = Player::GetPlayer();
+	//bool bLeft = player->GetPos().x < m_pos.x;
 
 	if (!m_bBusy && ((rand() % 32) == 0))
 	{
 
 		m_bBusy = true;
 
-		/*
-		if (player.OverlapsHorizontally(this) && ((rand() % 5) == 0))
+		if (player->OverlapsHorizontally(this) && ((rand() % 5) == 0))
 		{
-			bool bLeft = player.GetPos().x < m_pos.x;
-			Maze::GetMaze()->AddEntity(new HorizontalWave(this, m_pos + Vector2(4.f, 4.f), bLeft));
+			bool bLeft = player->GetPos().x < m_pos.x;
+			Maze::GetMaze()->AddEntity(std::make_shared<HorizontalWave>(this, m_pos + Vector2(4.f, 4.f), bLeft));
 		}
 		else
 		{
-			Vector2 posPredicted = player.GetPos() + Vector2(16.f, 2.f) + float(rand() % 50) * player.GetVelocity();
+			Vector2 posPredicted = player->GetPos() + Vector2(16.f, 2.f) + float(rand() % 50) * player->GetVelocity();
 			Vector2 vel = posPredicted - m_pos;
 			vel.SetLength(1.f + .3f * float(rand()) / RAND_MAX);
-			Maze::GetMaze()->AddEntity(new Wave(this, m_pos + Vector2(4.f, 2.f), vel));
+			Maze::GetMaze()->AddEntity(std::make_shared<Wave>(this, m_pos + Vector2(4.f, 2.f), vel));
 		}
-		*/
 	}
 }
 
@@ -613,7 +603,6 @@ void Base::Explode()
 }
 
 
-/*
 bool Player::OverlapsHorizontally(Entity* pEntity)
 {
 	UINT my_y = static_cast<UINT>(m_pos.y);
@@ -628,4 +617,3 @@ bool Player::OverlapsVertically(Entity* pEntity)
 	UINT x = static_cast<UINT>(pEntity->GetPos().x) - 8;
 	return max(my_x, x) < min(my_x + GetWidth(), x + pEntity->GetWidth() + 16);
 }
-*/

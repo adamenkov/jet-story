@@ -13,11 +13,12 @@ public:
 	Enemy(const Vector2& vInitialPos) : Entity(vInitialPos) {}
 	
 	virtual void Reset() override;
+	virtual void Update() override { Move(); }
 	virtual bool IsMovable() const override { return true; }
 	virtual bool IsEnemy() const override { return true; }
+	virtual void Move() {}
 	virtual bool CollidesWithPlayer() const override { return true; }
 	virtual void OnCollision(std::shared_ptr<Player> player) override;
-
 	virtual bool OnBulletHit();
 
 protected:
@@ -31,7 +32,7 @@ public:
 	DualCannon(const Vector2& vInitialPos);
 
 	virtual void Reset() override;
-	virtual void Move();
+	virtual void Move() override;
 	virtual int GetScore() const override { return 90; }
 };
 
@@ -44,7 +45,7 @@ public:
 	virtual void Reset() override;
 	virtual void Explode() override;
 	virtual void OnCollision(std::shared_ptr<Player> player) override;
-	virtual void Move();
+	virtual void Move() override;
 	virtual int GetScore() const override { return 90; }
 };
 
@@ -57,7 +58,7 @@ public:
 	virtual void Reset() override;
 	virtual void Explode() override;
 	virtual void OnCollision(std::shared_ptr<Player> player) override;
-	virtual void Move();
+	virtual void Move() override;
 	virtual int GetScore() const override { return 90; }
 };
 
@@ -68,7 +69,7 @@ public:
 	BigBall(const Vector2& vInitialPos) : Enemy(vInitialPos) {}
 
 	virtual void Reset() override;
-	virtual void Move();
+	virtual void Move() override;
 	virtual int GetScore() const override { return 90; }
 };
 
@@ -79,7 +80,7 @@ public:
 	Globe(const Vector2& vInitialPos);
 
 	virtual void Reset() override;
-	virtual void Move();
+	virtual void Move() override;
 	virtual int GetScore() const override { return 30; }
 };
 
@@ -90,7 +91,7 @@ public:
 	Medusa(const Vector2& vInitialPos);
 
 	virtual void Reset() override;
-	virtual void Move();
+	virtual void Move() override;
 	virtual int GetScore() const override { return 25; }
 };
 
@@ -101,7 +102,7 @@ public:
 	Revolver(const Vector2& vInitialPos);
 
 	virtual void Reset() override;
-	virtual void Move();
+	virtual void Move() override;
 	virtual int GetScore() const override { return 25; }
 };
 
@@ -113,7 +114,7 @@ public:
 
 	virtual void Reset() override;
 	virtual void Animate() override;
-	virtual void Move();
+	virtual void Move() override;
 	virtual int GetScore() const override { return 10; }
 };
 
@@ -142,7 +143,7 @@ public:
 
 	virtual void Reset() override;
 	virtual void Animate() override;
-	virtual void Move();
+	virtual void Move() override;
 	virtual int GetScore() const override { return 40; }
 };
 
@@ -154,7 +155,7 @@ public:
 
 	virtual void Reset() override;
 	virtual void Animate() override;
-	virtual void Move();
+	virtual void Move() override;
 	virtual int GetScore() const override { return 50; }
 };
 
@@ -166,7 +167,7 @@ public:
 
 	virtual void Reset() override;
 	virtual void Animate() override;
-	virtual void Move();
+	virtual void Move() override;
 	virtual int GetScore() const override { return 75; }
 };
 
