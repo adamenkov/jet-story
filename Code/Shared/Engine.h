@@ -6,6 +6,30 @@
 #include "../Engine/Vector2.h"
 
 
+enum class EColor
+{
+	eC_Black,
+	eC_Blue,
+	eC_Red,
+	eC_Magenta,
+	eC_Green,
+	eC_Cyan,
+	eC_Yellow,
+	eC_Grey,
+
+	eC_LightBlack,
+	eC_LightBlue,
+	eC_LightRed,
+	eC_LightMagenta,
+	eC_LightGreen,
+	eC_LightCyan,
+	eC_LightYellow,
+	eC_White,
+
+	eC_TotalColors
+};
+
+
 namespace Engine
 {
 	enum
@@ -22,30 +46,6 @@ namespace Engine
 
 		eScreenWidthInPixels	= eCharacterWidthInPixels * eScreenWidthInCharacters,
 		eScreenHeightInPixels	= eCharacterHeightInPixels * eScreenHeightInCharacters,
-	};
-
-
-	enum EColor
-	{
-		eC_Black,
-		eC_Blue,
-		eC_Red,
-		eC_Magenta,
-		eC_Green,
-		eC_Cyan,
-		eC_Yellow,
-		eC_Grey,
-
-		eC_LightBlack,
-		eC_LightBlue,
-		eC_LightRed,
-		eC_LightMagenta,
-		eC_LightGreen,
-		eC_LightCyan,
-		eC_LightYellow,
-		eC_White,
-
-		eC_TotalColors
 	};
 
 

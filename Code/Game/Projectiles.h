@@ -113,7 +113,7 @@ class PlayerBullet : public Entity
 public:
 	PlayerBullet(const Vector2& vInitialPosition);
 
-	virtual void Render() const { Engine::DrawText(GetPos() + Vector2(0.f, -3.f), Engine::eC_White, "`"); }
+	virtual void Render() const { Engine::DrawText(GetPos() + Vector2(0.f, -3.f), EColor::eC_White, "`"); }
 	virtual void SetGarbage() override { Entity::SetGarbage(); Player::GetPlayer()->OnNoPlayerBullet(); }
 	virtual bool IsMovable() const override { return true; }
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) override { SetGarbage(); }
@@ -150,7 +150,7 @@ public:
 class PlayerVerticalBomb : public PlayerBomb
 {
 public:
-	virtual void Render() const { Engine::DrawText(GetPos(), Engine::eC_LightCyan, "c"); }
+	virtual void Render() const { Engine::DrawText(GetPos(), EColor::eC_LightCyan, "c"); }
 	virtual void Update();
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) override { SetGarbage(); }
 	virtual void OnCollision(Enemy& enemy);
@@ -163,7 +163,7 @@ class PlayerHorizontalBomb : public PlayerBomb
 public:
 	PlayerHorizontalBomb(bool bLeft) : m_bLeft(bLeft) {}
 
-	virtual void Render() const { Engine::DrawText(GetPos(), Engine::eC_LightCyan, m_bLeft ? "b" : "a"); }
+	virtual void Render() const { Engine::DrawText(GetPos(), EColor::eC_LightCyan, m_bLeft ? "b" : "a"); }
 	virtual void Update();
 	virtual void OnCollision(bool UNUSED_PARAM(bHorizontal), bool UNUSED_PARAM(bVertical)) override { SetGarbage(); }
 	virtual void OnCollision(Enemy& enemy);

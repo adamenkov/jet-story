@@ -1,6 +1,3 @@
-#ifndef __GAME_OVER_H
-#define __GAME_OVER_H
-
 #pragma once
 
 #include "GameStates.h"
@@ -16,6 +13,3 @@ public:
 private:
 	int m_nFrameID;
 };
-
-
-#endif	// #ifndef __GAME_OVER_H

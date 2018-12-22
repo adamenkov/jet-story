@@ -1,6 +1,3 @@
-#ifndef __MENU_H
-#define __MENU_H
-
 #pragma once
 
 #define _USING_V110_SDK71_ 1
@@ -21,18 +18,18 @@ public:
 	virtual void KeyPressed(char key);
 
 private:
-	void			DrawBorder() const;
-	Engine::EColor	GetRandomBorderColor() const { return static_cast<Engine::EColor>(rand() % 8); }
+	void	DrawBorder() const;
+	EColor	GetRandomBorderColor() const { return static_cast<EColor>(rand() % 8); }
 
-	enum EState
+	enum class EState
 	{
-		eMS_MainMenu,
-		eMS_GetReadyForSession,
-		eMS_AssigningKey_Left,
-		eMS_AssigningKey_Right,
-		eMS_AssigningKey_Down,
-		eMS_AssigningKey_Up,
-		eMS_AssigningKey_Fire,
+		MainMenu,
+		GetReadyForSession,
+		AssigningKey_Left,
+		AssigningKey_Right,
+		AssigningKey_Down,
+		AssigningKey_Up,
+		AssigningKey_Fire,
 	};
 	EState m_eState;
 
@@ -41,6 +38,3 @@ private:
 
 	int m_waitFrames;
 };
-
-
-#endif	// #ifndef __MENU_H

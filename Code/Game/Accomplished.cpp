@@ -18,7 +18,7 @@ void Accomplished::OnEnter()
 
 	m_cBrightness = 255;
 
-	m_eState = eS_FadeOut;
+	m_eState = EState::FadeOut;
 
 	m_nFrameID = 0;
 }
@@ -30,25 +30,25 @@ void Accomplished::Update()
 
 	switch (m_eState)
 	{
-	case eS_FadeOut:
+	case EState::FadeOut:
 		--m_cBrightness;
 		if (m_cBrightness == 0)
 		{
 			Player::GetPlayer()->Disable();
-			m_eState = eS_FadeIn;
+			m_eState = EState::FadeIn;
 		}
 		break;
 
-	case eS_FadeIn:
+	case EState::FadeIn:
 		++m_cBrightness;
 		if (m_cBrightness == 255)
 		{
-			m_eState = eS_Explosions;
+			m_eState = EState::Explosions;
 		}
 		break;
 
-	case eS_Explosions:
-	case eS_Explosions_PressAnyKey:
+	case EState::Explosions:
+	case EState::Explosions_PressAnyKey:
 		++m_nFrameID;
 		if ((m_nFrameID % 16) == (rand() % 16))
 		{
@@ -66,7 +66,7 @@ void Accomplished::Update()
 			}
 			if (m_nFrameID == 2500)
 			{
-				m_eState = eS_Explosions_PressAnyKey;
+				m_eState = EState::Explosions_PressAnyKey;
 			}
 			if ((m_nFrameID % 8) == 0)
 			{
@@ -95,11 +95,11 @@ void Accomplished::Render() const
 
 	if (m_nFrameID >= 500)
 	{
-		Engine::Print(7, 7, Engine::eC_White, "MISSION");
+		Engine::Print(7, 7, EColor::eC_White, "MISSION");
 		
 		if (m_nFrameID >= 1000)
 		{
-			Engine::Print(14, 14, Engine::eC_White, "ACCOMPLISHED");
+			Engine::Print(14, 14, EColor::eC_White, "ACCOMPLISHED");
 		}
 	}
 }
@@ -107,7 +107,7 @@ void Accomplished::Render() const
 
 void Accomplished::KeyPressed(char UNUSED_PARAM(key))
 {
-	if (m_eState == eS_Explosions_PressAnyKey)
+	if (m_eState == EState::Explosions_PressAnyKey)
 	{
 		GameStates::SwitchTo("score");
 	}

@@ -7,7 +7,7 @@
 class HUD
 {
 	HUD();
-	HUD(const HUD&);
+	HUD(const HUD&) = delete;
 
 public:
 	static HUD& GetHUD();
@@ -23,9 +23,9 @@ private:
 	{
 		int x;
 		int y;
-		Engine::EColor eColor;
+		EColor eColor;
 
-		Tile(int x, int y) : x(x), y(y), eColor(Engine::eC_LightCyan) {}
+		Tile(int x, int y) : x(x), y(y), eColor(EColor::eC_LightCyan) {}
 		
 		void Render() { Engine::Print(x, y, eColor, '#'); }
 	};

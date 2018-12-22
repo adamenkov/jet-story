@@ -1,6 +1,3 @@
-#ifndef __GAME_STATES_H
-#define __GAME_STATES_H
-
 #pragma once
 
 #include "../Shared/Game.h"
@@ -26,6 +23,3 @@ namespace GameStates
 	void SwitchTo(const char* szNewState);
 
 }	// namespace GameStates
-
-
-#endif	// #ifndef __GAME_STATES_H

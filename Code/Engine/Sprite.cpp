@@ -62,7 +62,7 @@ void Sprite::Render() const
 }
 
 
-void Sprite::SetColor(Engine::EColor eColor)
+void Sprite::SetColor(EColor eColor)
 {
 	static const D3DCOLOR aZXColors[] = {
 		D3DCOLOR_XRGB(  0,   0,   0),	// Black
@@ -86,7 +86,7 @@ void Sprite::SetColor(Engine::EColor eColor)
 		D3DCOLOR_XRGB(248, 248, 248),	// White
 	};
 
-	m_color = aZXColors[eColor];
+	m_color = aZXColors[static_cast<int>(eColor)];
 }
 
 

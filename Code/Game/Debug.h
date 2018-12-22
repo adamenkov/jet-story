@@ -1,6 +1,3 @@
-#ifndef __DEBUG_H
-#define __DEBUG_H
-
 #pragma once
 
 #define _USING_V110_SDK71_ 1
@@ -19,6 +16,3 @@ namespace Debug
 	void KeyPressed(char key);
 
 }	// namespace Debug
-
-
-#endif	// #ifndef __DEBUG_H

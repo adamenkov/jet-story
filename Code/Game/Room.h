@@ -1,6 +1,3 @@
-#ifndef __ROOM_H
-#define __ROOM_H
-
 #pragma once
 
 #define _USING_V110_SDK71_ 1
@@ -72,6 +69,3 @@ private:
 	using Obstacles = std::vector<RECT>;
 	Obstacles	m_obstacles;
 };
-
-
-#endif	// #ifndef __ROOM_H

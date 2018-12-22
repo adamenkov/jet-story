@@ -1,6 +1,3 @@
-#ifndef __SCORE_H
-#define __SCORE_H
-
 #pragma once
 
 #define _USING_V110_SDK71_ 1
@@ -22,13 +19,13 @@ public:
 	virtual void KeyPressed(char key);
 
 private:
-	enum EState
+	enum class EState
 	{
-		eS_WaitingForFirstInitial,
-		eS_WaitingForSecondInitial,
-		eS_WaitingForThirdInitial,
-		eS_SmallDelayBeforeShowingBestScores,
-		eS_ShowingBestScores
+		WaitingForFirstInitial,
+		WaitingForSecondInitial,
+		WaitingForThirdInitial,
+		SmallDelayBeforeShowingBestScores,
+		ShowingBestScores
 	};
 	EState m_eState;
 
@@ -41,6 +38,3 @@ private:
 
 	int m_waitFrames;
 };
-
-
-#endif	// #ifndef __SCORE_H

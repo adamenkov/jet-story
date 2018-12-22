@@ -24,7 +24,7 @@ Font::Font(const std::string& sFontImageFileName, int nLetterWidth, int nLetterH
 }
 
 
-void Font::Render(int x, int y, Engine::EColor eColor, const std::string& text)
+void Font::Render(int x, int y, EColor eColor, const std::string& text)
 {
 	m_fontSprite->SetColor(eColor);
 	Vector2 pos(static_cast<float>(x), static_cast<float>(y));

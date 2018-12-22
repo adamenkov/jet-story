@@ -11,7 +11,7 @@ public:
 
 	bool IsEmpty() const { return !m_fontSprite->HasTexture(); }
 
-	void Render(int x, int y, Engine::EColor eColor, const std::string& text);
+	void Render(int x, int y, EColor eColor, const std::string& text);
 
 private:
 	std::unique_ptr<Sprite> m_fontSprite;

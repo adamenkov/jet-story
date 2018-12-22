@@ -1,6 +1,3 @@
-#ifndef __INTRO_H
-#define __INTRO_H
-
 #pragma once
 
 #include "../Shared/Engine.h"
@@ -16,16 +13,13 @@ public:
 	virtual void KeyPressed(char key);
 
 private:
-	enum EIntroState
+	enum class EIntroState
 	{
-		eIS_FirstScreen,
-		eIS_SecondScreen,
-		eIS_ThirdScreen,
+		FirstScreen,
+		SecondScreen,
+		ThirdScreen,
 	};
 	EIntroState m_eIntroState;
 
 	std::unique_ptr<Sprite> m_pScreenSprite;
 };
-
-
-#endif	// #ifndef __INTRO_H

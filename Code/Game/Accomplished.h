@@ -1,6 +1,3 @@
-#ifndef __ACCOMPLISHED_H
-#define __ACCOMPLISHED_H
-
 #pragma once
 
 #include "GameStates.h"
@@ -15,12 +12,12 @@ public:
 	virtual void KeyPressed(char key);
 
 private:
-	enum EState
+	enum class EState
 	{
-		eS_FadeOut,
-		eS_FadeIn,
-		eS_Explosions,
-		eS_Explosions_PressAnyKey
+		FadeOut,
+		FadeIn,
+		Explosions,
+		Explosions_PressAnyKey
 	};
 	EState m_eState;
 
@@ -28,6 +25,3 @@ private:
 
 	int m_nFrameID;
 };
-
-
-#endif	// #ifndef __ACCOMPLISHED_H

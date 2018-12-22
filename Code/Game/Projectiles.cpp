@@ -16,7 +16,7 @@ Explosion::Explosion(const Vector2& vInitialPos) :
 {
 	SetFrameTimer(2);
 	SetTexture(m_texture, 16);
-	m_eLifeTime = eLT_Animation;
+	m_eLifeTime = ELifeTime::Animation;
 	Audio::Play(Sounds::EXPLOSION);	// present even if sounds are off
 }
 
@@ -30,7 +30,7 @@ Debris::Debris(const Vector2& vInitialPos) : Entity(vInitialPos)
 	m_numAnimationFrames = 10;
 	m_iAnimationFrame = rand() % m_numAnimationFrames;
 	
-	m_eLifeTime = eLT_Collision;
+	m_eLifeTime = ELifeTime::Collision;
 
 	float angle = float(rand()) / (RAND_MAX + 1) * 2.f * PI;
 	float speed = float(rand()) / (RAND_MAX + 1) * 3.f + 1.f;
@@ -41,7 +41,7 @@ Debris::Debris(const Vector2& vInitialPos) : Entity(vInitialPos)
 
 void Debris::Render() const
 {
-	Engine::DrawText(m_pos, Engine::eC_White, char(117 + m_iAnimationFrame));
+	Engine::DrawText(m_pos, EColor::eC_White, char(117 + m_iAnimationFrame));
 }
 
 
@@ -71,7 +71,7 @@ HorizontalWave::HorizontalWave(Radar* pRadar, const Vector2& vInitialPos, bool b
 
 void HorizontalWave::Render() const
 {
-	Engine::DrawText(int(m_pos.x), int(m_pos.y) - 3, Engine::eC_Grey, "g");
+	Engine::DrawText(int(m_pos.x), int(m_pos.y) - 3, EColor::eC_Grey, "g");
 }
 
 
@@ -116,7 +116,7 @@ Wave::Wave(Radar* pRadar, const Vector2& vInitialPos, const Vector2& vel) :
 
 void Wave::Render() const
 {
-	Engine::DrawText(int(m_pos.x), int(m_pos.y), Engine::eC_Grey, "d");
+	Engine::DrawText(int(m_pos.x), int(m_pos.y), EColor::eC_Grey, "d");
 }
 
 
@@ -235,7 +235,7 @@ PlayerBall::PlayerBall()
 {
 	SetTimer(512);
 	SetFrameTimer(2);
-	m_numAnimationFrames = Engine::eC_White - Engine::eC_LightBlack;
+	m_numAnimationFrames = static_cast<int>(EColor::eC_White) - static_cast<int>(EColor::eC_LightBlack);
 }
 
 
@@ -244,8 +244,8 @@ void PlayerBall::Render() const
 	Engine::DrawText(
 		m_pos,
 		(m_timer > 100)
-			? Engine::eC_White
-			: static_cast<Engine::EColor>(Engine::eC_White - m_iAnimationFrame),
+			? EColor::eC_White
+			: static_cast<EColor>(static_cast<int>(EColor::eC_White) - m_iAnimationFrame),
 		"l");
 }
 
@@ -317,7 +317,7 @@ PlayerStar::PlayerStar()
 {
 	SetTimer(512);
 	SetFrameTimer(2);
-	m_numAnimationFrames = Engine::eC_White - Engine::eC_LightBlack;
+	m_numAnimationFrames = static_cast<int>(EColor::eC_White) - static_cast<int>(EColor::eC_LightBlack);
 }
 
 
@@ -326,8 +326,8 @@ void PlayerStar::Render() const
 	Engine::DrawText(
 		m_pos,
 		(m_timer > 100)
-			? Engine::eC_LightYellow
-			: static_cast<Engine::EColor>(Engine::eC_White - m_iAnimationFrame),
+			? EColor::eC_LightYellow
+			: static_cast<EColor>(static_cast<int>(EColor::eC_White) - m_iAnimationFrame),
 		"f");
 }
 

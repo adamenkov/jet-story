@@ -1,6 +1,3 @@
-#ifndef __MAZE_H
-#define __MAZE_H
-
 #pragma once
 
 #define _USING_V110_SDK71_ 1
@@ -81,6 +78,3 @@ private:
 	Sprite	m_spriteBlankScreen;
 	std::shared_ptr<Texture> m_textureBlankScreen;
 };
-
-
-#endif	// #ifndef __MAZE_H

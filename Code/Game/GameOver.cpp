@@ -61,8 +61,8 @@ void GameOver::Render() const
 			fgColor += 8;
 		}
 
-		Engine::Print(14, 1, static_cast<Engine::EColor>(bgColor), "\x1F\x1F\x1F\x1F\x1F\x1F");
-		Engine::Print(14, 1, static_cast<Engine::EColor>(fgColor), "SHIELD");
+		Engine::Print(14, 1, static_cast<EColor>(bgColor), "\x1F\x1F\x1F\x1F\x1F\x1F");
+		Engine::Print(14, 1, static_cast<EColor>(fgColor), "SHIELD");
 	}
 	else
 	{

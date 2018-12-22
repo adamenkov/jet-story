@@ -9,7 +9,7 @@
 
 
 Menu::Menu() :
-	m_eState(eMS_MainMenu)
+	m_eState(EState::MainMenu)
 {
 	std::ifstream fileRunningLine("Assets/RunningLine.txt");
 	m_sRunningLine.assign(
@@ -21,7 +21,7 @@ Menu::Menu() :
 
 void Menu::OnEnter()
 {
-	m_eState = eMS_MainMenu;
+	m_eState = EState::MainMenu;
 
 	if (Settings::bMusic)
 	{
@@ -51,13 +51,13 @@ void Menu::Update()
 		{
 			switch (m_eState)
 			{
-			case eMS_AssigningKey_Left:		m_eState = eMS_AssigningKey_Right;	break;
-			case eMS_AssigningKey_Right:	m_eState = eMS_AssigningKey_Down;	break;
-			case eMS_AssigningKey_Down:		m_eState = eMS_AssigningKey_Up;		break;
-			case eMS_AssigningKey_Up:		m_eState = eMS_AssigningKey_Fire;	break;
-			case eMS_AssigningKey_Fire:		m_eState = eMS_MainMenu;			break;
+			case EState::AssigningKey_Left:		m_eState = EState::AssigningKey_Right;	break;
+			case EState::AssigningKey_Right:	m_eState = EState::AssigningKey_Down;	break;
+			case EState::AssigningKey_Down:		m_eState = EState::AssigningKey_Up;		break;
+			case EState::AssigningKey_Up:		m_eState = EState::AssigningKey_Fire;	break;
+			case EState::AssigningKey_Fire:		m_eState = EState::MainMenu;			break;
 			
-			case eMS_MainMenu:
+			case EState::MainMenu:
 				break;
 
 			default:
@@ -70,7 +70,7 @@ void Menu::Update()
 
 void Menu::Render() const
 {
-	if (m_eState == eMS_AssigningKey_Fire)
+	if (m_eState == EState::AssigningKey_Fire)
 	{
 		if ((Settings::cKeyLeft  == 'K') &&
 			(Settings::cKeyRight == 'A') &&
@@ -90,23 +90,23 @@ void Menu::Render() const
 
 	switch (m_eState)
 	{
-	case eMS_MainMenu:
-	case eMS_GetReadyForSession:
-		Engine::Print(12,  5, Engine::eC_White, "JET-STORY");
+	case EState::MainMenu:
+	case EState::GetReadyForSession:
+		Engine::Print(12,  5, EColor::eC_White, "JET-STORY");
 
-		Engine::Print( 2, 13, Engine::eC_Grey,  "1.  REDEFINE KEYS");
+		Engine::Print( 2, 13, EColor::eC_Grey,  "1.  REDEFINE KEYS");
 		
-		Engine::Print( 2, 15, Engine::eC_Grey,  "2.  SOUND EFFECTS");
-		Engine::Print(20, 15, Settings::bSoundEffects ? Engine::eC_White : Engine::eC_LightMagenta, "ON");
-		Engine::Print(22, 15, Engine::eC_Grey,  "/");
-		Engine::Print(23, 15, Settings::bSoundEffects ? Engine::eC_LightMagenta : Engine::eC_White, "OFF");
+		Engine::Print( 2, 15, EColor::eC_Grey,  "2.  SOUND EFFECTS");
+		Engine::Print(20, 15, Settings::bSoundEffects ? EColor::eC_White : EColor::eC_LightMagenta, "ON");
+		Engine::Print(22, 15, EColor::eC_Grey,  "/");
+		Engine::Print(23, 15, Settings::bSoundEffects ? EColor::eC_LightMagenta : EColor::eC_White, "OFF");
 
-		Engine::Print( 2, 17, Engine::eC_Grey,  "3.  MUSIC");
-		Engine::Print(12, 17, Settings::bMusic ? Engine::eC_White : Engine::eC_LightMagenta, "ON");
-		Engine::Print(14, 17, Engine::eC_Grey,  "/");
-		Engine::Print(15, 17, Settings::bMusic ? Engine::eC_LightMagenta : Engine::eC_White, "OFF");
+		Engine::Print( 2, 17, EColor::eC_Grey,  "3.  MUSIC");
+		Engine::Print(12, 17, Settings::bMusic ? EColor::eC_White : EColor::eC_LightMagenta, "ON");
+		Engine::Print(14, 17, EColor::eC_Grey,  "/");
+		Engine::Print(15, 17, Settings::bMusic ? EColor::eC_LightMagenta : EColor::eC_White, "OFF");
 
-		Engine::Print( 2, 19, Engine::eC_Grey,  "4.  START GAME");
+		Engine::Print( 2, 19, EColor::eC_Grey,  "4.  START GAME");
 
 
 		enum { y = 8 * (Engine::eScreenHeightInCharacters - 1) };
@@ -114,7 +114,7 @@ void Menu::Render() const
 		Engine::DrawText(
 			-m_nFPSCounter % 8,
 			y,
-			Engine::eC_Cyan,
+			EColor::eC_Cyan,
 			m_sRunningLine.substr(
 				(m_nFPSCounter / 8) % m_sRunningLine.length(), 
 				Engine::eScreenWidthInCharacters
@@ -122,27 +122,27 @@ void Menu::Render() const
 		);
 
 		Engine::Print(0,
-			Engine::eScreenHeightInCharacters - 1, Engine::eC_Black, '\x1F');
+			Engine::eScreenHeightInCharacters - 1, EColor::eC_Black, '\x1F');
 		Engine::Print(Engine::eScreenWidthInCharacters - 1,
-			Engine::eScreenHeightInCharacters - 1, Engine::eC_Black, '\x1F');
+			Engine::eScreenHeightInCharacters - 1, EColor::eC_Black, '\x1F');
 
 		break;
 		
-	case eMS_AssigningKey_Fire:
-		Engine::Print(12,  17, Engine::eC_LightYellow, "FIRE");
-		Engine::Print(18,  17, Engine::eC_LightYellow, Settings::cKeyFire);
-	case eMS_AssigningKey_Up:
-		Engine::Print(12,  16, Engine::eC_LightYellow, "UP");
-		Engine::Print(18,  16, Engine::eC_LightYellow, Settings::cKeyUp);
-	case eMS_AssigningKey_Down:
-		Engine::Print(12,  15, Engine::eC_LightYellow, "DOWN");
-		Engine::Print(18,  15, Engine::eC_LightYellow, Settings::cKeyDown);
-	case eMS_AssigningKey_Right:
-		Engine::Print(12,  14, Engine::eC_LightYellow, "RIGHT");
-		Engine::Print(18,  14, Engine::eC_LightYellow, Settings::cKeyRight);
-	case eMS_AssigningKey_Left:
-		Engine::Print(12,  13, Engine::eC_LightYellow, "LEFT");
-		Engine::Print(18,  13, Engine::eC_LightYellow, Settings::cKeyLeft);
+	case EState::AssigningKey_Fire:
+		Engine::Print(12,  17, EColor::eC_LightYellow, "FIRE");
+		Engine::Print(18,  17, EColor::eC_LightYellow, Settings::cKeyFire);
+	case EState::AssigningKey_Up:
+		Engine::Print(12,  16, EColor::eC_LightYellow, "UP");
+		Engine::Print(18,  16, EColor::eC_LightYellow, Settings::cKeyUp);
+	case EState::AssigningKey_Down:
+		Engine::Print(12,  15, EColor::eC_LightYellow, "DOWN");
+		Engine::Print(18,  15, EColor::eC_LightYellow, Settings::cKeyDown);
+	case EState::AssigningKey_Right:
+		Engine::Print(12,  14, EColor::eC_LightYellow, "RIGHT");
+		Engine::Print(18,  14, EColor::eC_LightYellow, Settings::cKeyRight);
+	case EState::AssigningKey_Left:
+		Engine::Print(12,  13, EColor::eC_LightYellow, "LEFT");
+		Engine::Print(18,  13, EColor::eC_LightYellow, Settings::cKeyLeft);
 		break;
 	}
 }
@@ -155,7 +155,7 @@ void Menu::KeyPressed(char key)
 
 	switch (m_eState)
 	{
-	case eMS_MainMenu:
+	case EState::MainMenu:
 		Audio::Play(Sounds::KEY_PRESSED);
 
 		switch (key)
@@ -167,7 +167,7 @@ void Menu::KeyPressed(char key)
 			Settings::cKeyDown	= ' ';
 			Settings::cKeyUp	= ' ';
 			Settings::cKeyFire	= ' ';
-			m_eState = eMS_AssigningKey_Left;
+			m_eState = EState::AssigningKey_Left;
 			break;
 
 		case '2':
@@ -187,7 +187,7 @@ void Menu::KeyPressed(char key)
 			break;
 
 		case '4':
-			m_eState = eMS_GetReadyForSession;
+			m_eState = EState::GetReadyForSession;
 			break;
 
 		default:
@@ -195,36 +195,36 @@ void Menu::KeyPressed(char key)
 		}
 		break;
 
-	case eMS_GetReadyForSession:
+	case EState::GetReadyForSession:
 		Audio::Play(Sounds::KEY_DEFINED);
 		GameStates::SwitchTo("session");
 		break;
 
-	case eMS_AssigningKey_Left:
+	case EState::AssigningKey_Left:
 		Settings::cKeyLeft = key;
 		Audio::Play(Sounds::KEY_DEFINED);
 		m_waitFrames = 20;
 		break;
 
-	case eMS_AssigningKey_Right:
+	case EState::AssigningKey_Right:
 		Settings::cKeyRight = key;
 		Audio::Play(Sounds::KEY_DEFINED);
 		m_waitFrames = 20;
 		break;
 
-	case eMS_AssigningKey_Down:
+	case EState::AssigningKey_Down:
 		Settings::cKeyDown = key;
 		Audio::Play(Sounds::KEY_DEFINED);
 		m_waitFrames = 20;
 		break;
 
-	case eMS_AssigningKey_Up:
+	case EState::AssigningKey_Up:
 		Settings::cKeyUp = key;
 		Audio::Play(Sounds::KEY_DEFINED);
 		m_waitFrames = 20;
 		break;
 
-	case eMS_AssigningKey_Fire:
+	case EState::AssigningKey_Fire:
 		Settings::cKeyFire = key;
 		Audio::Play(Sounds::KEY_DEFINED);
 		m_waitFrames =

@@ -11,8 +11,8 @@ void Enemy::Reset()
 {
 	Entity::Reset();
 
-	Engine::EColor eColor = static_cast<Engine::EColor>
-		(Engine::eC_LightBlue + (rand() % (Engine::eC_White - Engine::eC_LightBlue + 1)));
+	EColor eColor = static_cast<EColor>
+		(static_cast<int>(EColor::eC_LightBlue) + (rand() % (static_cast<int>(EColor::eC_White) - static_cast<int>(EColor::eC_LightBlue) + 1)));
 
 	SetColor(eColor);
 	

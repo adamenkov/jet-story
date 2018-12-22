@@ -31,7 +31,7 @@ public:
 	int GetAnimationFrame() const { return m_iAnimationFrame; }
 	void SetAnimationFrame(int iAnimationFrame)	{ m_iAnimationFrame = iAnimationFrame; }
 
-	void SetColor(Engine::EColor eColor);
+	void SetColor(EColor eColor);
 	void SetAlpha(unsigned char alpha) { m_color &= 0xFFFFFF; m_color |= ((alpha & 0xFF) << 24); }
 
 	std::shared_ptr<Texture> GetTexture() const { return m_pTexture; }

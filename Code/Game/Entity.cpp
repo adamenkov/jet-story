@@ -5,7 +5,7 @@
 
 
 Entity::Entity(const Vector2& vInitialPos) :
-	m_eLifeTime(eLT_Session),
+	m_eLifeTime(ELifeTime::Session),
 	m_vInitialPos(vInitialPos),
 	m_vel(ZERO),
 	m_bEnabled(true),
@@ -32,7 +32,7 @@ void Entity::Animate()
 	int oldFrame = m_iAnimationFrame;
 	Sprite::Animate();
 
-	if (m_eLifeTime == eLT_Animation)
+	if (m_eLifeTime == ELifeTime::Animation)
 	{
 		if ((oldFrame > 0) && (m_iAnimationFrame == 0))
 		{

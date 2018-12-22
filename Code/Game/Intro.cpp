@@ -3,7 +3,7 @@
 #include "../Shared/Engine.h"
 
 
-Intro::Intro() : m_eIntroState(eIS_FirstScreen)
+Intro::Intro() : m_eIntroState(EIntroState::FirstScreen)
 {
 	m_pScreenSprite = std::make_unique<Sprite>();
 	m_pScreenSprite->SetTexture(std::make_shared<Texture>("Assets/Intro1.png"));
@@ -14,22 +14,22 @@ void Intro::Render() const
 {
 	switch (m_eIntroState)
 	{
-	case eIS_FirstScreen:
-	case eIS_SecondScreen:
+	case EIntroState::FirstScreen:
+	case EIntroState::SecondScreen:
 		m_pScreenSprite->Render();
 		break;
 
-	case eIS_ThirdScreen:
-		Engine::Print(10,  8, Engine::eC_Grey, "PC REMAKE BY");
-		Engine::Print( 8, 11, Engine::eC_White, "EVGENY ADAMENKOV");
-		Engine::Print(14, 13, Engine::eC_White, "2012");
+	case EIntroState::ThirdScreen:
+		Engine::Print(10,  8, EColor::eC_Grey, "PC REMAKE BY");
+		Engine::Print( 8, 11, EColor::eC_White, "EVGENY ADAMENKOV");
+		Engine::Print(14, 13, EColor::eC_White, "2012");
 		break;
 
 	default:
 		assert(!!!"Should not be here!");
 	}
 
-	Engine::Print(0, Engine::eScreenHeightInCharacters - 1, Engine::eC_Grey, "(PRESS ANY KEY TO CONTINUE)");
+	Engine::Print(0, Engine::eScreenHeightInCharacters - 1, EColor::eC_Grey, "(PRESS ANY KEY TO CONTINUE)");
 }
 
 
@@ -37,16 +37,16 @@ void Intro::KeyPressed(char UNUSED_PARAM(key))
 {
 	switch (m_eIntroState)
 	{
-	case eIS_FirstScreen:
+	case EIntroState::FirstScreen:
 		m_pScreenSprite->GetTexture()->LoadFromFile("Assets/Intro2.png");
-		m_eIntroState = eIS_SecondScreen;
+		m_eIntroState = EIntroState::SecondScreen;
 		break;
 
-	case eIS_SecondScreen:
-		m_eIntroState = eIS_ThirdScreen;
+	case EIntroState::SecondScreen:
+		m_eIntroState = EIntroState::ThirdScreen;
 		break;
 
-	case eIS_ThirdScreen:
+	case EIntroState::ThirdScreen:
 		GameStates::SwitchTo("menu");
 		break;
 

@@ -38,8 +38,8 @@ namespace Game
 	{
 		if (bExitDialog)
 		{
-			Engine::Print(8, 9, Engine::eC_White, "EXIT JET-STORY?");
-			Engine::Print(5, 13, Engine::eC_White, "ENTER=YES       ESC=NO");
+			Engine::Print(8, 9, EColor::eC_White, "EXIT JET-STORY?");
+			Engine::Print(5, 13, EColor::eC_White, "ENTER=YES       ESC=NO");
 		}
 		else
 		{

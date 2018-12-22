@@ -52,7 +52,7 @@ Player::Player() :
 	m_spriteJetLeft .SetFrameTimer(2);
 	m_spriteJetRight.SetFrameTimer(2);
 
-	SetLifeTime(eLT_Game);
+	SetLifeTime(ELifeTime::Game);
 }
 
 
@@ -259,19 +259,19 @@ void Player::Update()
 			case 'c':	// Vertical bomb
 				m_pPlayerBomb = std::make_shared<PlayerVerticalBomb>();
 				m_pPlayerBomb->SetVelocity(m_vel.x, 1.f);
-				m_pPlayerBomb->SetLifeTime(Entity::eLT_Room);
+				m_pPlayerBomb->SetLifeTime(ELifeTime::Room);
 				break;
 
 			case 'a':	// Horizontal bomb
 				m_pPlayerBomb = std::make_shared<PlayerHorizontalBomb>(bLeft);
 				m_pPlayerBomb->SetVelocity(bLeft ? -.5f : .5f, 1.5f);
-				m_pPlayerBomb->SetLifeTime(Entity::eLT_Room);
+				m_pPlayerBomb->SetLifeTime(ELifeTime::Room);
 				break;
 
 			case 'l':	// Ball
 				m_pPlayerBomb = std::make_shared<PlayerBall>();
 				m_pPlayerBomb->SetVelocity(bLeft ? -1.6f : 1.6f, 2.f + ((rand() % 400) / 1000.f));
-				m_pPlayerBomb->SetLifeTime(Entity::eLT_FollowPlayer);
+				m_pPlayerBomb->SetLifeTime(ELifeTime::FollowPlayer);
 				break;
 
 			case 'f':	// Star
@@ -280,7 +280,7 @@ void Player::Update()
 				float r = float(rand()) / RAND_MAX;
 				float angle = (bLeft ? PIover2 : -PIover2) + PI * r;
 				m_pPlayerBomb->SetVelocity(cosf(angle), sinf(angle));
-				m_pPlayerBomb->SetLifeTime(Entity::eLT_FollowPlayer);
+				m_pPlayerBomb->SetLifeTime(ELifeTime::FollowPlayer);
 				break;
 			}
 
@@ -308,7 +308,7 @@ void Player::Update()
 			bool bLeft = (m_iAnimationFrame == 1);
 			std::shared_ptr<PlayerBullet> pBullet = std::make_shared<PlayerBullet>(m_pos + Vector2(bLeft ? 0.f : 24.f, 7.f));
 			pBullet->SetVelocity(bLeft ? -6.f : 6.f, 0.f);
-			pBullet->SetLifeTime(Entity::eLT_Room);
+			pBullet->SetLifeTime(ELifeTime::Room);
 
 			Maze::GetMaze()->AddEntity(pBullet);
 			Audio::Play(Sounds::FIRE);
@@ -387,7 +387,7 @@ void Player::ConsumeShield(int nUnits)
 
 void Player::OnRoomChanged()
 {
-	if (m_pPlayerBomb && (m_pPlayerBomb->GetLifeTime() == eLT_FollowPlayer))
+	if (m_pPlayerBomb && (m_pPlayerBomb->GetLifeTime() == ELifeTime::FollowPlayer))
 	{
 		m_pPlayerBomb->SetPosNearPlayer();
 		Maze::GetMaze()->AddEntity(m_pPlayerBomb);

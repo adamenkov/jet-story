@@ -230,7 +230,7 @@ std::shared_ptr<Entity> Room::CreateEntity(int type, const Vector2& vInitialPos,
 
 void Room::Reset()
 {
-	RemoveEntities(Entity::eLT_Session);
+	RemoveEntities(Entity::ELifeTime::Session);
 	
 	for (std::shared_ptr<Entity>& pEntity : m_entities)
 	{
@@ -324,7 +324,7 @@ void Room::MoveEntitiesAndResolveCollisions()
 
 		if (bHorizonalCollision || bVerticalCollision)
 		{
-			if (pEntity->GetLifeTime() == Entity::eLT_Collision)
+			if (pEntity->GetLifeTime() == Entity::ELifeTime::Collision)
 			{
 				it = m_entities.erase(it);
 				continue;
@@ -504,7 +504,7 @@ void Room::OnPlayerExit()
 	for (std::vector<std::shared_ptr<Entity>>::iterator it = m_entities.begin(); it != m_entities.end(); )
 	{
 		std::shared_ptr<Entity> pEntity = *it;
-		if ((pEntity == player) || (pEntity->GetLifeTime() == Entity::eLT_FollowPlayer))
+		if ((pEntity == player) || (pEntity->GetLifeTime() == Entity::ELifeTime::FollowPlayer))
 		{
 			it = m_entities.erase(it);
 		}
@@ -514,7 +514,7 @@ void Room::OnPlayerExit()
 		}
 	}
 
-	RemoveEntities(Entity::eLT_Room);
+	RemoveEntities(Entity::ELifeTime::Room);
 }
 
 
@@ -529,7 +529,7 @@ void Room::AddGameEntity(std::shared_ptr<Entity> pEntity)
 	assert(pEntity && (m_entities.size() < eMaxEntitiesPerRoom));
 	if (pEntity && (m_entities.size() < eMaxEntitiesPerRoom))
 	{
-		pEntity->SetLifeTime(Entity::eLT_Game);
+		pEntity->SetLifeTime(Entity::ELifeTime::Game);
 		m_entities.emplace_back(pEntity);
 	}
 }
@@ -552,7 +552,7 @@ void Room::ExplodeAllEntititiesExceptPlayer()
 		{
 			// Don't explode explosions
 			Entity::ELifeTime eLifeTime = pEntity->GetLifeTime();
-			if ((eLifeTime != Entity::eLT_Animation) && (eLifeTime != Entity::eLT_Collision))
+			if ((eLifeTime != Entity::ELifeTime::Animation) && (eLifeTime != Entity::ELifeTime::Collision))
 			{
 				pEntity->ForceExplode();
 			}
