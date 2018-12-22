@@ -127,6 +127,8 @@ void Maze::Reset()
 		}
 	}
 
+	m_curRow = 0;
+	m_curColumn = 0;
 	SetCurrentRoom(0, 0);
 
 	m_nBasesLeft = 47;

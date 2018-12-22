@@ -29,7 +29,7 @@ private:
 	};
 	EState m_eState;
 
-	using BestScores =std::map<int, std::string, std::greater<int>>;
+	using BestScores = std::map<int, std::string, std::greater<int>>;
 	BestScores m_BestScores;
 
 	char m_cPlayerFirstInitial;

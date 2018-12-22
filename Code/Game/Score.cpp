@@ -149,8 +149,5 @@ void Score::KeyPressed(char key)
 		}
 		GameStates::SwitchTo("menu");
 		break;
-	
-	default:
-		assert(!"Should not be here!");
 	}
 }
