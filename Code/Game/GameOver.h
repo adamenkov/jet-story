@@ -6,9 +6,9 @@
 class GameOver : public GameState
 {
 public:
-	virtual void OnEnter();
-	virtual void Update();
-	virtual void Render() const;
+	virtual void OnEnter() override;
+	virtual void Update() override;
+	virtual void Render() const override;
 
 private:
 	int m_nFrameID;

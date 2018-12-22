@@ -9,8 +9,8 @@ class Intro : public GameState
 public:
 	Intro();
 
-	virtual void Render() const;
-	virtual void KeyPressed(char key);
+	virtual void Render() const override;
+	virtual void KeyPressed(char key) override;
 
 private:
 	enum class EIntroState

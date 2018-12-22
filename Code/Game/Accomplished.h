@@ -6,10 +6,10 @@
 class Accomplished : public GameState
 {
 public:
-	virtual void OnEnter();
-	virtual void Update();
-	virtual void Render() const;
-	virtual void KeyPressed(char key);
+	virtual void OnEnter() override;
+	virtual void Update() override;
+	virtual void Render() const override;
+	virtual void KeyPressed(char key) override;
 
 private:
 	enum class EState

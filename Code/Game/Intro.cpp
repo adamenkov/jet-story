@@ -22,11 +22,8 @@ void Intro::Render() const
 	case EIntroState::ThirdScreen:
 		Engine::Print(10,  8, EColor::eC_Grey, "PC REMAKE BY");
 		Engine::Print( 8, 11, EColor::eC_White, "EVGENY ADAMENKOV");
-		Engine::Print(14, 13, EColor::eC_White, "2012");
+		Engine::Print(14, 13, EColor::eC_White, "2019");
 		break;
-
-	default:
-		assert(!!!"Should not be here!");
 	}
 
 	Engine::Print(0, Engine::eScreenHeightInCharacters - 1, EColor::eC_Grey, "(PRESS ANY KEY TO CONTINUE)");
@@ -49,8 +46,5 @@ void Intro::KeyPressed(char UNUSED_PARAM(key))
 	case EIntroState::ThirdScreen:
 		GameStates::SwitchTo("menu");
 		break;
-
-	default:
-		assert(!!!"Should not be here!");
 	}
 }
