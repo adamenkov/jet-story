@@ -1,22 +1,28 @@
 ZX Spectrum memory
 
-*	0000–3FFF	ROM
+*	0000-3FFF	ROM
 *	11AA		Based on (x, y) in BC (y in B, x in C; y grows downwards), calculate address in screen memory (HL) and pixel position in the byte (C mod 8)
-*	4000–57FF	screen pixels (3 parts x 8 rows x32 columns x 8 pixels)
-*	5800–5AFF	attributes
-*	5DC0–6DBF	Initial map (128 x 8 x (y, x, 0, type)) of all game objects
+*	4000-57FF	screen pixels (3 parts x 8 rows x32 columns x 8 pixels)
+*	5800-5AFF	attributes
+*	5DC0-6DBF	Initial map (128 x 8 x (y, x, 0, type)) of all game objects
 
 
-
+*	6DD3-6DE1	Strange adjustment of HL after each pixel line of running line shift 1 pixel to the left
+*	6DE2-6DE8	Z=1 iff no key is pressed.
+*	6DE9-6DEE	Wait until key is pressed.
 *	6DEF-6E07	Clear the screen and border.
+*	6F4B-6F63	Shift the running line one pixel to the left.
+*	6F64-7139	Text of running line and the trailing '$'.
+*	713A-71C0	Spaces (' ')
+*	71C1-		The code that outputs the running line.
 *	7213		Initialize game
-*	8F00–9EFF	32 (actually, 29) 32x32 labyrinth elements’ pixels
-*	9F00–A0FF	attributes for the above
-*	A100–A2FF	8 x 2 tables used to convert sprite byte to a pair of actual screen bytes based on sprite x (mod 8) coordinate
-*	B100–…		16 x 16 sprites (no attributes)
-*	C400–D3FF	Session-dependent (current) map (128 x 8 x (y, x, 0, type)) of all game objects
+*	8F00-9EFF	32 (actually, 29) 32x32 labyrinth elements' pixels
+*	9F00-A0FF	attributes for the above
+*	A100-A2FF	8 x 2 tables used to convert sprite byte to a pair of actual screen bytes based on sprite x (mod 8) coordinate
+*	B100-...	16 x 16 sprites (no attributes)
+*	C400-D3FF	Session-dependent (current) map (128 x 8 x (y, x, 0, type)) of all game objects
 
-*	D400–DFB7	Labyrinth (encoded;  in byte b7b6b5b4b3b2b1b0, (b4b3b2b1b0 – 1) or 0 is the number of labyrinth block, b7b6b5 is the number it is repeated)
+*	D400-DFB7	Labyrinth (encoded;  in byte b7b6b5b4b3b2b1b0, (b4b3b2b1b0 - 1) or 0 is the number of labyrinth block, b7b6b5 is the number it is repeated)
 *	DEAB		Go to DF74
 *	DF49		Render a room
 *	DF74		Return (in HL) target address of the next pixel line of HUD
@@ -31,6 +37,8 @@ ZX Spectrum memory
 
 *	E497		current room (1 byte)
 *	E7C8		Update the coordinates (?) and draw a sprite
+*	EADC-EB51	Play 48k main music.
+*	ECDC		Main menu code.
 *	EE51		Go to FB91
 *	EE58		game objects of the current room (6 x 20 bytes)
 *	EED1		table of 8 bytes (of something) for each type
