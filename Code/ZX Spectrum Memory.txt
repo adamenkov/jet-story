@@ -14,7 +14,8 @@ ZX Spectrum memory
 *	6F4B-6F63	Shift the running line one pixel to the left.
 *	6F64-7139	Text of running line and the trailing '$'.
 *	713A-71C0	Spaces (' ')
-*	71C1-		The code that outputs the running line.
+*	71C1-71E7	The code that outputs the running line.
+*	71ED		The (invisible) symbol at the bottom right-hand corner - for the running line.
 *	7213		Initialize game
 *	8F00-9EFF	32 (actually, 29) 32x32 labyrinth elements' pixels
 *	9F00-A0FF	attributes for the above
@@ -24,11 +25,12 @@ ZX Spectrum memory
 
 *	D400-DFB7	Labyrinth (encoded;  in byte b7b6b5b4b3b2b1b0, (b4b3b2b1b0 - 1) or 0 is the number of labyrinth block, b7b6b5 is the number it is repeated)
 *	DEAB		Go to DF74
+*	DECC-DECF	Go to E18B
 *	DF49		Render a room
 *	DF74		Return (in HL) target address of the next pixel line of HUD
 *	E011		Get the address of sprite number A in DE, address of screen memory where to draw it in HL, pixel offset (a2a1a0) in A, 1010_a2_a1_a0_1 in B (see A100)
 *	E027		Draw a sprite
-
+*	E18B-
 *	E1B8-E1E9	get key (Z=1 iff pressed). D = 5-group query mask, E = pressed key mask, B = group element counter, C = 5-key group counter
 *	E1EA-E211	key table.  (element at 8 * key_number_1_to_5 + group_number_1_to_8 gives the pressed key)
 *	E212-E21E	Wait for pressed key and play the sound "key assigned".
