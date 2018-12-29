@@ -21,17 +21,20 @@ ZX Spectrum memory
 *	8F00-9EFF	32 (actually, 29) 32x32 labyrinth elements' pixels
 *	9F00-A0FF	attributes for the above
 *	A100-A2FF	8 x 2 tables used to convert sprite byte to a pair of actual screen bytes based on sprite x (mod 8) coordinate
+*	A4FF, A6FF, A8FF, A9FF, AAFF, ACFF, AEFF - bytes correspoding to 1, 2, 3, 4, 5, 6 pixel columns of bar (fuel, ammo, shield)
 *	B100-...	16 x 16 sprites (no attributes)
+
 *	C400-D3FF	Session-dependent (current) map (128 x 8 x (y, x, 0, type)) of all game objects
 
 *	D400-DFB7	Labyrinth (encoded;  in byte b7b6b5b4b3b2b1b0, (b4b3b2b1b0 - 1) or 0 is the number of labyrinth block, b7b6b5 is the number it is repeated)
 *	DEAB		Go to DF74
-*	DECC-DECE	Go to E18B
+*	DECC-DECE	Go to E18B (draw a string with special characters)
 *	DEF0-DEF1	Destination address in screen memory to print a character
 *	DEF2		Attribute (What follows symbol 1 in a given string to print (in DEF2)).
 *	DEF3		Height in pixels?
 *	DF49		Render a room
 *	DF74		Return (in HL) target address of the next pixel line of HUD
+
 *	E011		Get the address of sprite number A in DE, address of screen memory where to draw it in HL, pixel offset (a2a1a0) in A, 1010_a2_a1_a0_1 in B (see A100)
 *	E027		Draw a sprite
 *	E0DD-E0E8	Give address (in DE) of graphics for character in A.
@@ -43,19 +46,32 @@ ZX Spectrum memory
 *	E212-E21E	Wait for pressed key and play the sound "key assigned".
 *	E21F-E243	Actually play the sound "key assigned"
 *	E244-E24E	Play the sound "key assigned".
-
+*	E358-E3C6	Guess: Update functions for Objects.
+*	E3B2-E3B4	Go to ECBO (draw a bar of remaining quantity A, HL - destination screen memory address).
+*	E3B5-E3B7	Go to ECF5
+*	E3CB		Type of player bombs (1 - missiles, 2 - bombs, 3 - stars, 4 - balls)
+*	E3CC		Quantity of player bombs
+*	E3CF		Fuel remaining
 *	E497		current room (1 byte)
 *	E7C8		Update the coordinates (?) and draw a sprite
 *	EADC-EB51	Play 48k main music.
-*	ECDC		Main menu code.
+*	FAFA-		Draw stats?
+*	ECBO-ECF4	Draw a bar of remaining quantity A, HL - destination screen memory address
+*	ECF5-		Update all objects (on screen)
 *	EE51		Go to FB91
 *	EE58		game objects of the current room (6 x 20 bytes)
+*	EED0		Shield remaining
 *	EED1		table of 8 bytes (of something) for each type
+
 *	F052		Prepare current room (copy objects from the map (C400) and draw HUD)
-*	F876		Number of bases left (in hexadecimal)
+*	F876		Number of bases left (in BCD for, starting from 47)
+*	F9FB		Main game (session) loop
+*	FECA-		All bases destroyed (mission accomplished)
 *	FAD5		Draw HUD
 *	FAFA		Draw figures in HUD
 *	FB44		Print current scores
+*	FB56-FB59	Characters for player bombs on HUD ('a'/61h - missiles, 'c'/63h - bombs, 'f'/6F - stars, 'l'/6C - balls)
+*	FB5A-FB90	Text of stats: "FUEL     AMMO     SHIELD  >    <    ^^ (2 bases)"
 *	FB91		Draw HUD and
 *	FBA4		draw objects
 
