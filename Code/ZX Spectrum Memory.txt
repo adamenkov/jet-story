@@ -57,7 +57,7 @@ ZX Spectrum memory
 *	EADC-EB51	Play 48k main music.
 *	FAFA-		Draw stats?
 *	ECBO-ECF4	Draw a bar of remaining quantity A, HL - destination screen memory address
-*	ECF5-		Update all objects (on screen)
+*	ECF5-ED11	Render all objects (on screen)
 *	EE51		Go to FB91
 *	EE58		game objects of the current room (6 x 20 bytes)
 *	EED0		Shield remaining
@@ -65,11 +65,13 @@ ZX Spectrum memory
 
 *	F052		Prepare current room (copy objects from the map (C400) and draw HUD)
 *	F876		Number of bases left (in BCD for, starting from 47)
-*	F9FB		Main game (session) loop
+*	F9FB-FA2C	Main game (session) loop
+*	FA2D-		Out of shield!
 *	FECA-		All bases destroyed (mission accomplished)
 *	FAD5		Draw HUD
 *	FAFA		Draw figures in HUD
 *	FB44		Print current scores
+*	FB4C		
 *	FB56-FB59	Characters for player bombs on HUD ('a'/61h - missiles, 'c'/63h - bombs, 'f'/6F - stars, 'l'/6C - balls)
 *	FB5A-FB90	Text of stats: "FUEL     AMMO     SHIELD  >    <    ^^ (2 bases)"
 *	FB91		Draw HUD and
