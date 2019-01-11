@@ -24,7 +24,7 @@ ZX Spectrum memory
 *	A4FF, A6FF, A8FF, A9FF, AAFF, ACFF, AEFF - bytes correspoding to 1, 2, 3, 4, 5, 6 pixel columns of bar (fuel, ammo, shield)
 *	B100-...	16 x 16 sprites (no attributes)
 
-*	C400-D3FF	Session-dependent (current) map (128 x 8 x (y, x, 0, type)) of all game objects
+*	C400-D3FF	Session-dependent (current) map (16 x 8 x (y, x, 0, type)) of all game objects
 
 *	D400-DFB7	Labyrinth (encoded;  in byte b7b6b5b4b3b2b1b0, (b4b3b2b1b0 - 1) or 0 is the number of labyrinth block, b7b6b5 is the number it is repeated)
 *	DEAB		Go to DF74
@@ -43,37 +43,39 @@ ZX Spectrum memory
 *	E18B-		Draw a character.  Symbol 2 sets cursor at (row, column).  Symbol 1 sets attribute (puts the next symbol in (DEF2))
 *	E1B8-E1E9	get key (Z=1 iff pressed). D = 5-group query mask, E = pressed key mask, B = group element counter, C = 5-key group counter
 *	E1EA-E211	key table.  (element at 8 * key_number_1_to_5 + group_number_1_to_8 gives the pressed key)
-*	E212-E21E	Wait for pressed key and play the sound "key assigned".
-*	E21F-E243	Actually play the sound "key assigned"
+*	E212-E21E	Wait for pressed key and play music/sound.
+*	E21F-E243	Actually play the sound "key assigned".
 *	E244-E24E	Play the sound "key assigned".
 *	E358-E3C6	Guess: Update functions for Objects.
 *	E3B2-E3B4	Go to ECBO (draw a bar of remaining quantity A, HL - destination screen memory address).
 *	E3B5-E3B7	Go to ECF5
 *	E3CB		Type of player bombs (1 - missiles, 2 - bombs, 3 - stars, 4 - balls)
 *	E3CC		Quantity of player bombs
+*	E3CE		Amount of ammo (0-255)
 *	E3CF		Fuel remaining
 *	E497		current room (1 byte)
 *	E7C8		Update the coordinates (?) and draw a sprite
+*	E970-		Key "4. Start game" was press, wait for a keypress and start the game.
 *	EADC-EB51	Play 48k main music.
-*	FAFA-		Draw stats?
+*	EC8B-ECAF	Print a number in A (2 digits in BCD format).
 *	ECBO-ECF4	Draw a bar of remaining quantity A, HL - destination screen memory address
 *	ECF5-		Update all objects (on screen)
-*	EE51		Go to FB91
-*	EE58		game objects of the current room (6 x 20 bytes)
+*	EE51		Go to FB91 (Draw stats and objects, save current room enemies (?), go the glitch at room (3, 8)?)
+*	EE58-EECF	game objects of the current room (6 x 20 bytes)
 *	EED0		Shield remaining
-*	EED1		table of 8 bytes (of something) for each type
+*	EED1-F008(?)table of 8 bytes (of something) for each type (0-38)
 
-*	F052		Prepare current room (copy objects from the map (C400) and draw HUD)
+*	F052-F0AC	Prepare current room (copy objects from the map (C400) and draw HUD)
+*	F873-F875	Score (in BCD format)
 *	F876		Number of bases left (in BCD for, starting from 47)
+*	F889		Current room number again (like in E497)
 *	F9FB		Main game (session) loop
 *	FECA-		All bases destroyed (mission accomplished)
-*	FAD5		Draw HUD
-*	FAFA		Draw figures in HUD
+*	FAD5-FB47	Draw squares in HUD (first four character lines), then draw stats.
 *	FB44		Print current scores
 *	FB56-FB59	Characters for player bombs on HUD ('a'/61h - missiles, 'c'/63h - bombs, 'f'/6F - stars, 'l'/6C - balls)
-*	FB5A-FB90	Text of stats: "FUEL     AMMO     SHIELD  >    <    ^^ (2 bases)"
-*	FB91		Draw HUD and
-*	FBA4		draw objects
+*	FB5A-FB90	Text of stats: "FUEL     AMMO     SHIELD  >    <    ^^ (2 bases)" (FB89,FB8A - player bomb characters))
+*	FB91-FC14	Draw stats and objects, save current room enemies (?), go the glitch at room (3, 8)?
 
 Game object (IX)
 Each game object occupies 20 bytes of memory.  There are up to 6 16x16 objects in each room.
@@ -85,3 +87,7 @@ Each game object occupies 20 bytes of memory.  There are up to 6 16x16 objects i
 *	IX+5	new x coordinate
 *	IX+6	new sprite number / animation frame
 
+Render order:
+1. Maze and player
+2. HUD
+3. Enemies and objects
