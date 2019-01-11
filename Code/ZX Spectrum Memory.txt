@@ -81,8 +81,8 @@ ZX Spectrum memory
 Game object (IX)
 Each game object occupies 20 bytes of memory.  There are up to 6 16x16 objects in each room.
 *	IX	object type
-*	IX+1	old x coordinate
-*	IX+2	old y coordinate
+*	IX+1	old x coordinate (vertical coordinate in pixels from the top of the screen)
+*	IX+2	old y coordinate (vertical coordinate in pixels from the left of the screen)
 *	IX+3	old sprite number (in the catalog of all 16x16 sprites) / animation frame
 *	IX+4	new y coordinate
 *	IX+5	new x coordinate
