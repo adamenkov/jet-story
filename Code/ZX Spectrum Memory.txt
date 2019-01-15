@@ -59,7 +59,7 @@ ZX Spectrum memory
 *	EADC-EB51	Play 48k main music.
 *	EC8B-ECAF	Print a number in A (2 digits in BCD format).
 *	ECBO-ECF4	Draw a bar of remaining quantity A, HL - destination screen memory address
-*	ECF5-ED11	Render all objects (on screen)
+*	ECF5-ED11	Probably some delays - everything is so quick if disabled (wrong: Render all objects (on screen))
 *	EE4B		Go to FC76
 *	EE51		Go to FB91 (Draw stats and objects, save current room enemies (?), go the glitch at room (3, 8)?)
 *	EE58-EECF	6 game objects of the current room (6 x 20 bytes)
@@ -78,10 +78,12 @@ ZX Spectrum memory
 *	F873-F875	Score (in BCD format)
 *	F876		Number of bases left (in BCD for, starting from 47)
 *	F889		Current room number again (like in E497)
+*	F9B9-F9BC	"Notes" to play when the room is empty.
 
 ***	F9FB-FA2C	Main game (session) loop
 
 *	FA2D-		Out of shield!
+*	FA86-		Play music when current room is empty
 *	FECA-		All bases destroyed (mission accomplished)
 *	FAD5-FB47	Draw squares in HUD (first four character lines), then draw stats.
 *	FA86-FAD4	???
@@ -90,7 +92,7 @@ ZX Spectrum memory
 *	FB5A-FB90	Text of stats: "FUEL     AMMO     SHIELD  >    <    ^^ (2 bases)" (FB89,FB8A - player bomb characters))
 *	FB91-FC14	Draw stats and objects, save current room enemies (?), go the glitch at room (3, 8)?
 *	FC76-
-*	FDCA-		Object-specific code?
+*	FDCA-		Update timers?  (Without it, cannons don't shoot)
 
 
 
