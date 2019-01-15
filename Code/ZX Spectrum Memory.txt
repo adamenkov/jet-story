@@ -84,7 +84,6 @@ ZX Spectrum memory
 
 *	FA2D-		Out of shield!
 *	FA86-		Play music when current room is empty
-*	FECA-		All bases destroyed (mission accomplished)
 *	FAD5-FB47	Draw squares in HUD (first four character lines), then draw stats.
 *	FA86-FAD4	???
 *	FB44		Print current scores
@@ -93,6 +92,7 @@ ZX Spectrum memory
 *	FB91-FC14	Draw stats and objects, save current room enemies (?), go the glitch at room (3, 8)?
 *	FC76-
 *	FDCA-		Update timers?  (Without it, cannons don't shoot)
+*	FECA-		All bases destroyed (mission accomplished)
 
 
 
