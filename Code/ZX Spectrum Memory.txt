@@ -47,14 +47,27 @@ ZX Spectrum memory
 *	E21F-E243	Actually play the sound "key assigned".
 *	E244-E24E	Play the sound "key assigned".
 *	E358-E3C6	Guess: Update functions for Objects.
+*	E35B-E35D	Go to E4D0
+*	E364-E366	Go to E4FC.
+*	E397-E399	Go to E859
+*	E3AC-		Handle a temporary object (e.g. player bullet)?
+*	E3AF-		???
 *	E3B2-E3B4	Go to ECBO (draw a bar of remaining quantity A, HL - destination screen memory address).
 *	E3B5-E3B7	Go to ECF5
+*	E3C4-		???
+*	E3C7		Frame number (modulo 256) - to be used in animation frame selection?
 *	E3CB		Type of player bombs (1 - missiles, 2 - bombs, 3 - stars, 4 - balls)
 *	E3CC		Quantity of player bombs
 *	E3CE		Amount of ammo (0-255)
 *	E3CF		Fuel remaining
+*	E3D1		Number of enemies remaining in the room?
+*	E3D7		Y-coordinate of the player, in pixels, starting from the first line after the HUD
+*	E3D8		X-coordinate of the player, in pixels, starting from left
 *	E497		current room (1 byte)
+*	E4D0-		???
+*	E4FC-		Update enemies animation frames.
 *	E7C8-E7F4	Update the coordinates (?) and draw a sprite
+*	E859-E899	Update music and read keyboard, also process player's bombs
 *	E970-		Key "4. Start game" was press, wait for a keypress and start the game.
 *	EADC-EB51	Play 48k main music.
 *	EC8B-ECAF	Print a number in A (2 digits in BCD format).
@@ -67,14 +80,17 @@ ZX Spectrum memory
 *	EED1-F008(?)table of 8 bytes (of something) for each type (0-38)
 
 *	F023-F028	Some initialization before the session?
-*	F029-F04C	Render objects, update squares of HUD, update object location?
-*	F052-F0AC	Prepare current room (copy objects from the map (C400) and draw HUD)
+*	F029-F04C	Render objects, update squares of HUD, update object location?, probably set a flag (or A) to indicate that some enemies are still remaining.
+*	F04D-F0AC	Sync room and its enemies - prepare current room (copy objects from the map (C400) and draw HUD)
 *	F0B8-F0C4	Given object type (IX), multiply it by 8 and add EED1 to return a pointer to some 8-byte structure in HL (which we later save in E3C9)
-*	F0C5-F0CE	Get update function address for the given object type and call it.
+*	F0C5-F0CE	Get update function address for the given object type and call it.  Does not include projectiles.
 *	F0CF-F0FC	Render current objects and update objects?
 *	F0FF-F14B(?)Virtual table of update (?) functions for each object type
 *	F163-		The join point for object update functions.
+*	F25C-F26B	Set desired vertical acceleration(?) of the Big Z, depending on the relative Y-coordinate of the player.
+*	F26C-F27D	Set desired horizontal acceleration(?) of the Big Z, depending on the relative X-coordinate of the player.
 >>>	F53D-		Update the Big Z (object 14=0E)
+*	F563-F571	Set the correct image of the Big Z - looking left or right, depending on where the player is.
 *	F873-F875	Score (in BCD format)
 *	F876		Number of bases left (in BCD for, starting from 47)
 *	F889		Current room number again (like in E497)
@@ -83,15 +99,16 @@ ZX Spectrum memory
 ***	F9FB-FA2C	Main game (session) loop
 
 *	FA2D-		Out of shield!
-*	FA86-		Play music when current room is empty
+*	FA86-FAD4	Play music when current room is empty
 *	FAD5-FB47	Draw squares in HUD (first four character lines), then draw stats.
 *	FA86-FAD4	???
 *	FB44		Print current scores
+*	FB48-		???
 *	FB56-FB59	Characters for player bombs on HUD ('a'/61h - missiles, 'c'/63h - bombs, 'f'/6F - stars, 'l'/6C - balls)
 *	FB5A-FB90	Text of stats: "FUEL     AMMO     SHIELD  >    <    ^^ (2 bases)" (FB89,FB8A - player bomb characters))
 *	FB91-FC14	Draw stats and objects, save current room enemies (?), go the glitch at room (3, 8)?
-*	FC76-
-*	FDCA-		Update timers?  (Without it, cannons don't shoot)
+*	FC76-		Enemy-player collisions, update HUD color squares
+*	FDCA-		Update timers?  (Without it, cannons don't shoot)  Or enemy-specific code?
 *	FECA-		All bases destroyed (mission accomplished)
 
 
@@ -101,10 +118,12 @@ Each game object occupies 20 bytes of memory.  There are up to 6 16x16 objects i
 *	IX	object type (0 - killed?)
 *	IX+1	old y coordinate (vertical coordinate in pixels from the top of the screen)
 *	IX+2	old x coordinate (vertical coordinate in pixels from the left of the screen)
-*	IX+3	old sprite number (in the catalog of all 16x16 sprites) / animation frame
+*	IX+3	sprite number (in the catalog of all 16x16 sprites) / animation frame
 *	IX+4	new y coordinate
 *	IX+5	new x coordinate
 *	IX+6	new sprite number / animation frame
+*	IX+0D	desired vertical acceleration?
+*	IX+0E	desired horizontal acceleration?
 
 Render order:
 1. Maze and player
