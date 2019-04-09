@@ -49,13 +49,14 @@ ZX Spectrum memory
 *	E244-E24E	Play the sound "key assigned".
 *	E358-E3C6	Guess: Update functions for Objects.
 *	E35B-E35D	Go to E4D0 (generate a random byte in A).
-*	E364-E366	Go to E4FC.
->>>	E370-		???
->>>	E379-		(?) Update enemy's vertical position
->>>	E37C-E37E	Go to E696 (update enemy's horizontal position).
+*	E364-E366	Go to E4FC. (Update enemies animation frames.)
+*	E370-E372	Go to E5ED. (Every 4th frame, update object's horizontal position based on horizontal acceleration.)
+	E379-E37B	Go to E60A. (Update enemy's vertical position based on vertical acceleration.)
+*	E37C-E37E	Go to E696. (update enemy's horizontal position.)
 >>>	E37F-		(?) Update enemy's vertical position
 *	E38B-E38D	Go to E7CC
 *	E397-E399	Go to E859
+*	E3A6-		Render explosion particles.
 *	E3AC-		Handle a temporary object (e.g. player bullet)?
 *	E3AF-		???
 *	E3B2-E3B4	Go to ECBO (draw a bar of remaining quantity A, HL - destination screen memory address).
@@ -67,13 +68,18 @@ ZX Spectrum memory
 *	E3CE		Amount of ammo (0-255)
 *	E3CF		Fuel remaining
 *	E3D1		Number of enemies remaining in the room?
-*	E3D7		Y-coordinate of the player, in pixels, starting from the first line after the HUD
-*	E3D8		X-coordinate of the player, in pixels, starting from left
+*	E3D7		Y-coordinate of the player, in pixels, starting from the top of the screen
+*	E3D8		X-coordinate of the player, in pixels, starting from the left edge of the screen
 *	E497		current room (1 byte)
 *	E4D0-E4DE	Generate a random byte in A?
 *	E4FC-		Update enemies animation frames.
->>>	E696-E70B	Update enemy's horizontal position.
-*	E7BA-		Put enemies at the right locations.
+*	E5AE-E5BE	???
+*	E5CA-E5EC	Update horizontal/vertical speed (in A) based on horizontal/vertical velocity (in E) but keep |A| within 60.
+*	E5ED-E5FF	Every 4th frame, update object's horizontal position based on horizontal acceleration.
+*	E600-E609	Every 4th frame, do what's below (update vertical position, adding gravity).
+*	E60A-E61B	Update vertical position, adding gravity.
+>>>	E696-E70B	Update enemy's horizontal position. HOW??????
+*	E7BA-E7BD	Read enemy's old y and x coordinates to BC
 *	E7C8-E7F4	Update the coordinates (?) and draw a sprite
 *	E7CC-		
 *	E859-E899	Update music and read keyboard, also process player's bombs
@@ -82,7 +88,7 @@ ZX Spectrum memory
 *	EC8B-ECAF	Print a number in A (2 digits in BCD format).
 *	ECBO-ECF4	Draw a bar of remaining quantity A, HL - destination screen memory address
 *	ECF5-ED11	Probably some delays - everything is so quick if disabled (wrong: Render all objects (on screen))
-*	EE4B		Go to FC76
+*	EE4B		Go to FC76 (Enemy-player collisions, update HUD color squares)
 *	EE51		Go to FB91 (Draw stats and objects, save current room enemies (?), go the glitch at room (3, 8)?)
 *	EE58-EECF	6 game objects of the current room (6 x 20 bytes)
 *	EED0		Shield remaining
@@ -93,20 +99,23 @@ ZX Spectrum memory
 *	F04D-F0AC	Sync room and its enemies - prepare current room (copy objects from the map (C400) and draw HUD)
 *	F0B8-F0C4	Given object type (IX), multiply it by 8 and add EED1 to return a pointer to some 8-byte structure in HL (which we later save in E3C9)
 *	F0C5-F0CE	Get update function address for the given object type and call it.  Does not include projectiles.
-*	F0CF-F0FC	Render current objects and update objects?
+*	F0CF-F0FC	Multiple purpose: render current objects and update objects?
 *	F0FF-F14B(?)Virtual table of update (?) functions for each object type
 >>>	F163-		The join point (?) for object update functions.
 *	F22D-F239	Generate a number in A, 0 <= A <= 3F (63) or (128 <= A <= 128 + 63)
 *	F241-F247	Generate a number in A, 0 <= A <= 3F (63) or (128 <= A <= 128 + 63), and put it in (IX+11)
 
-*	F25C-F26B	Set desired vertical acceleration(?) of the Big Z, depending on the relative Y-coordinate of the player.
-*	F26C-F27D	Set desired horizontal acceleration(?) of the Big Z, depending on the relative X-coordinate of the player.
->>>	F53D-F552	Update the Big Z (object 14=0E)
+*	F25C-F26B	Set desired vertical acceleration(?), depending on the relative Y-coordinate of the player.
+*	F26C-F27D	Set desired horizontal acceleration(?), depending on the relative X-coordinate of the player.
+*	F29F-		Update the flying pyramids (object 18 = 12h)
+>>>	F53D-F552	Update the Big Z (object 14 = 0E)
+*	F553-F562	Update the animation frame for the flying pyramid (or maybe any four-frame object with alternating jet?)
 *	F563-F571	Set the correct image of the Big Z - looking left or right, depending on where the player is.
 *	F873-F875	Score (in BCD format)
 *	F876		Number of bases left (in BCD for, starting from 47)
 *	F889		Current room number again (like in E497)
 *	F9B9-F9BC	"Notes" to play when the room is empty.
+*	F9BD		???
 
 ***	F9FB-FA2C	Main game (session) loop
 
@@ -134,11 +143,17 @@ Each game object occupies 20 bytes of memory.  There are up to 6 16x16 objects i
 *	IX+4	new y coordinate
 *	IX+5	new x coordinate
 *	IX+6	new sprite number (in the catalog of all 16x16 sprites) / animation frame
-*	IX+0D	desired vertical acceleration?
-*	IX+0E	desired horizontal acceleration?
+*	IX+9	vertical speed
+*	IX+0B	horizontal speed
+*	IX+0C	?
+*	IX+0D	desired vertical acceleration
+*	IX+0E	desired horizontal acceleration
 *	IX+11	A fluctuation of velocity/acceleration? e.g. a number A, 0 <= A <= 3F (63) or (128 <= A <= 128 + 63)
 
 Render order:
 1. Maze and player
 2. HUD
 3. Enemies and objects
+
+Enemies:
+12:	Flying pyramid. Frames 38-41 (move left with/without jet, move right with/without jet).
