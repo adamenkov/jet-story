@@ -73,17 +73,18 @@ ZX Spectrum memory
 *	E497		current room (1 byte)
 *	E4D0-E4DE	Generate a random byte in A?
 *	E4FC-		Update enemies animation frames.
-*	E557-		Collision with screen edge (in Carry)?
+*	E557-E59F	OR paper attributes at the object location (all 8x8 blocks).
 *	E5AE-E5BE	Add (IX+0C) ??? to A (horizontal speed), store A mod 16 back to (IX+0C). WHY????
 *	E5CA-E5EC	Update horizontal/vertical speed (in A) based on horizontal/vertical velocity (in E) but keep |A| within 60.
 *	E5ED-E5FF	Every 4th frame, update object's horizontal position based on horizontal acceleration.
 *	E600-E609	Every 4th frame, do what's below (update vertical position, adding gravity).
 *	E60A-E61B	Update (player's) vertical position, adding gravity.
 *	E61C-		Update enemy's vertical position.
->>>	E696-E70B	Update enemy's horizontal position. HOW??????
+*	E696-E70B	Update collisions?
 *	E730-E73B	Carry = (enemy touched screen top, bottom, or right).
 *	E73C-E75D	Put in HL the address of top left attribute square, based on x (in C) and y (in B), in IX y and x mod 8 (i.e. inside the 8x8 block), make DE = 20.
-*	E762-		
+*	E762-E781	OR paper attributes at the object location (4 8x8 blocks).
+*	E79C-E7AD	OR attributes (2 or 3 bytes, depending on whether x is divisible by 8).
 *	E7BA-E7BD	Read enemy's old y to B, old x coordinate to C.
 *	E7C8-E7F4	Update the coordinates (?) and draw a sprite
 *	E7CC-		
