@@ -26,15 +26,19 @@ ZX Spectrum memory
 
 *	C400-D3FF	Session-dependent (current) map (16 x 8 x (y, x, 0, type)) of all game objects
 
-*	D400-DFB7	Labyrinth (encoded;  in byte b7b6b5b4b3b2b1b0, (b4b3b2b1b0 - 1) or 0 is the number of labyrinth block, b7b6b5 is the number it is repeated)
-*	DEAB		Go to DF74
+*	D400-DEA7	Labyrinth (encoded;  in byte b7b6b5b4b3b2b1b0, (b4b3b2b1b0 - 1) or 0 is the number of labyrinth block, b7b6b5 is the number it is repeated)
+*	DEA8-DEAA	Go to DF1B (Render all blocks of current room: extract (decompress) 28h blocks of current room into DEF3-DF1A, rendering.)
+*	DEAB		Go to DF74 (Return (in HL) target address of the next pixel line of HUD).
 *	DEB4-		
 *	DECC-DECE	Go to E18B (draw a string with special characters)
 *	DEF0-DEF1	Destination address in screen memory to print a character
 *	DEF2		Attribute (What follows symbol 1 in a given string to print (in DEF2)).
-*	DEF3		Height in pixels?
+*	DEF3-DF1A	Blocks of current room (28h pieces).
+*	DF1B-DF48	Render all blocks of current room: extract (decompress) 28h blocks of current room into DEF3-DF1A, rendering.
 *	DF49		Render a room
-*	DF74		Return (in HL) target address of the next pixel line of HUD
+*	DF74-DF82	Return (in HL) target address of the (after HL) pixel byte below the current one.
+*	DF83-DFEB	Copy block (128 bytes of pixels + 16 bytes of attributes) from block definition (block number in A) to the video memory (at the right spot, pointed to by HL).
+*	DFEC-DFF5	For each of the five maze block rows, get the screen address of the first block top left corner.
 
 *	E011		Get the address of sprite number A in DE, address of screen memory where to draw it in HL, pixel offset (a2a1a0) in A, 1010_a2_a1_a0_1 in B (see A100)
 >>>	E027-E0DC	Actually update the coordinates and draw a sprite???
@@ -70,11 +74,16 @@ ZX Spectrum memory
 *	E3D1		Number of enemies remaining in the room?
 *	E3D7		Y-coordinate of the player, in pixels, starting from the top of the screen
 *	E3D8		X-coordinate of the player, in pixels, starting from the left edge of the screen
+*	E3DE		New room?
 *	E497		current room (1 byte)
 *	E4D0-E4DE	Generate a random byte in A?
 *	E4FC-		Update enemies animation frames.
+*	E51C-E537	Change current room, if necessary.
+*	E538-E548	Render blocks of current room, clearing screen first, if necessary.
+*	E549-E556	Clear screen, including the attributes (zero out using LDIR).
 *	E557-E59F	OR paper attributes at the object location (all 8x8 blocks).
 *	E5AE-E5BE	Add (IX+0C) ??? to A (horizontal speed), store A mod 16 back to (IX+0C). WHY????
+*	E5BF-
 *	E5CA-E5EC	Update horizontal/vertical speed (in A) based on horizontal/vertical velocity (in E) but keep |A| within 60.
 *	E5ED-E5FF	Every 4th frame, update object's horizontal position based on horizontal acceleration.
 *	E600-E609	Every 4th frame, do what's below (update vertical position, adding gravity).
@@ -143,7 +152,7 @@ ZX Spectrum memory
 
 Game object (IX)
 Each game object occupies 20 bytes of memory.  There are up to 6 16x16 objects in each room.
-*	IX	object type (0 - killed?, 64 - the player)
+*	IX	object type (0 - killed?, 64 - the player?)
 *	IX+1	old y coordinate (vertical coordinate in pixels from the top of the screen)
 *	IX+2	old x coordinate (vertical coordinate in pixels from the left of the screen)
 *	IX+3	sprite number (in the catalog of all 16x16 sprites) / animation frame
@@ -151,6 +160,7 @@ Each game object occupies 20 bytes of memory.  There are up to 6 16x16 objects i
 *	IX+5	new x coordinate
 *	IX+6	new sprite number (in the catalog of all 16x16 sprites) / animation frame
 *	IX+9	vertical speed
+*	IX+0A	
 *	IX+0B	horizontal speed
 *	IX+0C	?
 *	IX+0D	desired vertical acceleration
