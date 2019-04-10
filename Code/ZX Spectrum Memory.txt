@@ -52,8 +52,8 @@ ZX Spectrum memory
 *	E364-E366	Go to E4FC. (Update enemies animation frames.)
 *	E370-E372	Go to E5ED. (Every 4th frame, update object's horizontal position based on horizontal acceleration.)
 	E379-E37B	Go to E60A. (Update enemy's vertical position based on vertical acceleration.)
-*	E37C-E37E	Go to E696. (update enemy's horizontal position.)
->>>	E37F-		(?) Update enemy's vertical position
+*	E37C-E37E	Go to E696. (Update enemy's horizontal position.)
+>>>	E37F-E381	Go to E61C.	(Update enemy's vertical position.)
 *	E38B-E38D	Go to E7CC
 *	E397-E399	Go to E859
 *	E3A6-		Render explosion particles.
@@ -73,13 +73,18 @@ ZX Spectrum memory
 *	E497		current room (1 byte)
 *	E4D0-E4DE	Generate a random byte in A?
 *	E4FC-		Update enemies animation frames.
-*	E5AE-E5BE	???
+*	E557-		Collision with screen edge (in Carry)?
+*	E5AE-E5BE	Add (IX+0C) ??? to A (horizontal speed), store A mod 16 back to (IX+0C). WHY????
 *	E5CA-E5EC	Update horizontal/vertical speed (in A) based on horizontal/vertical velocity (in E) but keep |A| within 60.
 *	E5ED-E5FF	Every 4th frame, update object's horizontal position based on horizontal acceleration.
 *	E600-E609	Every 4th frame, do what's below (update vertical position, adding gravity).
-*	E60A-E61B	Update vertical position, adding gravity.
+*	E60A-E61B	Update (player's) vertical position, adding gravity.
+*	E61C-		Update enemy's vertical position.
 >>>	E696-E70B	Update enemy's horizontal position. HOW??????
-*	E7BA-E7BD	Read enemy's old y and x coordinates to BC
+*	E730-E73B	Carry = (enemy touched screen top, bottom, or right).
+*	E73C-E75D	Put in HL the address of top left attribute square, based on x (in C) and y (in B), in IX y and x mod 8 (i.e. inside the 8x8 block), make DE = 20.
+*	E762-		
+*	E7BA-E7BD	Read enemy's old y to B, old x coordinate to C.
 *	E7C8-E7F4	Update the coordinates (?) and draw a sprite
 *	E7CC-		
 *	E859-E899	Update music and read keyboard, also process player's bombs
@@ -111,6 +116,7 @@ ZX Spectrum memory
 >>>	F53D-F552	Update the Big Z (object 14 = 0E)
 *	F553-F562	Update the animation frame for the flying pyramid (or maybe any four-frame object with alternating jet?)
 *	F563-F571	Set the correct image of the Big Z - looking left or right, depending on where the player is.
+*	F719-		Collision of player bullets with enemies.
 *	F873-F875	Score (in BCD format)
 *	F876		Number of bases left (in BCD for, starting from 47)
 *	F889		Current room number again (like in E497)
@@ -136,7 +142,7 @@ ZX Spectrum memory
 
 Game object (IX)
 Each game object occupies 20 bytes of memory.  There are up to 6 16x16 objects in each room.
-*	IX	object type (0 - killed?)
+*	IX	object type (0 - killed?, 64 - the player)
 *	IX+1	old y coordinate (vertical coordinate in pixels from the top of the screen)
 *	IX+2	old x coordinate (vertical coordinate in pixels from the left of the screen)
 *	IX+3	sprite number (in the catalog of all 16x16 sprites) / animation frame
