@@ -2,6 +2,10 @@ This is becoming unmanageable.  I want to try z80dismblr-win.exe instead.  So I 
 
 .\z80dismblr-win.exe --bin 0x5B00 .\Jet-Story_5B00-FFFF.bin --codelabel 0x6EB4 --out Jet-Story.txt
 
+Screen memory layout:
+
+http://www.breakintoprogram.co.uk/computers/zx-spectrum/screen-memory-layout
+
 ZX Spectrum memory
 
 *	0000-3FFF	ROM
