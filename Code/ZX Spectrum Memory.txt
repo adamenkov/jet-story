@@ -1,6 +1,6 @@
 This is becoming unmanageable.  I want to try z80dismblr-win.exe instead.  So I saved memory at 5B00-FFFF and process it with
 
-.\z80dismblr-win.exe --bin 0 .\Jet-Story_5B00-FFFF.bin --codelabel 0x6EB4 --lblsin Jet-Story_labels.txt --out Jet-Story.txt  --callgraphout Jet-Story.cg
+.\z80dismblr-win.exe --bin 0x5B00 .\Jet-Story_5B00-FFFF.bin --codelabel 0x6EB4 --out Jet-Story.txt
 
 ZX Spectrum memory
 
