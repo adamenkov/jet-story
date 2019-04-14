@@ -79,9 +79,9 @@ export function activate(context: vscode.ExtensionContext) {
 		
 			if (foundPosition !== -1) {
 				let positionInDocument: vscode.Position = document.positionAt(foundPosition);
-				let hoverText : string = document.getText(new vscode.Range(positionInDocument.translate(-10), positionInDocument.translate(10)));
+				let hoverText : string = document.getText(new vscode.Range(positionInDocument.translate(-6), positionInDocument.translate(10)));
 				if (hoverText !== '') {
-					return { contents: [hoverText] };
+					return { contents: [ '```\n' + hoverText + '```' ] };
 				}
 			}
 
