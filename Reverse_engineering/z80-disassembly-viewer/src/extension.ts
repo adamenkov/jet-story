@@ -58,19 +58,36 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(vscode.commands.registerCommand('extension.goTo', goTo));
 
-	// vscode.languages.registerHoverProvider({ pattern: '**/*.asm' }, {
-	// 	provideHover(document, position, token) {
-	// 		let word: string = document.getText(document.getWordRangeAtPosition(position));
-	// 		if (word !== '') {
-	// 			let hoverText : string = getHoverText(document, position, word);
-	// 			if (hoverText !== '') {
-	// 				return { contents: [hoverText] };
-	// 			}
-	// 		}
+	vscode.languages.registerHoverProvider({ pattern: '**/*.asm' }, {
+		provideHover(document, position, token) {
+			let word: string = document.getText(document.getWordRangeAtPosition(position));
+			if (word === '') {
+				return;
+			}
+		
+			let text: string = document.getText(); 
+		
+			let foundPosition: number = -1;
+			if ((word.length === 5) && word.endsWith('h')) {
+				word = word.substr(0, word.length - 1);
+				foundPosition = 1 + text.indexOf('\n' + word);
+			}
+			else {
+				var regex = new RegExp('[0-9a-fA-F]{4} \.?' + word);
+				foundPosition = text.search(regex);
+			}
+		
+			if (foundPosition !== -1) {
+				let positionInDocument: vscode.Position = document.positionAt(foundPosition);
+				let hoverText : string = document.getText(new vscode.Range(positionInDocument.translate(-10), positionInDocument.translate(10)));
+				if (hoverText !== '') {
+					return { contents: [hoverText] };
+				}
+			}
 
-	// 		return undefined;
-	// 	}
-	// });
+			return undefined;
+		}
+	});
 }
 
 // this method is called when your extension is deactivated
