@@ -73,6 +73,10 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		
 		let document: vscode.TextDocument = textEditor.document;
+		if (!document.fileName.match(/\.asm$/)) {
+			return;
+		}
+
 		let definitionPosition: vscode.Position | undefined = findDefinitionPosition(document, textEditor.selection.active);
 		if (definitionPosition !== undefined) {
 			let previewTextDocument: vscode.TextDocument = await vscode.workspace.openTextDocument({ content: document.getText() });
