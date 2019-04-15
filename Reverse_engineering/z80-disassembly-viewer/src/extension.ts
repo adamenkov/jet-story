@@ -3,6 +3,35 @@
 import * as vscode from 'vscode';
 
 
+function findDefinitionPosition(document: vscode.TextDocument, position: vscode.Position): vscode.Position | undefined {
+	let word: string = document.getText(document.getWordRangeAtPosition(position));
+	if (word === '') {
+		return undefined;
+	}
+
+	let text: string = document.getText(); 
+
+	let definitionPosition: number = -1;
+	if ((word.length === 5) && word.endsWith('h')) {
+		word = word.substr(0, word.length - 1);
+		definitionPosition = 1 + text.indexOf('\n' + word);
+		if (definitionPosition === 0) {
+			definitionPosition = -1;
+		}
+	}
+	else {
+		var regex = new RegExp('[0-9a-fA-F]{4} \.?' + word);
+		definitionPosition = text.search(regex);
+	}
+
+	if (definitionPosition !== -1) {
+		return document.positionAt(definitionPosition);
+	}
+
+	return undefined;
+}
+
+
 async function goTo() {
 	let textEditor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
 	if (!textEditor) {
@@ -10,28 +39,9 @@ async function goTo() {
 	}
 	
 	let document: vscode.TextDocument = textEditor.document;
-
-	let position: vscode.Position = textEditor.selection.active;
-	let word: string = document.getText(document.getWordRangeAtPosition(position));
-	if (word === '') {
-		return;
-	}
-
-	let text: string = document.getText(); 
-
-	let foundPosition: number = -1;
-	if ((word.length === 5) && word.endsWith('h')) {
-		word = word.substr(0, word.length - 1);
-		foundPosition = 1 + text.indexOf('\n' + word);
-	}
-	else {
-		var regex = new RegExp('[0-9a-fA-F]{4} \.?' + word);
-		foundPosition = text.search(regex);
-	}
-
-	if (foundPosition !== -1) {
-		let positionInDocument: vscode.Position = document.positionAt(foundPosition);
-		textEditor.selection = new vscode.Selection(positionInDocument, positionInDocument);
+	let definitionPosition: vscode.Position | undefined = findDefinitionPosition(document, textEditor.selection.active);
+	if (definitionPosition !== undefined) {
+		textEditor.selection = new vscode.Selection(definitionPosition, definitionPosition);
 		textEditor.revealRange(textEditor.selection, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
 	}
 }
@@ -40,47 +50,13 @@ async function goTo() {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-		console.log('Congratulations, your extension "z80-disassembly-viewer" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World!');
-	});
-
-	context.subscriptions.push(disposable);
-
 	context.subscriptions.push(vscode.commands.registerCommand('extension.goTo', goTo));
 
 	vscode.languages.registerHoverProvider({ pattern: '**/*.asm' }, {
 		provideHover(document, position, token) {
-			let word: string = document.getText(document.getWordRangeAtPosition(position));
-			if (word === '') {
-				return;
-			}
-		
-			let text: string = document.getText(); 
-		
-			let foundPosition: number = -1;
-			if ((word.length === 5) && word.endsWith('h')) {
-				word = word.substr(0, word.length - 1);
-				foundPosition = 1 + text.indexOf('\n' + word);
-			}
-			else {
-				var regex = new RegExp('[0-9a-fA-F]{4} \.?' + word);
-				foundPosition = text.search(regex);
-			}
-		
-			if (foundPosition !== -1) {
-				let positionInDocument: vscode.Position = document.positionAt(foundPosition);
-				let hoverText : string = document.getText(new vscode.Range(positionInDocument.translate(-6), positionInDocument.translate(10)));
+			let definitionPosition: vscode.Position | undefined = findDefinitionPosition(document, position);
+			if (definitionPosition !== undefined) {
+				let hoverText: string = document.getText(new vscode.Range(definitionPosition.translate(-6), definitionPosition.translate(10)));
 				if (hoverText !== '') {
 					return { contents: [ '```\n' + hoverText + '```' ] };
 				}
@@ -97,33 +73,14 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		
 		let document: vscode.TextDocument = textEditor.document;
-	
-		let position: vscode.Position = textEditor.selection.active;
-		let word: string = document.getText(document.getWordRangeAtPosition(position));
-		if (word === '') {
-			return;
-		}
-	
-		let text: string = document.getText(); 
-	
-		let foundPosition: number = -1;
-		if ((word.length === 5) && word.endsWith('h')) {
-			word = word.substr(0, word.length - 1);
-			foundPosition = 1 + text.indexOf('\n' + word);
-		}
-		else {
-			var regex = new RegExp('[0-9a-fA-F]{4} \.?' + word);
-			foundPosition = text.search(regex);
-		}
-	
-		if (foundPosition !== -1) {
-			let positionInDocument: vscode.Position = document.positionAt(foundPosition);
+		let definitionPosition: vscode.Position | undefined = findDefinitionPosition(document, textEditor.selection.active);
+		if (definitionPosition !== undefined) {
 			let previewTextDocument: vscode.TextDocument = await vscode.workspace.openTextDocument({ content: document.getText() });
 			let previewTextEditor: vscode.TextEditor = await vscode.window.showTextDocument(previewTextDocument, { 
 				viewColumn: vscode.ViewColumn.Beside,
 				preserveFocus: true,
 				preview: true,
-				selection: new vscode.Selection(positionInDocument, positionInDocument) });
+				selection: new vscode.Selection(definitionPosition, definitionPosition) });
 			previewTextEditor.revealRange(previewTextEditor.selection, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
 		}
 	});
