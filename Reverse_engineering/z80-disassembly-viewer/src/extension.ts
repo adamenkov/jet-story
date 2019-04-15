@@ -3,13 +3,14 @@
 import * as vscode from 'vscode';
 
 
-function goTo() {
+async function goTo() {
 	let textEditor: vscode.TextEditor | undefined = vscode.window.activeTextEditor;
 	if (!textEditor) {
 		return;
 	}
 	
 	let document: vscode.TextDocument = textEditor.document;
+
 	let position: vscode.Position = textEditor.selection.active;
 	let word: string = document.getText(document.getWordRangeAtPosition(position));
 	if (word === '') {
@@ -86,6 +87,44 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 
 			return undefined;
+		}
+	});
+
+	vscode.window.onDidChangeTextEditorSelection(async (textEditorSelectionChangeEvent: vscode.TextEditorSelectionChangeEvent) => {
+		let textEditor: vscode.TextEditor = textEditorSelectionChangeEvent.textEditor;
+		if (!textEditor) {
+			return;
+		}
+		
+		let document: vscode.TextDocument = textEditor.document;
+	
+		let position: vscode.Position = textEditor.selection.active;
+		let word: string = document.getText(document.getWordRangeAtPosition(position));
+		if (word === '') {
+			return;
+		}
+	
+		let text: string = document.getText(); 
+	
+		let foundPosition: number = -1;
+		if ((word.length === 5) && word.endsWith('h')) {
+			word = word.substr(0, word.length - 1);
+			foundPosition = 1 + text.indexOf('\n' + word);
+		}
+		else {
+			var regex = new RegExp('[0-9a-fA-F]{4} \.?' + word);
+			foundPosition = text.search(regex);
+		}
+	
+		if (foundPosition !== -1) {
+			let positionInDocument: vscode.Position = document.positionAt(foundPosition);
+			let previewTextDocument: vscode.TextDocument = await vscode.workspace.openTextDocument({ content: document.getText() });
+			let previewTextEditor: vscode.TextEditor = await vscode.window.showTextDocument(previewTextDocument, { 
+				viewColumn: vscode.ViewColumn.Beside,
+				preserveFocus: true,
+				preview: true,
+				selection: new vscode.Selection(positionInDocument, positionInDocument) });
+			previewTextEditor.revealRange(previewTextEditor.selection, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
 		}
 	});
 }
