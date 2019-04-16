@@ -67,7 +67,7 @@ export function activate(context: vscode.ExtensionContext) {
 		provideHover(document, position, token) {
 			let definitionPosition: vscode.Position | undefined = findDefinitionPosition(document, position);
 			if (definitionPosition !== undefined) {
-				let hoverText: string = document.getText(new vscode.Range(definitionPosition.translate(-6), definitionPosition.translate(10)));
+				let hoverText: string = document.getText(new vscode.Range(definitionPosition, definitionPosition.translate(16)));
 				if (hoverText !== '') {
 					return { contents: [ '```\n' + hoverText + '```' ] };
 				}
