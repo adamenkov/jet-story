@@ -37604,7 +37604,7 @@ B3E0 35           DEFB 35h    	; 53, '5'
 
 ; Subroutine: Size=1066, CC=169.
 ; Called by: SUB007[0240h].
-; Calls: RST18, RST28, RST30, RST38, SUB274, SUB275, SUB286, SUB288, SUB289, SUB295, SUB296, SUB309, SUB328, SUB454, SUB480, SUB495, SUB526, SUB528.
+; Calls: RST18, RST28, RST30, RST38, SUB274, SUB275, SUB286, SUB288, SUB289, SUB295, SUB296, SUB309, Render_labyrinth_block_A_at_addr_DE, SUB454, SUB480, SUB495, SUB526, SUB528.
 B3E1 SUB294:
 B3E1 58           LD   E,B    
 B3E2 35           DEC  (HL)   
@@ -48263,7 +48263,7 @@ DF5D D5           PUSH DE
 DF5E C5           PUSH BC     
 DF5F E5           PUSH HL     
 DF60 DD E5        PUSH IX     
-DF62 CD 83 DF     CALL SUB328 	; DF83h
+DF62 CD 83 DF     CALL Render_labyrinth_block_A_at_addr_DE 	; DF83h
 DF65 DD E1        POP  IX     
 DF67 E1           POP  HL     
 DF68 C1           POP  BC     
@@ -48278,8 +48278,9 @@ DF71 20 DF        JR   NZ,.sub294_loop1 	; DF52h
 DF73 C9           RET         
 
 
+; Returns (in HL) the address of the pixel byte below the current one (in HL).
 ; Subroutine: Size=15, CC=3.
-; Called by: SUB314[DEABh], SUB328[DFB6h].
+; Called by: SUB314[DEABh], Render_labyrinth_block_A_at_addr_DE[DFB6h].
 ; Calls: -
 DF74 Pixel_address_below_current_in_HL:
 DF74 24           INC  H        ; This is enough unless we are in a pixel line == 7 (mod 8),
@@ -48296,38 +48297,40 @@ DF81 67           LD   H,A
 DF82 C9           RET         
 
 
+; Copy block (128 bytes of pixels + 16 bytes of attributes) from block definition (block number in A)
+; to the video memory (pointed to by DE).
 ; Subroutine: Size=105, CC=2.
-; Called by: SUB294[DF62h].
+; Called by: SUB326[DF1B].
 ; Calls: Pixel_address_below_current_in_HL.
-DF83 SUB328:
-DF83 D5           PUSH DE     
-DF84 A7           AND  A      
+DF83 Render_labyrinth_block_A_at_addr_DE:
+DF83 D5           PUSH DE       ; save DE (destination video memory address)
+DF84 A7           AND  A        ; if A == 0, let A = 20h
 DF85 C2 8A DF     JP   NZ,.sub328_l 	; DF8Ah
 DF88 3E 20        LD   A,20h  	; 32, ' '
 DF8A .sub328_l:
-DF8A 3D           DEC  A      
-DF8B 67           LD   H,A    
+DF8A 3D           DEC  A        ; A > 0, so --A
+DF8B 67           LD   H,A      ; HL = 128 * A
 DF8C 2E 00        LD   L,00h  	; 0
 DF8E CB 3C        SRL  H      
 DF90 CB 1D        RR   L      
-DF92 11 00 8F     LD   DE,8F00h 	; 36608, -28928
-DF95 19           ADD  HL,DE  
+DF92 11 00 8F     LD   DE,8F00h ; at 8F00-9EFF there are 32 (actually, 29) 32x32 labyrinth block' pixels
+DF95 19           ADD  HL,DE    ; so HL = 8F00h + 128 * A
 DF96 E5           PUSH HL     
-DF97 DD E1        POP  IX     
-DF99 E1           POP  HL     
-DF9A E5           PUSH HL     
-DF9B F5           PUSH AF     
-DF9C 06 20        LD   B,20h  	; 32, ' '
+DF97 DD E1        POP  IX       ; IX = 8F00h + 128 * A
+DF99 E1           POP  HL       ; HL = initial DE (destination video memory address)
+DF9A E5           PUSH HL       ; save the initial DE (destination video memory address)
+DF9B F5           PUSH AF       ; save the (decremented) labyrith block's number
+DF9C 06 20        LD   B,20h  	; block height == 32
 DF9E .sub328_loop1:
-DF9E DD 7E 00     LD   A,(IX+0) 
+DF9E DD 7E 00     LD   A,(IX+0) ; read the leftmost (of four) byte of the block line
 
 
 ; Data accessed by:
 ; E4EFh(in SUB379), E4E0h(in SUB378), E53Bh(in SUB384)
 DFA1 SELF_MOD46:
-DFA1 77           LD   (HL),A 
-DFA2 2C           INC  L      
-DFA3 DD 7E 20     LD   A,(IX+32) 
+DFA1 77           LD   (HL),A   ; write the pixels to video memory
+DFA2 2C           INC  L        ; point HL to the right neighbor
+DFA3 DD 7E 20     LD   A,(IX+32)    ; apparently the labyrinth blocks are stored column after column (i.e. not row after row)
 
 
 ; Data accessed by:
@@ -48350,14 +48353,14 @@ DFAD DD 7E 60     LD   A,(IX+96)
 ; E4F5h(in SUB379), E4E6h(in SUB378)
 DFB0 SELF_MOD49:
 DFB0 77           LD   (HL),A 
-DFB1 2D           DEC  L      
+DFB1 2D           DEC  L      ; rewind HL to the left-most byte
 DFB2 2D           DEC  L      
 DFB3 2D           DEC  L      
-DFB4 DD 23        INC  IX     
+DFB4 DD 23        INC  IX     ; proceed source to the next byte of the left-most column
 DFB6 CD 74 DF     CALL Pixel_address_below_current_in_HL 	; DF74h
 DFB9 10 E3        DJNZ .sub328_loop1 	; DF9Eh
-DFBB F1           POP  AF     
-DFBC 6F           LD   L,A    
+DFBB F1           POP  AF     ; restore the (decremented) labyrith block's number (now it's time to copy the attributes)
+DFBC 6F           LD   L,A    ; DE = 9F00 + 16 * A, because 9F00-A0FF stores attributes for the labyrith blocks
 DFBD 26 00        LD   H,00h  	; 0
 DFBF 29           ADD  HL,HL  
 DFC0 29           ADD  HL,HL  
@@ -48366,27 +48369,27 @@ DFC2 29           ADD  HL,HL
 DFC3 11 00 9F     LD   DE,9F00h 	; 40704, -24832
 DFC6 19           ADD  HL,DE  
 DFC7 EB           EX   DE,HL  
-DFC8 E1           POP  HL     
-DFC9 7C           LD   A,H    
+DFC8 E1           POP  HL     ; HL = (destination video memory address)
+DFC9 7C           LD   A,H    ; H = (H / 8) & 11b, since one attribute line serve 8 pixel lines
 DFCA 0F           RRCA        
 DFCB 0F           RRCA        
 DFCC 0F           RRCA        
 DFCD E6 03        AND  03h    	; 3
-DFCF F6 58        OR   58h    	; 88, 'X'
-DFD1 67           LD   H,A    
-DFD2 EB           EX   DE,HL  
-DFD3 06 04        LD   B,04h  	; 4
+DFCF F6 58        OR   58h    	; Attribute block in video memory is 5800-5AFF
+DFD1 67           LD   H,A    ; so now HL points to the attributes of the labyrinth block in video memory
+DFD2 EB           EX   DE,HL  ; HL - source attributes, DE - destination attributes in video memory
+DFD3 06 04        LD   B,04h  	; 4 rows
 DFD5 .sub328_loop2:
-DFD5 C5           PUSH BC     
+DFD5 C5           PUSH BC     ; copy one row of attributes, i.e. 4 bytes
 DFD6 ED A0        LDI         
 DFD8 ED A0        LDI         
 DFDA ED A0        LDI         
 DFDC ED A0        LDI         
-DFDE 1D           DEC  E      
+DFDE 1D           DEC  E      ; rewind the destination, so that we add 20h to it (so that it points to the next row)
 DFDF 1D           DEC  E      
 DFE0 1D           DEC  E      
 DFE1 1D           DEC  E      
-DFE2 EB           EX   DE,HL  
+DFE2 EB           EX   DE,HL  ; DE += 20h
 DFE3 01 20 00     LD   BC,0020h 	; 32
 DFE6 09           ADD  HL,BC  
 DFE7 EB           EX   DE,HL  
@@ -48395,16 +48398,12 @@ DFE9 10 EA        DJNZ .sub328_loop2 	; DFD5h
 DFEB C9           RET         
 
 
-DFEC 80           DEFB 80h    	; 128, -128
-DFED 40           DEFB 40h    	; 64, '@'
-DFEE 00           DEFB 00h    	; 0
-DFEF 48           DEFB 48h    	; 72, 'H'
-DFF0 80           DEFB 80h    	; 128, -128
-DFF1 48           DEFB 48h    	; 72, 'H'
-DFF2 00           DEFB 00h    	; 0
-DFF3 50           DEFB 50h    	; 80, 'P'
-DFF4 80           DEFB 80h    	; 128, -128
-DFF5 50           DEFB 50h    	; 80, 'P'
+; For each of the five maze block rows, get the screen address of the first block top left corner.
+DFEC 80 40        DEFW 4080h
+DFEE 00 48        DEFW 4800h
+DFF0 80 48        DEFW 4880h
+DFF2 00 50        DEFW 5000h
+DFF4 80 50        DEFW 5080h
 
 
 ; Subroutine: Size=27, CC=2.

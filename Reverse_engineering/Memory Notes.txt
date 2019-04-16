@@ -27,8 +27,8 @@ ZX Spectrum memory
 *	71E8-		String line to print a character, to call DECC (E18B) - character 2 sets row (17h) and column (1F), ?, ?, character to print (71ED)
 *	71ED		The (invisible) symbol at the bottom right-hand corner - for the running line.
 *	7213		Initialize game
-*	8F00-9EFF	32 (actually, 29) 32x32 labyrinth elements' pixels
-*	9F00-A0FF	attributes for the above
+OK	8F00-9EFF	32 (actually, 29) 32x32 labyrinth elements' pixels
+OK	9F00-A0FF	attributes for the above
 *	A100-A2FF	8 x 2 tables used to convert sprite byte to a pair of actual screen bytes based on sprite x (mod 8) coordinate
 *	A4FF, A6FF, A8FF, A9FF, AAFF, ACFF, AEFF - bytes correspoding to 1, 2, 3, 4, 5, 6 pixel columns of bar (fuel, ammo, shield)
 *	B100-...	16 x 16 sprites (no attributes)
@@ -45,8 +45,8 @@ ZX Spectrum memory
 *	DEF3-DF1A	Blocks of current room (28h pieces).
 *	DF1B-DF48	Render all blocks of current room: extract (decompress) 28h blocks of current room into DEF3-DF1A, rendering.
 *	DF49		Render a room
-*	DF74-DF82	Return (in HL) target address of the (after HL) pixel byte below the current one.
-*	DF83-DFEB	Copy block (128 bytes of pixels + 16 bytes of attributes) from block definition (block number in A) to the video memory (at the right spot, pointed to by HL).
+OK	DF74-DF82	Return (in HL) target address of the (after HL) pixel byte below the current one.
+OK	DF83-DFEB	Copy block (128 bytes of pixels + 16 bytes of attributes) from block definition (block number in A) to the video memory (at the right spot, pointed to by HL).
 *	DFEC-DFF5	For each of the five maze block rows, get the screen address of the first block top left corner.
 
 *	E011-E026	Put the address of sprite number A in DE, address of screen memory where to draw it (B = y, C = x) in HL, pixel offset (a2a1a0) in B as 1010_a2_a1_a0_1 in B (see A100)

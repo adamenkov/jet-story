@@ -4,7 +4,8 @@ import * as vscode from 'vscode';
 
 
 function findDefinitionPosition(document: vscode.TextDocument, position: vscode.Position): vscode.Position | undefined {
-	let word: string = document.getText(document.getWordRangeAtPosition(position));
+	let initialWordRange: vscode.Range | undefined = document.getWordRangeAtPosition(position);
+	let word: string = document.getText(initialWordRange);
 	if ((word === '') || (word.length < 4)) {
 		return undefined;
 	}
@@ -12,7 +13,13 @@ function findDefinitionPosition(document: vscode.TextDocument, position: vscode.
 	let text: string = document.getText(); 
 
 	let definitionPosition: number = -1;
-	if ((word.length === 5) && word.endsWith('h')) {
+	if (word.length === 4) {
+		definitionPosition = 1 + text.indexOf('\n' + word);
+		if (definitionPosition === 0) {
+			definitionPosition = -1;
+		}
+	}
+	else if ((word.length === 5) && word.endsWith('h')) {
 		word = word.substr(0, word.length - 1);
 		definitionPosition = 1 + text.indexOf('\n' + word);
 		if (definitionPosition === 0) {
@@ -20,12 +27,16 @@ function findDefinitionPosition(document: vscode.TextDocument, position: vscode.
 		}
 	}
 	else {
-		var regex = new RegExp('[0-9a-fA-F]{4} \.?' + word);
+		var regex = new RegExp('^[0-9a-fA-F]{4} \.?' + word, 'm');
 		definitionPosition = text.search(regex);
 	}
 
 	if (definitionPosition !== -1) {
-		return document.positionAt(definitionPosition);
+		let newPosition: vscode.Position = document.positionAt(definitionPosition);
+		let newWordRange: vscode.Range | undefined = document.getWordRangeAtPosition(newPosition);
+		if (newWordRange !== initialWordRange) {
+			return newPosition;
+		}
 	}
 
 	return undefined;
