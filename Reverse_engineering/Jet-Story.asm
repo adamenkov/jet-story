@@ -48088,9 +48088,9 @@ DECC C3 8B E1     JP   SUB343 	; E18Bh
 
 ; Subroutine: Size=3, CC=1.
 ; Called by: SUB286[FF1Ah], SUB286[FF2Eh].
-; Calls: SUB344.
+; Calls: Print_text_at_HL_on_screen.
 DECF SUB318:
-DECF C3 8E E1     JP   SUB344 	; E18Eh
+DECF C3 8E E1     JP   Print_text_at_HL_on_screen 	; E18Eh
 
 
 DED2 C3           DEFB C3h    	; 195,  -61
@@ -48155,15 +48155,17 @@ DEED SUB325:
 DEED C3 BD E2     JP   SUB354 	; E2BDh
 
 
+; Destination address in screen memory to print a character
 ; Data accessed by:
-; E1B2h(in SUB344), E17Ah(in SUB342), E187h(in SUB294)
+; E1B2h(in Print_text_at_HL_on_screen), E17Ah(in Render_character_in_A_to_stored_video_addr_using_current_stored_attribute_Update_current_video_addr), E187h(in SUB294)
 DEF0 DATA168:
 DEF0 70           DEFB 70h    	; 112, 'p'
 DEF1 50           DEFB 50h    	; 80, 'P'
 
 
+; Current text attribute
 ; Data accessed by:
-; E1A4h(in SUB344), E17Dh(in SUB342)
+; E1A4h(in Print_text_at_HL_on_screen), E17Dh(in Render_character_in_A_to_stored_video_addr_using_current_stored_attribute_Update_current_video_addr)
 DEF2 DATA169:
 DEF2 07           DEFB 07h    	; 7
 DEF3 09           DEFB 09h    	; 9
@@ -48468,12 +48470,12 @@ E029 CD 11 E0     CALL Put_addr_of_sprite_A_in_DE_pixel_at_YX_in_BC_to_addr_in_H
 E02C D9           EXX         
 E02D 08           EX   AF,AF' 
 E02E CD 11 E0     CALL Put_addr_of_sprite_A_in_DE_pixel_at_YX_in_BC_to_addr_in_HL_A1h_plus_2xBitNumber_in_B 	; E011h
-E031 3E 10        LD   A,10h  	; 16
+E031 3E 10        LD   A,10h  	; A = 16 pixel rows?
 E033 .sub331_loop:
 E033 F5           PUSH AF     
-E034 1A           LD   A,(DE) 
-E035 4F           LD   C,A    
-E036 1C           INC  E      
+E034 1A           LD   A,(DE)   ; A = sprite byte
+E035 4F           LD   C,A      ; C = sprite byte
+E036 1C           INC  E        ; increment sprite source addr
 E037 0A           LD   A,(BC) 
 E038 AE           XOR  (HL)   
 E039 77           LD   (HL),A 
@@ -48658,16 +48660,17 @@ E0D9 11 20 00     LD   DE,0020h 	; 32
 E0DC C9           RET         
 
 
+; Give address (in DE) of graphics for character in A.
 ; Subroutine: Size=3, CC=1.
-; Called by: SUB339[E153h], SUB337[E0EBh].
+; Called by: Render_character_A_to_video_memory_at_HL_apply_attribute_C_if_nonzero[E153h], SUB337[E0EBh].
 ; Calls: SUB336.
-E0DD SUB335:
+E0DD For_character_in_A_give_its_8x8_graphics_at_DE:
 E0DD 6F           LD   L,A    
 E0DE 26 00        LD   H,00h  	; 0
 
 
 ; Subroutine: Size=9, CC=1.
-; Called by: SUB299[C22Bh], SUB299[C233h], SUB299[C284h], SUB335[E0DEh].
+; Called by: SUB299[C22Bh], SUB299[C233h], SUB299[C284h], For_character_in_A_give_its_8x8_graphics_at_DE[E0DEh].
 ; Calls: -
 E0E0 SUB336:
 E0E0 29           ADD  HL,HL  
@@ -48681,11 +48684,11 @@ E0E8 C9           RET
 
 ; Subroutine: Size=80, CC=8.
 ; Called by: SUB410[E804h], SUB410[E814h].
-; Calls: From_YX_in_BC_put_pixel_byte_addr_in_HL_and_pixel_bit_number_in_A, SUB334, SUB335.
+; Calls: From_YX_in_BC_put_pixel_byte_addr_in_HL_and_pixel_bit_number_in_A, SUB334, For_character_in_A_give_its_8x8_graphics_at_DE.
 E0E9 SUB337:
 E0E9 D5           PUSH DE     
 E0EA C5           PUSH BC     
-E0EB CD DD E0     CALL SUB335 	; E0DDh
+E0EB CD DD E0     CALL For_character_in_A_give_its_8x8_graphics_at_DE 	; E0DDh
 E0EE 78           LD   A,B    
 E0EF CD B1 22     CALL From_YX_in_BC_put_pixel_byte_addr_in_HL_and_pixel_bit_number_in_A 	; 22B1h
 E0F2 87           ADD  A,A    
@@ -48750,22 +48753,23 @@ E135 67           LD   H,A
 E136 C3 0C E1     JP   .sub337_loop2 	; E10Ch
 
 
+; Calculate screen memory address (HL) based on row (0 <= H <= 17h) and column (0 <= L <= 1F).
 ; Subroutine: Size=15, CC=1.
-; Called by: SUB344[E1AEh].
+; Called by: Print_text_at_HL_on_screen[E1AEh].
 ; Calls: -
-E139 SUB338:
+E139 Convert_text_coordinates_in_HL_to_video_memory_addr_in_HL:
 E139 7C           LD   A,H    
 E13A 47           LD   B,A    
 E13B E6 18        AND  18h    	; 24
-E13D 67           LD   H,A    
+E13D 67           LD   H,A    ; will need to add 0000h, 0800h, or 1000h (to 4000h)?
 E13E 78           LD   A,B    
-E13F AC           XOR  H      
+E13F AC           XOR  H      ; A = (A & 11b) << 5
 E140 0F           RRCA        
 E141 0F           RRCA        
 E142 0F           RRCA        
 E143 B5           OR   L      
 E144 6F           LD   L,A    
-E145 CB F4        SET  6,H    
+E145 CB F4        SET  6,H    ; HL += 4000h
 E147 C9           RET         
 
 
@@ -48781,45 +48785,47 @@ E150 18           DEFB 18h    	; 24
 E151 05           DEFB 05h    	; 5
 
 
+; Actually draw the character (in A) on screen, given its destination in screen memory (in HL) and attributes in C.
+; E15B is either NOP (opcode 0) or XOR (HL) (opcode AEh).
 ; Subroutine: Size=29, CC=2.
 ; Called by: SUB528[E182h].
-; Calls: SUB335.
-E152 SUB339:
+; Calls: For_character_in_A_give_its_8x8_graphics_at_DE.
+E152 Render_character_A_to_video_memory_at_HL_apply_attribute_C_if_nonzero:
 E152 E5           PUSH HL     
-E153 CD DD E0     CALL SUB335 	; E0DDh
+E153 CD DD E0     CALL For_character_in_A_give_its_8x8_graphics_at_DE 	; E0DDh
 E156 E1           POP  HL     
 E157 06 08        LD   B,08h  	; 8
 E159 .sub339_loop:
-E159 1A           LD   A,(DE) 
-E15A 1C           INC  E      
+E159 1A           LD   A,(DE) ; A = 1/8 of the 8x8 graphics of the character in A
+E15A 1C           INC  E      ; DE = next byte of the graphics
 
 
 ; Data accessed by:
-; E176h(in SUB341), E171h(in SUB340)
+; E176h(in Set_text_print_mode_override_screen_data), E171h(in Set_text_print_mode_combine_with_screen_data)
 E15B SELF_MOD53:
-E15B AE           XOR  (HL)   
-E15C 77           LD   (HL),A 
-E15D 24           INC  H      
+E15B AE           XOR  (HL)   ; Combine (or not! - this is either "XOR (HL)" or "NOP") the character graphics
+E15C 77           LD   (HL),A ; ... with what's already on screen
+E15D 24           INC  H      ; it's safe to do just "INC H" since characters are printed at 8x8 screen cells
 E15E 10 F9        DJNZ .sub339_loop 	; E159h
-E160 25           DEC  H      
-E161 79           LD   A,C    
+E160 25           DEC  H      ; rewind the destination a bit, so that we can deduce the address of the attribute byte
+E161 79           LD   A,C    ; don't change the attribute if C == 0
 E162 A7           AND  A      
 E163 C8           RET  Z      
-E164 7C           LD   A,H    
+E164 7C           LD   A,H    ; get attribute address from pixel address
 E165 0F           RRCA        
 E166 0F           RRCA        
 E167 0F           RRCA        
 E168 E6 03        AND  03h    	; 3
 E16A F6 58        OR   58h    	; 88, 'X'
 E16C 67           LD   H,A    
-E16D 71           LD   (HL),C 
+E16D 71           LD   (HL),C ; put C at the attribute address
 E16E C9           RET         
 
 
 ; Subroutine: Size=6, CC=1.
-; Called by: SUB344[E190h], SUB353[E2B4h].
+; Called by: Print_text_at_HL_on_screen[E190h], SUB353[E2B4h].
 ; Calls: -
-E16F SUB340:
+E16F Set_text_print_mode_combine_with_screen_data:
 E16F 3E AE        LD   A,AEh  	; 174,  -82
 E171 32 5B E1     LD   (SELF_MOD53),A 	; E15Bh, WARNING: Instruction accesses code!
 E174 C9           RET         
@@ -48828,26 +48834,26 @@ E174 C9           RET
 ; Subroutine: Size=5, CC=1.
 ; Called by: SUB343[E18Bh], SUB353[E2ADh].
 ; Calls: -
-E175 SUB341:
+E175 Set_text_print_mode_override_screen_data:
 E175 AF           XOR  A      
 E176 32 5B E1     LD   (SELF_MOD53),A 	; E15Bh, WARNING: Instruction accesses code!
 E179 C9           RET         
 
 
 ; Subroutine: Size=8, CC=1.
-; Called by: SUB344[E19Ch], SUB353[E2B1h].
+; Called by: Print_text_at_HL_on_screen[E19Ch], SUB353[E2B1h].
 ; Calls: SUB528.
-E17A SUB342:
-E17A 2A F0 DE     LD   HL,(DATA168) 	; DEF0h
-E17D ED 4B F2 DE  LD   BC,(DATA169) 	; DEF2h
+E17A Render_character_in_A_to_stored_video_addr_using_current_stored_attribute_Update_current_video_addr:
+E17A 2A F0 DE     LD   HL,(DATA168) 	; DEF0h - Load HL with the destination address in screen memory to print a character
+E17D ED 4B F2 DE  LD   BC,(DATA169) 	; DEF2h - Put current text attribute to C
 E181 E5           PUSH HL     
 
 
 ; Subroutine: Size=9, CC=1.
-; Called by: SUB294[B48Fh], SUB342[E181h].
-; Calls: SUB339.
+; Called by: SUB294[B48Fh], Render_character_in_A_to_stored_video_addr_using_current_stored_attribute_Update_current_video_addr[E181h].
+; Calls: Render_character_A_to_video_memory_at_HL_apply_attribute_C_if_nonzero.
 E182 SUB528:
-E182 CD 52 E1     CALL SUB339 	; E152h
+E182 CD 52 E1     CALL Render_character_A_to_video_memory_at_HL_apply_attribute_C_if_nonzero 	; E152h
 
 
 E185 E1           POP  HL     
@@ -48858,42 +48864,46 @@ E18A C9           RET
 
 ; Subroutine: Size=3, CC=1.
 ; Called by: SUB317[DECCh], SUB529[E2CBh], SUB285[E2D7h], SUB285[E2E3h], SUB530[E2EFh], SUB285[E2FBh].
-; Calls: SUB341, SUB344.
+; Calls: Set_text_print_mode_override_screen_data, Print_text_at_HL_on_screen.
 E18B SUB343:
-E18B CD 75 E1     CALL SUB341 	; E175h
+E18B CD 75 E1     CALL Set_text_print_mode_override_screen_data 	; E175h
 
 
+; Print text.
+; Symbol 2 sets cursor at (row, column).
+; Symbol 1 sets attribute (puts the next symbol in (DEF2h))
 ; Subroutine: Size=42, CC=4.
 ; Called by: SUB318[DECFh], SUB343[E18Bh].
-; Calls: SUB338, SUB340, SUB342.
-E18E SUB344:
-E18E 7E           LD   A,(HL) 
+; Calls: Convert_text_coordinates_in_HL_to_video_memory_addr_in_HL, Set_text_print_mode_combine_with_screen_data, Render_character_in_A_to_stored_video_addr_using_current_stored_attribute_Update_current_video_addr.
+E18E Print_text_at_HL_on_screen:
+E18E 7E           LD   A,(HL) ; get input symbol
 E18F A7           AND  A      
-E190 28 DD        JR   Z,SUB340 	; E16Fh
+E190 28 DD        JR   Z,Set_text_print_mode_combine_with_screen_data 	; E16Fh (... and return)
 E192 23           INC  HL     
-E193 FE 01        CP   01h    	; 1
+E193 FE 01        CP   01h    	; if the symbol is 1, use the next symbol as attribute for the remaining text
 E195 28 0B        JR   Z,.sub344_l1 	; E1A2h
-E197 FE 02        CP   02h    	; 2
+E197 FE 02        CP   02h    	; if the symbol is 2, use the next two symbols Y and X to set cursor at (X, Y)
 E199 28 0E        JR   Z,.sub344_l2 	; E1A9h
 E19B E5           PUSH HL     
-E19C CD 7A E1     CALL SUB342 	; E17Ah
+E19C CD 7A E1     CALL Render_character_in_A_to_stored_video_addr_using_current_stored_attribute_Update_current_video_addr 	; E17Ah
 E19F E1           POP  HL     
-E1A0 18 EC        JR   SUB344 	; E18Eh
+E1A0 18 EC        JR   Print_text_at_HL_on_screen 	; E18Eh
+; use the next symbol as attribute for the remaining text
 E1A2 .sub344_l1:
 E1A2 7E           LD   A,(HL) 
 E1A3 23           INC  HL     
 E1A4 32 F2 DE     LD   (DATA169),A 	; DEF2h
-E1A7 18 E5        JR   SUB344 	; E18Eh
+E1A7 18 E5        JR   Print_text_at_HL_on_screen 	; E18Eh
 E1A9 .sub344_l2:
 E1A9 56           LD   D,(HL) 
 E1AA 23           INC  HL     
 E1AB 5E           LD   E,(HL) 
 E1AC 23           INC  HL     
 E1AD EB           EX   DE,HL  
-E1AE CD 39 E1     CALL SUB338 	; E139h
+E1AE CD 39 E1     CALL Convert_text_coordinates_in_HL_to_video_memory_addr_in_HL 	; E139h
 E1B1 EB           EX   DE,HL  
 E1B2 ED 53 F0 DE  LD   (DATA168),DE 	; DEF0h
-E1B6 18 D6        JR   SUB344 	; E18Eh
+E1B6 18 D6        JR   Print_text_at_HL_on_screen 	; E18Eh
 
 
 ; Subroutine: Size=50, CC=4.
@@ -49179,15 +49189,15 @@ E2A7 E6           DEFB E6h    	; 230,  -26
 
 ; Subroutine: Size=21, CC=1.
 ; Called by: SUB285[E2CEh], SUB285[E2DAh], SUB285[E2E6h], SUB285[E2F2h], SUB285[E2FEh].
-; Calls: SUB340, SUB341, SUB342, SUB346.
+; Calls: Set_text_print_mode_combine_with_screen_data, Set_text_print_mode_override_screen_data, Render_character_in_A_to_stored_video_addr_using_current_stored_attribute_Update_current_video_addr, SUB346.
 E2A8 SUB353:
 E2A8 CD 12 E2     CALL SUB346 	; E212h
 E2AB D5           PUSH DE     
 E2AC F5           PUSH AF     
-E2AD CD 75 E1     CALL SUB341 	; E175h
+E2AD CD 75 E1     CALL Set_text_print_mode_override_screen_data 	; E175h
 E2B0 F1           POP  AF     
-E2B1 CD 7A E1     CALL SUB342 	; E17Ah
-E2B4 CD 6F E1     CALL SUB340 	; E16Fh
+E2B1 CD 7A E1     CALL Render_character_in_A_to_stored_video_addr_using_current_stored_attribute_Update_current_video_addr 	; E17Ah
+E2B4 CD 6F E1     CALL Set_text_print_mode_combine_with_screen_data 	; E16Fh
 E2B7 D1           POP  DE     
 E2B8 7B           LD   A,E    
 E2B9 2F           CPL         
