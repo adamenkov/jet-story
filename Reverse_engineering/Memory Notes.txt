@@ -20,6 +20,7 @@ OK	22B1		See 22AA above.
 *	6DE2-6DE8	Z=1 iff no key is pressed.
 *	6DE9-6DEE	Wait until key is pressed.
 *	6DEF-6E07	Clear the screen and border.
+*	6EB4		Main menu?
 *	6F4B-6F63	Shift the running line one pixel to the left.
 *	6F64-7139	Text of running line and the trailing '$'.
 *	713A-71C0	Spaces (' ')
@@ -53,12 +54,12 @@ OK	E011-E026	Put the address of sprite number A in DE, address of screen memory 
 >>>	E027-E0A1	Draw a sprite???
 >>>	E0BE-E0DC	???
 OK	E0DD-E0E8	Give address (in DE) of graphics for character in A.
-*	E139-E147	Calculate screen memory address (HL) based on row (0 <= H <= 17h) and column (0 <= L <= 1F).
+OK	E139-E147	Calculate screen memory address (HL) based on row (0 <= H <= 17h) and column (0 <= L <= 1F).
 OK	E152-E16E	Actually draw character (in A) on screen, given its destination in screen memory (in HL).  E15B is either NOP or XOR (HL) (opcode AE).
-*	E18B-		Draw a character.  Symbol 2 sets cursor at (row, column).  Symbol 1 sets attribute (puts the next symbol in (DEF2))
-*	E1B8-E1E9	get key (Z=1 iff pressed). D = 5-group query mask, E = pressed key mask, B = group element counter, C = 5-key group counter
-*	E1EA-E211	key table.  (element at 8 * key_number_1_to_5 + group_number_1_to_8 gives the pressed key)
-*	E212-E21E	Wait for pressed key and play music/sound.
+OK	E18B-E1B7	Print text.  Symbol 2 sets cursor at (row, column).  Symbol 1 sets attribute (puts the next symbol in (DEF2))
+OK	E1B8-E1E9	get key (Z=1 iff pressed). D = 5-group query mask, E = pressed key mask, B = group element counter, C = 5-key group counter
+OK	E1EA-E211	key table.  (element at 8 * key_number_1_to_5 + group_number_1_to_8 gives the pressed key)
+OK	E212-E21E	Wait for pressed key and play the sound "key assigned".
 *	E21F-E243	Actually play the sound "key assigned".
 *	E244-E24E	Play the sound "key assigned".
 *	E358-E3C6	Guess: Update functions for Objects.
