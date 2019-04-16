@@ -48032,9 +48032,9 @@ DEA8 C3 1B DF     JP   SUB326 	; DF1Bh
 
 ; Subroutine: Size=3, CC=1.
 ; Called by: SUB508[FEA1h], SUB490[FAE5h], SUB490[FAF4h].
-; Calls: SUB327.
+; Calls: Pixel_address_below_current_in_HL.
 DEAB SUB314:
-DEAB C3 74 DF     JP   SUB327 	; DF74h
+DEAB C3 74 DF     JP   Pixel_address_below_current_in_HL 	; DF74h
 
 
 DEAE C3           DEFB C3h    	; 195,  -61
@@ -48281,24 +48281,24 @@ DF73 C9           RET
 ; Subroutine: Size=15, CC=3.
 ; Called by: SUB314[DEABh], SUB328[DFB6h].
 ; Calls: -
-DF74 SUB327:
-DF74 24           INC  H      
-DF75 7C           LD   A,H    
+DF74 Pixel_address_below_current_in_HL:
+DF74 24           INC  H        ; This is enough unless we are in a pixel line == 7 (mod 8),
+DF75 7C           LD   A,H      ; i.e. at the bottom of a 8-pixel horizontal line.
 DF76 E6 07        AND  07h    	; 7
 DF78 C0           RET  NZ     
-DF79 7D           LD   A,L    
-DF7A C6 20        ADD  A,20h  	; 32, ' '
+DF79 7D           LD   A,L      ; ... in which case we are either at the bottom line of any of the 3 thirds of the screen
+DF7A C6 20        ADD  A,20h  	; (and we only need to add 32 to L)
 DF7C 6F           LD   L,A    
 DF7D D8           RET  C      
-DF7E 7C           LD   A,H    
-DF7F D6 08        SUB  A,08h  	; 8
+DF7E 7C           LD   A,H      ; or we need to "rewind" the address to step from the bottom line of the current 8-pixel line
+DF7F D6 08        SUB  A,08h  	; to the top line of the next 8-pixel horizontal line.
 DF81 67           LD   H,A    
 DF82 C9           RET         
 
 
 ; Subroutine: Size=105, CC=2.
 ; Called by: SUB294[DF62h].
-; Calls: SUB327.
+; Calls: Pixel_address_below_current_in_HL.
 DF83 SUB328:
 DF83 D5           PUSH DE     
 DF84 A7           AND  A      
@@ -48354,7 +48354,7 @@ DFB1 2D           DEC  L
 DFB2 2D           DEC  L      
 DFB3 2D           DEC  L      
 DFB4 DD 23        INC  IX     
-DFB6 CD 74 DF     CALL SUB327 	; DF74h
+DFB6 CD 74 DF     CALL Pixel_address_below_current_in_HL 	; DF74h
 DFB9 10 E3        DJNZ .sub328_loop1 	; DF9Eh
 DFBB F1           POP  AF     
 DFBC 6F           LD   L,A    
