@@ -7822,9 +7822,9 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 
 ; Subroutine: Size=26, CC=1.
-; Called by: SUB337[E0EFh], SUB330[E01Fh].
+; Called by: SUB337[E0EFh], Put_addr_of_sprite_A_in_DE_pixel_at_YX_in_BC_to_addr_in_HL_A1h_plus_2xBitNumber_in_B[E01Fh].
 ; Calls: -
-22B1 SUB126:
+22B1 From_YX_in_BC_put_pixel_byte_addr_in_HL_and_pixel_bit_number_in_A:
 22B1 A7           AND  A      
 22B2 1F           RRA         
 22B3 37           SCF         
@@ -48438,9 +48438,9 @@ E010 C9           RET
 
 ; Subroutine: Size=22, CC=1.
 ; Called by: SUB331[E029h], SUB331[E02Eh].
-; Calls: SUB126.
-E011 SUB330:
-E011 6F           LD   L,A    
+; Calls: From_YX_in_BC_put_pixel_byte_addr_in_HL_and_pixel_bit_number_in_A.
+E011 Put_addr_of_sprite_A_in_DE_pixel_at_YX_in_BC_to_addr_in_HL_A1h_plus_2xBitNumber_in_B:
+E011 6F           LD   L,A    ; HL = sprite address B100h + 32 * A
 E012 26 00        LD   H,00h  	; 0
 E014 29           ADD  HL,HL  
 E015 29           ADD  HL,HL  
@@ -48449,9 +48449,9 @@ E017 29           ADD  HL,HL
 E018 29           ADD  HL,HL  
 E019 11 00 B1     LD   DE,B100h 	; 45312, -20224
 E01C 19           ADD  HL,DE  
-E01D EB           EX   DE,HL  
+E01D EB           EX   DE,HL  ; DE = sprite address B100h + 32 * A
 E01E 78           LD   A,B    
-E01F CD B1 22     CALL SUB126 	; 22B1h
+E01F CD B1 22     CALL From_YX_in_BC_put_pixel_byte_addr_in_HL_and_pixel_bit_number_in_A 	; 22B1h, 
 E022 87           ADD  A,A    
 E023 C6 A1        ADD  A,A1h  	; 161,  -95
 E025 47           LD   B,A    
@@ -48460,14 +48460,14 @@ E026 C9           RET
 
 ; Subroutine: Size=21, CC=1.
 ; Called by: SUB316[DEB4h].
-; Calls: SUB330, SUB332.
+; Calls: Put_addr_of_sprite_A_in_DE_pixel_at_YX_in_BC_to_addr_in_HL_A1h_plus_2xBitNumber_in_B, SUB332.
 E027 SUB331:
 E027 C5           PUSH BC     
 E028 D5           PUSH DE     
-E029 CD 11 E0     CALL SUB330 	; E011h
+E029 CD 11 E0     CALL Put_addr_of_sprite_A_in_DE_pixel_at_YX_in_BC_to_addr_in_HL_A1h_plus_2xBitNumber_in_B 	; E011h
 E02C D9           EXX         
 E02D 08           EX   AF,AF' 
-E02E CD 11 E0     CALL SUB330 	; E011h
+E02E CD 11 E0     CALL Put_addr_of_sprite_A_in_DE_pixel_at_YX_in_BC_to_addr_in_HL_A1h_plus_2xBitNumber_in_B 	; E011h
 E031 3E 10        LD   A,10h  	; 16
 E033 .sub331_loop:
 E033 F5           PUSH AF     
@@ -48681,13 +48681,13 @@ E0E8 C9           RET
 
 ; Subroutine: Size=80, CC=8.
 ; Called by: SUB410[E804h], SUB410[E814h].
-; Calls: SUB126, SUB334, SUB335.
+; Calls: From_YX_in_BC_put_pixel_byte_addr_in_HL_and_pixel_bit_number_in_A, SUB334, SUB335.
 E0E9 SUB337:
 E0E9 D5           PUSH DE     
 E0EA C5           PUSH BC     
 E0EB CD DD E0     CALL SUB335 	; E0DDh
 E0EE 78           LD   A,B    
-E0EF CD B1 22     CALL SUB126 	; 22B1h
+E0EF CD B1 22     CALL From_YX_in_BC_put_pixel_byte_addr_in_HL_and_pixel_bit_number_in_A 	; 22B1h
 E0F2 87           ADD  A,A    
 E0F3 C6 A1        ADD  A,A1h  	; 161,  -95
 E0F5 47           LD   B,A    
@@ -49367,9 +49367,9 @@ E36C E5           DEFB E5h    	; 229,  -27
 
 ; Subroutine: Size=3, CC=1.
 ; Called by: SUB472[F259h].
-; Calls: SUB386.
+; Calls: For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen.
 E36D SUB358:
-E36D C3 57 E5     JP   SUB386 	; E557h
+E36D C3 57 E5     JP   For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen 	; E557h
 
 
 ; Subroutine: Size=3, CC=1.
@@ -49406,9 +49406,9 @@ E37F C3 1C E6     JP   SUB393 	; E61Ch
 
 ; Subroutine: Size=3, CC=1.
 ; Called by: SUB475[F37Ah], SUB506[FE0Dh].
-; Calls: SUB405.
+; Calls: Load_YX_in_BC.
 E382 SUB362:
-E382 C3 BA E7     JP   SUB405 	; E7BAh
+E382 C3 BA E7     JP   Load_YX_in_BC 	; E7BAh
 
 
 E385 C3           DEFB C3h    	; 195,  -61
@@ -50034,22 +50034,22 @@ E556 C9           RET
 
 ; Subroutine: Size=87, CC=12.
 ; Called by: SUB394[E6AAh], SUB393[E630h], SUB394[E6C0h], SUB393[E646h], SUB358[E36Dh].
-; Calls: SUB400, SUB401, SUB402.
-E557 SUB386:
-E557 DD 7E 00     LD   A,(IX+0) 
-E55A FE 40        CP   40h    	; 64, '@'
+; Calls: Unless_B_below_20h_or_above_B0h_or_C_above_F0h_for_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes, For_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes, SUB402.
+E557 For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen:
+E557 DD 7E 00     LD   A,(IX+0) ; A = object type
+E55A FE 40        CP   40h    	; player(?) (16x32)
 E55C 28 26        JR   Z,.sub386_l2 	; E584h
-E55E FE 01        CP   01h    	; 1
+E55E FE 01        CP   01h    	; "big crab" (16x32)
 E560 28 22        JR   Z,.sub386_l2 	; E584h
-E562 FE 02        CP   02h    	; 2
+E562 FE 02        CP   02h    	; flying platform A (32x16)
 E564 28 3A        JR   Z,.sub386_l3 	; E5A0h
-E566 FE 03        CP   03h    	; 3
+E566 FE 03        CP   03h    	; flying platform B (32x16)
 E568 28 36        JR   Z,.sub386_l3 	; E5A0h
-E56A FE 04        CP   04h    	; 4
+E56A FE 04        CP   04h    	; the big ball (32x32)
 E56C 28 08        JR   Z,.sub386_l1 	; E576h
 E56E FE 64        CP   64h    	; 100, 'd'
-E570 D2 82 E7     JP   NC,SUB402 	; E782h
-E573 C3 5E E7     JP   SUB400 	; E75Eh
+E570 D2 82 E7     JP   NC,SUB402 	; object type >= 64
+E573 C3 5E E7     JP   Unless_B_below_20h_or_above_B0h_or_C_above_F0h_for_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes 	; object type < 64 (16x16)
 E576 .sub386_l1:
 E576 CD 84 E5     CALL .sub386_l2 	; E584h
 E579 C0           RET  NZ     
@@ -50067,28 +50067,28 @@ E587 D8           RET  C
 E588 3E B0        LD   A,B0h  	; 176,  -80
 E58A B8           CP   B      
 E58B D8           RET  C      
-E58C 3E E0        LD   A,E0h  	; 224,  -32
+E58C 3E E0        LD   A,E0h  	; E0h, not F0h, since the object is wide i.e. 16x32
 E58E B9           CP   C      
 E58F D8           RET  C      
-E590 CD 62 E7     CALL SUB401 	; E762h
+E590 CD 62 E7     CALL For_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes 	; E762h
 E593 C5           PUSH BC     
 E594 F5           PUSH AF     
 E595 79           LD   A,C    
 E596 C6 10        ADD  A,10h  	; 16
 E598 4F           LD   C,A    
-E599 CD 62 E7     CALL SUB401 	; E762h
+E599 CD 62 E7     CALL For_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes 	; E762h
 E59C C1           POP  BC     
 E59D B0           OR   B      
 E59E C1           POP  BC     
 E59F C9           RET         
 E5A0 .sub386_l3:
-E5A0 CD 5E E7     CALL SUB400 	; E75Eh
+E5A0 CD 5E E7     CALL Unless_B_below_20h_or_above_B0h_or_C_above_F0h_for_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes 	; E75Eh
 E5A3 C0           RET  NZ     
 E5A4 C5           PUSH BC     
 E5A5 78           LD   A,B    
 E5A6 D6 10        SUB  A,10h  	; 16
 E5A8 47           LD   B,A    
-E5A9 CD 5E E7     CALL SUB400 	; E75Eh
+E5A9 CD 5E E7     CALL Unless_B_below_20h_or_above_B0h_or_C_above_F0h_for_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes 	; E75Eh
 E5AC C1           POP  BC     
 E5AD C9           RET         
 
@@ -50199,18 +50199,18 @@ E61B C9           RET
 
 ; Subroutine: Size=127, CC=9.
 ; Called by: SUB361[E37Fh], SUB413[E885h].
-; Calls: SUB386, SUB388, SUB395, SUB397, SUB405, SUB406.
+; Calls: For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen, SUB388, SUB395, SUB397, Load_YX_in_BC, SUB406.
 E61C SUB393:
 E61C FD CB 9C 7E  BIT  7,(IY-100) 
 E620 C0           RET  NZ     
 E621 DD 7E 09     LD   A,(IX+9) 
-E624 CD BA E7     CALL SUB405 	; E7BAh
+E624 CD BA E7     CALL Load_YX_in_BC 	; E7BAh
 E627 CB 7F        BIT  7,A    
 E629 20 12        JR   NZ,.sub393_l1 	; E63Dh
 E62B CD BF E5     CALL SUB388 	; E5BFh
 E62E 80           ADD  A,B    
 E62F 47           LD   B,A    
-E630 CD 57 E5     CALL SUB386 	; E557h
+E630 CD 57 E5     CALL For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen 	; E557h
 E633 38 4C        JR   C,.sub393_l4 	; E681h
 E635 28 03        JR   Z,.sub393_loop2 	; E63Ah
 E637 .sub393_loop1:
@@ -50225,7 +50225,7 @@ E642 6F           LD   L,A
 E643 78           LD   A,B    
 E644 95           SUB  A,L    
 E645 47           LD   B,A    
-E646 CD 57 E5     CALL SUB386 	; E557h
+E646 CD 57 E5     CALL For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen 	; E557h
 E649 38 24        JR   C,.sub393_l3 	; E66Fh
 E64B 28 ED        JR   Z,.sub393_loop2 	; E63Ah
 E64D .sub393_loop3:
@@ -50265,18 +50265,18 @@ E694 18 71        JR   .sub286_l153 	; E707h
 
 ; Subroutine: Size=112, CC=9.
 ; Called by: SUB360[E37Ch], SUB413[E882h].
-; Calls: SUB386, SUB387, SUB405, SUB406.
+; Calls: For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen, SUB387, Load_YX_in_BC, SUB406.
 E696 SUB394:
 E696 FD CB 9C 7E  BIT  7,(IY-100) 
 E69A C0           RET  NZ     
 E69B DD 7E 0B     LD   A,(IX+11) 
-E69E CD BA E7     CALL SUB405 	; E7BAh
+E69E CD BA E7     CALL Load_YX_in_BC 	; E7BAh
 E6A1 CB 7F        BIT  7,A    
 E6A3 20 12        JR   NZ,.sub394_l1 	; E6B7h
 E6A5 CD AE E5     CALL SUB387 	; E5AEh
 E6A8 81           ADD  A,C    
 E6A9 4F           LD   C,A    
-E6AA CD 57 E5     CALL SUB386 	; E557h
+E6AA CD 57 E5     CALL For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen 	; E557h
 E6AD 38 4A        JR   C,.sub394_l3 	; E6F9h
 E6AF 28 03        JR   Z,.sub394_loop2 	; E6B4h
 E6B1 .sub394_loop1:
@@ -50291,7 +50291,7 @@ E6BC 6F           LD   L,A
 E6BD 79           LD   A,C    
 E6BE 95           SUB  A,L    
 E6BF 4F           LD   C,A    
-E6C0 CD 57 E5     CALL SUB386 	; E557h
+E6C0 CD 57 E5     CALL For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen 	; E557h
 E6C3 38 24        JR   C,.sub394_l2 	; E6E9h
 E6C5 28 ED        JR   Z,.sub394_loop2 	; E6B4h
 
@@ -50387,9 +50387,9 @@ E72F C9           RET
 
 
 ; Subroutine: Size=12, CC=3.
-; Called by: SUB402[E782h], SUB400[E75Eh].
+; Called by: SUB402[E782h], Unless_B_below_20h_or_above_B0h_or_C_above_F0h_for_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes[E75Eh].
 ; Calls: -
-E730 SUB398:
+E730 Is_B_below_20h_or_above_B0h_or_C_above_F0h:
 E730 78           LD   A,B    
 E731 FE 20        CP   20h    	; 32, ' '
 E733 D8           RET  C      
@@ -50401,29 +50401,31 @@ E73A B9           CP   C
 E73B C9           RET         
 
 
+; Put in HL the address of top left attribute square,
+; based on x (in C) and y (in B), in IX y and x mod 8 (i.e. inside the 8x8 block), make DE = 20.
 ; Subroutine: Size=34, CC=1.
-; Called by: SUB402[E788h], SUB401[E764h].
+; Called by: SUB402[E788h], For_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes[E764h].
 ; Calls: -
-E73C SUB399:
-E73C 78           LD   A,B    
+E73C For_YX_in_BC_get_attribute_addr_in_HL_20_in_DE_YXmod8_in_IX:
+E73C 78           LD   A,B    A = y
 E73D E6 07        AND  07h    	; 7
-E73F DD 67        LD   IXH,A  
+E73F DD 67        LD   IXH,A  ; IXh = y % 8
 E741 78           LD   A,B    
-E742 E6 F8        AND  F8h    	; 248,   -8
+E742 E6 F8        AND  F8h    	; A = attribute row x 8
 E744 6F           LD   L,A    
 E745 26 00        LD   H,00h  	; 0
 E747 29           ADD  HL,HL  
-E748 29           ADD  HL,HL  
-E749 79           LD   A,C    
+E748 29           ADD  HL,HL  ; HL = attribute row x 32
+E749 79           LD   A,C    ; A = x
 E74A E6 07        AND  07h    	; 7
-E74C DD 6F        LD   IXL,A  
+E74C DD 6F        LD   IXL,A  ; IXl = x % 8
 E74E 79           LD   A,C    
 E74F 0F           RRCA        
 E750 0F           RRCA        
-E751 0F           RRCA        
+E751 0F           RRCA        ; A = x / 8
 E752 E6 1F        AND  1Fh    	; 31
 E754 B5           OR   L      
-E755 6F           LD   L,A    
+E755 6F           LD   L,A    ; HL - attribute byte (0-based) for a given (y, x) in BC
 E756 11 00 58     LD   DE,5800h 	; 22528
 E759 19           ADD  HL,DE  
 E75A 11 20 00     LD   DE,0020h 	; 32
@@ -50431,30 +50433,30 @@ E75D C9           RET
 
 
 ; Subroutine: Size=4, CC=2.
-; Called by: SUB386[E573h], SUB418[E94Eh], SUB386[E5A0h], SUB386[E5A9h].
-; Calls: SUB398, SUB401.
-E75E SUB400:
-E75E CD 30 E7     CALL SUB398 	; E730h
+; Called by: For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen[E573h], SUB418[E94Eh], For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen[E5A0h], For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen[E5A9h].
+; Calls: Is_B_below_20h_or_above_B0h_or_C_above_F0h, For_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes.
+E75E Unless_B_below_20h_or_above_B0h_or_C_above_F0h_for_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes:
+E75E CD 30 E7     CALL Is_B_below_20h_or_above_B0h_or_C_above_F0h 	; E730h
 E761 D8           RET  C      
 
 
 ; Subroutine: Size=32, CC=2.
-; Called by: SUB386[E590h], SUB386[E599h], SUB400[E761h].
-; Calls: SUB399, SUB403.
-E762 SUB401:
+; Called by: For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen[E590h], For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen[E599h], Unless_B_below_20h_or_above_B0h_or_C_above_F0h_for_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes[E761h].
+; Calls: For_YX_in_BC_get_attribute_addr_in_HL_20_in_DE_YXmod8_in_IX, OR_2_bytes_at_HL_if_IXl_is_zero_otherwise_OR_3_bytes_at_HL.
+E762 For_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes:
 E762 DD E5        PUSH IX     
-E764 CD 3C E7     CALL SUB399 	; E73Ch
+E764 CD 3C E7     CALL For_YX_in_BC_get_attribute_addr_in_HL_20_in_DE_YXmod8_in_IX 	; E73Ch
 E767 AF           XOR  A      
-E768 CD 9C E7     CALL SUB403 	; E79Ch
+E768 CD 9C E7     CALL OR_2_bytes_at_HL_if_IXl_is_zero_otherwise_OR_3_bytes_at_HL 	; E79Ch
 E76B 19           ADD  HL,DE  
-E76C CD 9C E7     CALL SUB403 	; E79Ch
+E76C CD 9C E7     CALL OR_2_bytes_at_HL_if_IXl_is_zero_otherwise_OR_3_bytes_at_HL 	; E79Ch
 E76F 08           EX   AF,AF' 
 E770 DD 7C        LD   A,IXH  
 E772 A7           AND  A      
 E773 28 0A        JR   Z,.sub401_loop2 	; E77Fh
 E775 08           EX   AF,AF' 
 E776 19           ADD  HL,DE  
-E777 CD 9C E7     CALL SUB403 	; E79Ch
+E777 CD 9C E7     CALL OR_2_bytes_at_HL_if_IXl_is_zero_otherwise_OR_3_bytes_at_HL 	; E79Ch
 E77A .sub401_loop1:
 E77A DD E1        POP  IX     
 E77C E6 38        AND  38h    	; 56, '8'
@@ -50465,13 +50467,13 @@ E780 18 F8        JR   .sub401_loop1 	; E77Ah
 
 
 ; Subroutine: Size=34, CC=3.
-; Called by: SUB386[E570h].
-; Calls: SUB398, SUB399, SUB404.
+; Called by: For_given_object_in_IX_and_YX_in_BC_return_ORed_paper_attributes_of_first_nonblackpaper_16x16_screen_area_if_object_fits_in_screen[E570h].
+; Calls: Is_B_below_20h_or_above_B0h_or_C_above_F0h, For_YX_in_BC_get_attribute_addr_in_HL_20_in_DE_YXmod8_in_IX, SUB404.
 E782 SUB402:
-E782 CD 30 E7     CALL SUB398 	; E730h
+E782 CD 30 E7     CALL Is_B_below_20h_or_above_B0h_or_C_above_F0h 	; E730h
 E785 D8           RET  C      
 E786 DD E5        PUSH IX     
-E788 CD 3C E7     CALL SUB399 	; E73Ch
+E788 CD 3C E7     CALL For_YX_in_BC_get_attribute_addr_in_HL_20_in_DE_YXmod8_in_IX 	; E73Ch
 E78B AF           XOR  A      
 E78C CD AE E7     CALL SUB404 	; E7AEh
 E78F 08           EX   AF,AF' 
@@ -50485,9 +50487,9 @@ E79A 18 DE        JR   .sub401_loop1 	; E77Ah
 
 
 ; Subroutine: Size=18, CC=2.
-; Called by: SUB401[E768h], SUB401[E76Ch], SUB401[E777h].
+; Called by: For_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes[E768h], For_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes[E76Ch], For_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes[E777h].
 ; Calls: -
-E79C SUB403:
+E79C OR_2_bytes_at_HL_if_IXl_is_zero_otherwise_OR_3_bytes_at_HL:
 E79C B6           OR   (HL)   
 E79D 2C           INC  L      
 E79E B6           OR   (HL)   
@@ -50527,7 +50529,7 @@ E7B9 C9           RET
 ; Subroutine: Size=7, CC=1.
 ; Called by: SUB394[E69Eh], SUB393[E624h], SUB408[E7D7h], SUB410[E807h], SUB362[E382h].
 ; Calls: -
-E7BA SUB405:
+E7BA Load_YX_in_BC:
 E7BA DD 46 01     LD   B,(IX+1) 
 E7BD DD 4E 02     LD   C,(IX+2) 
 E7C0 C9           RET         
@@ -50551,14 +50553,14 @@ E7C8 DD 36 06 00  LD   (IX+6),%s
 
 ; Subroutine: Size=41, CC=1.
 ; Called by: SUB363[E38Bh], SUB412[E843h], SUB412[E853h], SUB418[E963h], SUB418[E96Ah], SUB407[E7C8h].
-; Calls: SUB316, SUB405.
+; Calls: SUB316, Load_YX_in_BC.
 E7CC SUB408:
 E7CC DD 46 04     LD   B,(IX+4) 
 E7CF DD 4E 05     LD   C,(IX+5) 
 E7D2 DD 7E 06     LD   A,(IX+6) 
 E7D5 D9           EXX         
 E7D6 08           EX   AF,AF' 
-E7D7 CD BA E7     CALL SUB405 	; E7BAh
+E7D7 CD BA E7     CALL Load_YX_in_BC 	; E7BAh
 E7DA DD 7E 03     LD   A,(IX+3) 
 E7DD DD 5E 07     LD   E,(IX+7) 
 E7E0 F5           PUSH AF     
@@ -50583,14 +50585,14 @@ E7F5 DD 36 06 20  LD   (IX+6),%s
 
 ; Subroutine: Size=44, CC=1.
 ; Called by: SUB364[E391h], SUB409[E7F5h].
-; Calls: SUB337, SUB405.
+; Calls: SUB337, Load_YX_in_BC.
 E7F9 SUB410:
 E7F9 DD 46 04     LD   B,(IX+4) 
 E7FC DD 4E 05     LD   C,(IX+5) 
 E7FF DD 7E 06     LD   A,(IX+6) 
 E802 1E 00        LD   E,00h  	; 0
 E804 CD E9 E0     CALL SUB337 	; E0E9h
-E807 CD BA E7     CALL SUB405 	; E7BAh
+E807 CD BA E7     CALL Load_YX_in_BC 	; E7BAh
 E80A DD 7E 03     LD   A,(IX+3) 
 E80D DD 5E 07     LD   E,(IX+7) 
 E810 F5           PUSH AF     
@@ -50751,7 +50753,7 @@ E90A C9           RET
 
 ; Subroutine: Size=77, CC=4.
 ; Called by: SUB413[E896h].
-; Calls: SUB400, SUB408, SUB419, SUB420.
+; Calls: Unless_B_below_20h_or_above_B0h_or_C_above_F0h_for_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes, SUB408, SUB419, SUB420.
 E90B SUB418:
 E90B DD 21 F2 E3  LD   IX,E3F2h 	; 58354,  -7182
 E90F CD 3C E9     CALL SUB420 	; E93Ch
@@ -50801,7 +50803,7 @@ E94D 4F           LD   C,A
 
 
 E94E .sub418_l2:
-E94E CD 5E E7     CALL SUB400 	; E75Eh
+E94E CD 5E E7     CALL Unless_B_below_20h_or_above_B0h_or_C_above_F0h_for_16x16_screen_area_at_YX_in_BC_OR_screen_paper_attributes 	; E75Eh
 E951 DA 66 E9     JP   C,.sub418_l3 	; E966h
 E954 20 17        JR   NZ,.sub418_l4 	; E96Dh
 E956 3E 47        LD   A,47h  	; 71, 'G'
