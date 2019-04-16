@@ -48024,10 +48024,10 @@ DEA7 00           NOP
 
 
 ; Subroutine: Size=3, CC=1.
-; Called by: SUB384[E543h].
-; Calls: SUB326.
-DEA8 SUB313:
-DEA8 C3 1B DF     JP   SUB326 	; DF1Bh
+; Called by: Clear_screen_and_render_blocks_of_room_A[E543h].
+; Calls: Render_blocks_of_room_A.
+DEA8 Thunk_Render_blocks_of_room_A:
+DEA8 C3 1B DF     JP   Render_blocks_of_room_A 	; DF1Bh
 
 
 ; Subroutine: Size=3, CC=1.
@@ -48208,56 +48208,59 @@ DF19 07           DEFB 07h    	; 7
 DF1A 07           DEFB 07h    	; 7
 
 
+; Render all blocks of current room (in A): extract (decompress) 28h blocks of current room into DEF3-DF1A, render them.
+; D400-DEA7: Labyrinth (encoded;  in byte b7b6b5b4b3b2b1b0,
+; b4b3b2b1b0 is the number of labyrinth block, b7b6b5 is the number it is repeated, 0 marks the end of a room)
 ; Subroutine: Size=89, CC=6.
-; Called by: SUB313[DEA8h].
+; Called by: Thunk_Render_blocks_of_room_A[DEA8h].
 ; Calls: -
-DF1B SUB326:
-DF1B 21 00 D4     LD   HL,D400h 	; 54272, -11264
+DF1B Render_blocks_of_room_A:
+DF1B 21 00 D4     LD   HL,D400h 	; HL = the start of the encoded labyrinth
 DF1E A7           AND  A      
 DF1F 28 0A        JR   Z,.sub326_l 	; DF2Bh
 DF21 57           LD   D,A    
 DF22 AF           XOR  A      
 DF23 01 B8 0B     LD   BC,0BB8h 	; 3000
-DF26 .sub326_loop1:
+DF26 .sub326_loop1: ; D == current room
 DF26 ED B1        CPIR        
 DF28 15           DEC  D      
 DF29 20 FB        JR   NZ,.sub326_loop1 	; DF26h
-DF2B .sub326_l:
-DF2B 11 F3 DE     LD   DE,DEF3h 	; 57075,  -8461
+DF2B .sub326_l: ; HL == blocks of current room (encoded)
+DF2B 11 F3 DE     LD   DE,DEF3h 	; DEF3h = blocks of current room (28h pieces).
 DF2E DD 2E 28     LD   IXL,28h 	; 40, '('
 DF31 .sub326_loop2:
 DF31 7E           LD   A,(HL) 
 DF32 A7           AND  A      
-DF33 28 14        JR   Z,.sub294_l09 	; DF49h
-DF35 07           RLCA        
+DF33 28 14        JR   Z,.sub294_l09 	; (A == 0) => end of room reached
+DF35 07           RLCA        ; B = number of times the block is repeated
 DF36 07           RLCA        
 DF37 07           RLCA        
 DF38 E6 07        AND  07h    	; 7
 DF3A 47           LD   B,A    
-DF3B 7E           LD   A,(HL) 
+DF3B 7E           LD   A,(HL) ; A = block number
 DF3C 23           INC  HL     
 DF3D E6 1F        AND  1Fh    	; 31
 DF3F .sub326_loop3:
 DF3F 12           LD   (DE),A 
 DF40 13           INC  DE     
 DF41 DD 2D        DEC  IXL    
-DF43 28 04        JR   Z,.sub294_l09 	; DF49h
-DF45 10 F8        DJNZ .sub326_loop3 	; DF3Fh
-DF47 18 E8        JR   .sub326_loop2 	; DF31h
+DF43 28 04        JR   Z,.sub294_l09 	; all 28h blocks copied => end of room reached
+DF45 10 F8        DJNZ .sub326_loop3 	; copy the current block one more time
+DF47 18 E8        JR   .sub326_loop2 	; copy next block
 
-
+; Blocks (block numbers) of the current room have been copied to DEF3-DF1A
 DF49 .sub294_l09:
 DF49 DD 21 F3 DE  LD   IX,DEF3h 	; 57075,  -8461
-DF4D 21 EC DF     LD   HL,DFECh 	; 57324,  -8212
-DF50 0E 05        LD   C,05h  	; 5
+DF4D 21 EC DF     LD   HL,DFECh 	; For each of the five maze block rows, get the screen address of the first block top left corner.
+DF50 0E 05        LD   C,05h  	; 5 32x32 block rows constitute the current room
 DF52 .sub294_loop1:
-DF52 5E           LD   E,(HL) 
+DF52 5E           LD   E,(HL) ; DE = screen address of the first block (of the current row) top left corner .
 DF53 23           INC  HL     
 DF54 56           LD   D,(HL) 
 DF55 23           INC  HL     
-DF56 06 08        LD   B,08h  	; 8
+DF56 06 08        LD   B,08h  	; 8 blocks in a given row
 DF58 .sub294_loop2:
-DF58 DD 7E 00     LD   A,(IX+0) 
+DF58 DD 7E 00     LD   A,(IX+0) ; A = next block number
 DF5B DD 23        INC  IX     
 DF5D D5           PUSH DE     
 DF5E C5           PUSH BC     
@@ -48268,7 +48271,7 @@ DF65 DD E1        POP  IX
 DF67 E1           POP  HL     
 DF68 C1           POP  BC     
 DF69 D1           POP  DE     
-DF6A 1C           INC  E      
+DF6A 1C           INC  E      ; DE += 4, i.e. render next block to the right of the current one
 DF6B 1C           INC  E      
 DF6C 1C           INC  E      
 DF6D 1C           INC  E      
@@ -48300,7 +48303,7 @@ DF82 C9           RET
 ; Copy block (128 bytes of pixels + 16 bytes of attributes) from block definition (block number in A)
 ; to the video memory (pointed to by DE).
 ; Subroutine: Size=105, CC=2.
-; Called by: SUB326[DF1B].
+; Called by: Render_blocks_of_room_A[DF1B].
 ; Calls: Pixel_address_below_current_in_HL.
 DF83 Render_labyrinth_block_A_at_addr_DE:
 DF83 D5           PUSH DE       ; save DE (destination video memory address)
@@ -48326,7 +48329,7 @@ DF9E DD 7E 00     LD   A,(IX+0) ; read the leftmost (of four) byte of the block 
 
 
 ; Data accessed by:
-; E4EFh(in SUB379), E4E0h(in SUB378), E53Bh(in SUB384)
+; E4EFh(in SUB379), E4E0h(in SUB378), E53Bh(in Clear_screen_and_render_blocks_of_room_A)
 DFA1 SELF_MOD46:
 DFA1 77           LD   (HL),A   ; write the pixels to video memory
 DFA2 2C           INC  L        ; point HL to the right neighbor
@@ -49615,7 +49618,7 @@ E3DD 47           DEFB 47h    	; 71, 'G'
 
 
 ; Data accessed by:
-; E51Ch(in SUB383)
+; E51Ch(in Change_current_room_if_necessary)
 E3DE DATA186:
 E3DE 01           DEFB 01h    	; 1
 E3DF 83           DEFB 83h    	; 131, -125
@@ -49961,7 +49964,7 @@ E500 C9           RET
 
 
 ; Subroutine: Size=7, CC=1.
-; Called by: SUB383[E52Bh].
+; Called by: Change_current_room_if_necessary[E52Bh].
 ; Calls: SUB382.
 E501 SUB381:
 E501 AF           XOR  A      
@@ -49985,14 +49988,14 @@ E51B C9           RET
 
 ; Subroutine: Size=28, CC=2.
 ; Called by: SUB413[E890h].
-; Calls: SUB381, SUB384, SUB411, SUB422, SUB424.
-E51C SUB383:
+; Calls: SUB381, Clear_screen_and_render_blocks_of_room_A, SUB411, SUB422, SUB424.
+E51C Change_current_room_if_necessary:
 E51C 3A DE E3     LD   A,(DATA186) 	; E3DEh
 E51F 21 97 E4     LD   HL,E497h 	; 58519,  -7017
 E522 BE           CP   (HL)   
 E523 C8           RET  Z      
 E524 77           LD   (HL),A 
-E525 CD 38 E5     CALL SUB384 	; E538h
+E525 CD 38 E5     CALL Clear_screen_and_render_blocks_of_room_A 	; E538h
 E528 CD 25 E8     CALL SUB411 	; E825h
 E52B CD 01 E5     CALL SUB381 	; E501h
 E52E CD AF E9     CALL SUB422 	; E9AFh
@@ -50003,24 +50006,24 @@ E537 C9           RET
 
 
 ; Subroutine: Size=17, CC=2.
-; Called by: SUB421[E975h], SUB383[E525h].
-; Calls: SUB313, SUB385.
-E538 SUB384:
+; Called by: SUB421[E975h], Change_current_room_if_necessary[E525h].
+; Calls: Thunk_Render_blocks_of_room_A, Clear_screen.
+E538 Clear_screen_and_render_blocks_of_room_A:
 E538 DD E5        PUSH IX     
 E53A F5           PUSH AF     
 E53B 3A A1 DF     LD   A,(SELF_MOD46) 	; DFA1h, WARNING: Instruction accesses code!
 E53E A7           AND  A      
-E53F CC 49 E5     CALL Z,SUB385 	; E549h
+E53F CC 49 E5     CALL Z,Clear_screen 	; E549h
 E542 F1           POP  AF     
-E543 CD A8 DE     CALL SUB313 	; DEA8h
+E543 CD A8 DE     CALL Thunk_Render_blocks_of_room_A 	; DEA8h
 E546 DD E1        POP  IX     
 E548 C9           RET         
 
 
 ; Subroutine: Size=14, CC=1.
-; Called by: SUB384[E53Fh].
+; Called by: Clear_screen_and_render_blocks_of_room_A[E53Fh].
 ; Calls: -
-E549 SUB385:
+E549 Clear_screen:
 E549 21 00 40     LD   HL,4000h 	; 16384
 E54C 11 01 40     LD   DE,4001h 	; 16385
 E54F 01 FF 1A     LD   BC,1AFFh 	; 6911
@@ -50604,7 +50607,7 @@ E824 C9           RET
 
 
 ; Subroutine: Size=26, CC=1.
-; Called by: SUB421[E9A1h], SUB383[E528h].
+; Called by: SUB421[E9A1h], Change_current_room_if_necessary[E528h].
 ; Calls: SUB406, SUB407.
 E825 SUB411:
 E825 DD 21 D6 E3  LD   IX,E3D6h 	; 58326,  -7210
@@ -50639,7 +50642,7 @@ E858 C9           RET
 
 ; Subroutine: Size=65, CC=4.
 ; Called by: SUB365[E397h].
-; Calls: SUB322, SUB323, SUB324, SUB382, SUB383, SUB391, SUB392, SUB393, SUB394, SUB412, SUB414, SUB415, SUB416, SUB418.
+; Calls: SUB322, SUB323, SUB324, SUB382, Change_current_room_if_necessary, SUB391, SUB392, SUB393, SUB394, SUB412, SUB414, SUB415, SUB416, SUB418.
 E859 SUB413:
 E859 21 F0 E3     LD   HL,E3F0h 	; 58352,  -7184
 E85C 22 C9 E3     LD   (DATA176),HL 	; E3C9h
@@ -50658,7 +50661,7 @@ E882 CD 96 E6     CALL SUB394 	; E696h
 E885 CD 1C E6     CALL SUB393 	; E61Ch
 E888 DD 36 0D 00  LD   (IX+13),%s 
 E88C DD 36 0E 00  LD   (IX+14),%s 
-E890 CD 1C E5     CALL SUB383 	; E51Ch
+E890 CD 1C E5     CALL Change_current_room_if_necessary 	; E51Ch
 E893 CD 3F E8     CALL SUB412 	; E83Fh
 E896 CD 0B E9     CALL SUB418 	; E90Bh
 E899 C9           RET         
@@ -50819,11 +50822,11 @@ E96E 18 E8        JR   .sub418_loop 	; E958h
 
 ; Subroutine: Size=63, CC=1.
 ; Called by: SUB366[E39Dh].
-; Calls: SUB319, SUB384, SUB411, SUB422, SUB424.
+; Calls: SUB319, Clear_screen_and_render_blocks_of_room_A, SUB411, SUB422, SUB424.
 E970 SUB421:
 E970 CD D5 DE     CALL SUB319 	; DED5h
 E973 3E 00        LD   A,00h  	; 0
-E975 CD 38 E5     CALL SUB384 	; E538h
+E975 CD 38 E5     CALL Clear_screen_and_render_blocks_of_room_A 	; E538h
 E978 DD 21 D6 E3  LD   IX,E3D6h 	; 58326,  -7210
 E97C DD 36 00 40  LD   (IX+0),%s 
 E980 DD 36 01 46  LD   (IX+1),%s 
@@ -50842,7 +50845,7 @@ E9AC CD BA E9     CALL SUB424 	; E9BAh
 
 
 ; Subroutine: Size=5, CC=1.
-; Called by: SUB286[FF06h], SUB383[E52Eh], SUB421[E9ACh].
+; Called by: SUB286[FF06h], Change_current_room_if_necessary[E52Eh], SUB421[E9ACh].
 ; Calls: SUB423.
 E9AF SUB422:
 E9AF 21 37 E4     LD   HL,E437h 	; 58423,  -7113
@@ -50860,7 +50863,7 @@ E9B9 C9           RET
 
 
 ; Subroutine: Size=37, CC=3.
-; Called by: SUB421[E9ACh], SUB383[E531h].
+; Called by: SUB421[E9ACh], Change_current_room_if_necessary[E531h].
 ; Calls: SUB406, SUB419, SUB423, SUB437.
 E9BA SUB424:
 E9BA 21 04 E4     LD   HL,E404h 	; 58372,  -7164
