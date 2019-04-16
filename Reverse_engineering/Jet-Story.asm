@@ -20748,7 +20748,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 6F00 CD EF 6D     CALL SUB243 	; 6DEFh
 6F03 21 B1 6E     LD   HL,6EB1h 	; 28337
 6F06 CD CC DE     CALL SUB317 	; DECCh
-6F09 CD ED DE     CALL SUB325 	; DEEDh
+6F09 CD ED DE     CALL Thunk_Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL 	; DEEDh
 6F0C CD EF 6D     CALL SUB243 	; 6DEFh
 6F0F C3 B4 6E     JP   LBL08  	; 6EB4h
 
@@ -26580,7 +26580,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 
 ; Data accessed by:
-; 8732h(in SUB284), 8737h(in SUB284)
+; 8732h(in Finish_assigning_key_and_activate_cheat_if_KAREL), 8737h(in Finish_assigning_key_and_activate_cheat_if_KAREL)
 8702 SELF_MOD79:
 8702 32 D0 00     LD   (DATA002),A 	; 00D0h
 8705 D1           POP  DE     
@@ -26601,10 +26601,10 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 ; Subroutine: Size=46, CC=3.
 ; Called by: SUB285[E301h].
 ; Calls: -
-8710 SUB284:
-8710 22 89 E2     LD   (DATA174),HL 	; E289h
-8713 21 81 E2     LD   HL,E281h 	; 57985,  -7551
-8716 11 50 87     LD   DE,8750h 	; 34640, -30896
+8710 Finish_assigning_key_and_activate_cheat_if_KAREL:
+8710 22 89 E2     LD   (KEY_FIRE),HL 	; E289h
+8713 21 81 E2     LD   HL,E281h 	; KEY_LEFT .. KEY_FIRE
+8716 11 50 87     LD   DE,8750h 	; "K", "E", "R", "A", "L" ("KAREL")
 8719 06 0A        LD   B,0Ah  	; 10
 871B .sub284_loop1:
 871B 1A           LD   A,(DE) 
@@ -26613,7 +26613,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 871E 23           INC  HL     
 871F 13           INC  DE     
 8720 10 F9        DJNZ .sub284_loop1 	; 871Bh
-8722 21 33 33     LD   HL,3333h 	; 13107
+8722 21 33 33     LD   HL,3333h 	; Play "Shhh.ogg" and play with the border
 8725 .sub284_loop2:
 8725 7E           LD   A,(HL) 
 8726 06 0D        LD   B,0Dh  	; 13
@@ -26625,9 +26625,9 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 872E FE FF        CP   FFh    	; 255,   -1
 8730 20 F3        JR   NZ,.sub284_loop2 	; 8725h
 8732 3A 04 87     LD   A,(SELF_MOD79+2) 	; 8704h, WARNING: Instruction accesses code!
-8735 EE EE        XOR  EEh    	; 238,  -18
+8735 EE EE        XOR  EEh    	; 238,  -18 ; 00D0h becomes EED0h (the address of "shield remaining")
 8737 32 04 87     LD   (SELF_MOD79+2),A 	; 8704h, WARNING: Instruction accesses code!
-873A AF           XOR  A      
+873A AF           XOR  A      ; clear sound and border
 873B D3 FE        OUT  (00FEh),A 	; 254
 873D C9           RET         
 
@@ -26699,7 +26699,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 ; Subroutine: Size=3313, CC=57.
 ; Called by: SUB276[7CD5h].
-; Calls: ORG_0000, RST38, SUB017, SUB038, SUB253, SUB284, SUB287, SUB292, SUB300, SUB343, SUB353, SUB433, SUB497, SUB506, SUB518, SUB529, SUB530.
+; Calls: ORG_0000, RST38, SUB017, SUB038, SUB253, Finish_assigning_key_and_activate_cheat_if_KAREL, SUB287, SUB292, SUB300, Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen, Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned, SUB433, SUB497, SUB506, SUB518, SUB529, SUB530.
 877D SUB285:
 877D 00           NOP         
 877E 00           NOP         
@@ -48081,9 +48081,9 @@ DECB E1           DEFB E1h    	; 225,  -31
 
 ; Subroutine: Size=3, CC=1.
 ; Called by: SUB244[6E0Eh], SUB248[71DFh], LBL10[6F06h], SUB253[7330h], SUB253[73C6h], SUB251[727Ah], SUB250[7269h], SUB258[7417h], SUB490[FB1Ah].
-; Calls: SUB343.
+; Calls: Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen.
 DECC SUB317:
-DECC C3 8B E1     JP   SUB343 	; E18Bh
+DECC C3 8B E1     JP   Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; E18Bh
 
 
 ; Subroutine: Size=3, CC=1.
@@ -48100,23 +48100,23 @@ DED4 E1           DEFB E1h    	; 225,  -31
 
 ; Subroutine: Size=3, CC=1.
 ; Called by: SUB258[740Dh], SUB421[E970h].
-; Calls: SUB346.
+; Calls: Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned.
 DED5 SUB319:
-DED5 C3 12 E2     JP   SUB346 	; E212h
+DED5 C3 12 E2     JP   Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned 	; E212h
 
 
 ; Subroutine: Size=3, CC=1.
 ; Called by: LBL08[6ED5h], SUB487[FA83h], SUB513[FED7h], SUB286[FF28h], SUB498[FD01h], SUB503[FD65h], SUB185[3825h].
-; Calls: SUB347.
+; Calls: Play_configurable_sound_A.
 DED8 SUB320:
-DED8 C3 1F E2     JP   SUB347 	; E21Fh
+DED8 C3 1F E2     JP   Play_configurable_sound_A 	; E21Fh
 
 
 ; Subroutine: Size=3, CC=1.
 ; Called by: SUB486[FA41h], SUB487[FA72h], SUB487[FA75h], SUB487[FA78h], SUB286[FF14h], SUB496[FCF5h], SUB286[B06Dh], SUB286[B0EDh].
-; Calls: SUB348.
+; Calls: Play_configurable_sound_B.
 DEDB SUB321:
-DEDB C3 26 E2     JP   SUB348 	; E226h
+DEDB C3 26 E2     JP   Play_configurable_sound_B 	; E226h
 
 
 ; Subroutine: Size=3, CC=1.
@@ -48150,9 +48150,9 @@ DEEC E2           DEFB E2h    	; 226,  -30
 
 ; Subroutine: Size=3, CC=1.
 ; Called by: LBL10[6F09h].
-; Calls: SUB354.
-DEED SUB325:
-DEED C3 BD E2     JP   SUB354 	; E2BDh
+; Calls: Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL.
+DEED Thunk_Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL:
+DEED C3 BD E2     JP   Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL 	; E2BDh
 
 
 ; Destination address in screen memory to print a character
@@ -48823,7 +48823,7 @@ E16E C9           RET
 
 
 ; Subroutine: Size=6, CC=1.
-; Called by: Print_text_at_HL_on_screen[E190h], SUB353[E2B4h].
+; Called by: Print_text_at_HL_on_screen[E190h], Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned[E2B4h].
 ; Calls: -
 E16F Set_text_print_mode_combine_with_screen_data:
 E16F 3E AE        LD   A,AEh  	; 174,  -82
@@ -48832,7 +48832,7 @@ E174 C9           RET
 
 
 ; Subroutine: Size=5, CC=1.
-; Called by: SUB343[E18Bh], SUB353[E2ADh].
+; Called by: Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen[E18Bh], Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned[E2ADh].
 ; Calls: -
 E175 Set_text_print_mode_override_screen_data:
 E175 AF           XOR  A      
@@ -48841,7 +48841,7 @@ E179 C9           RET
 
 
 ; Subroutine: Size=8, CC=1.
-; Called by: Print_text_at_HL_on_screen[E19Ch], SUB353[E2B1h].
+; Called by: Print_text_at_HL_on_screen[E19Ch], Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned[E2B1h].
 ; Calls: SUB528.
 E17A Render_character_in_A_to_stored_video_addr_using_current_stored_attribute_Update_current_video_addr:
 E17A 2A F0 DE     LD   HL,(DATA168) 	; DEF0h - Load HL with the destination address in screen memory to print a character
@@ -48865,7 +48865,7 @@ E18A C9           RET
 ; Subroutine: Size=3, CC=1.
 ; Called by: SUB317[DECCh], SUB529[E2CBh], SUB285[E2D7h], SUB285[E2E3h], SUB530[E2EFh], SUB285[E2FBh].
 ; Calls: Set_text_print_mode_override_screen_data, Print_text_at_HL_on_screen.
-E18B SUB343:
+E18B Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen:
 E18B CD 75 E1     CALL Set_text_print_mode_override_screen_data 	; E175h
 
 
@@ -48873,7 +48873,7 @@ E18B CD 75 E1     CALL Set_text_print_mode_override_screen_data 	; E175h
 ; Symbol 2 sets cursor at (row, column).
 ; Symbol 1 sets attribute (puts the next symbol in (DEF2h))
 ; Subroutine: Size=42, CC=4.
-; Called by: SUB318[DECFh], SUB343[E18Bh].
+; Called by: SUB318[DECFh], Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen[E18Bh].
 ; Calls: Convert_text_coordinates_in_HL_to_video_memory_addr_in_HL, Set_text_print_mode_combine_with_screen_data, Render_character_in_A_to_stored_video_addr_using_current_stored_attribute_Update_current_video_addr.
 E18E Print_text_at_HL_on_screen:
 E18E 7E           LD   A,(HL) ; get input symbol
@@ -48906,35 +48906,36 @@ E1B2 ED 53 F0 DE  LD   (DATA168),DE 	; DEF0h
 E1B6 18 D6        JR   Print_text_at_HL_on_screen 	; E18Eh
 
 
+; Get pressed key (Z=1 iff pressed). D = 5-group query mask, E = pressed key mask, B = group element counter, C = 5-key group counter
 ; Subroutine: Size=50, CC=4.
-; Called by: SUB346[E212h].
+; Called by: Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned[E212h].
 ; Calls: -
-E1B8 SUB345:
-E1B8 0E 00        LD   C,00h  	; 0
-E1BA 16 7F        LD   D,7Fh  	; 127
+E1B8 Get_pressed_key_in_A_and_DE_Set_Z_iff_key_pressed:
+E1B8 0E 00        LD   C,00h  	; start with group 0, i.e.
+E1BA 16 7F        LD   D,7Fh  	; port address upper byte for the group - 7Fh is for "Space, Symbol Shift, M, N, B"
 E1BC .sub345_loop1:
-E1BC 1E EF        LD   E,EFh  	; 239,  -17
-E1BE 06 00        LD   B,00h  	; 0
+E1BC 1E EF        LD   E,EFh  	; mask to query actual key in a group, starting from the fifth (111.1111)
+E1BE 06 00        LD   B,00h  	; start with key 0 of [0, 5)
 E1C0 .sub345_loop2:
 E1C0 7A           LD   A,D    
-E1C1 DB FE        IN   A,(00FEh) 	; 254
-E1C3 F6 E0        OR   E0h    	; 224,  -32
-E1C5 BB           CP   E      
+E1C1 DB FE        IN   A,(00FEh) 	; A = combination of 5 pressed(0) or depressed(1) keys of the current group
+E1C3 F6 E0        OR   E0h    	; keys 5, 6, and 7 of the group don't event exist, mark them as depressed
+E1C5 BB           CP   E      ; is one concrete key pressed?
 E1C6 28 13        JR   Z,.sub345_l 	; E1DBh
-E1C8 CB 0B        RRC  E      
-E1CA 04           INC  B      
+E1C8 CB 0B        RRC  E      ; rotate the key mask for the next key in the same group
+E1CA 04           INC  B      ; increase the key number of the group
 E1CB 78           LD   A,B    
 E1CC FE 05        CP   05h    	; 5
 E1CE 20 F0        JR   NZ,.sub345_loop2 	; E1C0h
-E1D0 CB 0A        RRC  D      
-E1D2 0C           INC  C      
+E1D0 CB 0A        RRC  D      ; all keys in this group have been queried, prepare the port address upper byte for the next group
+E1D2 0C           INC  C      ;
 E1D3 79           LD   A,C    
 E1D4 FE 08        CP   08h    	; 8
 E1D6 20 E4        JR   NZ,.sub345_loop1 	; E1BCh
-E1D8 FE 01        CP   01h    	; 1
+E1D8 FE 01        CP   01h    	; reset Z
 E1DA C9           RET         
 E1DB .sub345_l:
-E1DB 78           LD   A,B    
+E1DB 78           LD   A,B    ; A = 8 * key_number_in_group + group number  (there are 8 5-key groups)
 E1DC 07           RLCA        
 E1DD 07           RLCA        
 E1DE 07           RLCA        
@@ -48944,10 +48945,11 @@ E1E1 26 00        LD   H,00h  	; 0
 E1E3 01 EA E1     LD   BC,E1EAh 	; 57834,  -7702
 E1E6 09           ADD  HL,BC  
 E1E7 7E           LD   A,(HL) 
-E1E8 BF           CP   A      
+E1E8 BF           CP   A      ; set Z
 E1E9 C9           RET         
 
 
+; Pressed key table (element at 8 * key_number_1_to_5 + group_number_1_to_8 gives the pressed key)
 E1EA 42           DEFB 42h    	; 66, 'B'
 E1EB 48           DEFB 48h    	; 72, 'H'
 E1EC 59           DEFB 59h    	; 89, 'Y'
@@ -48991,32 +48993,32 @@ E211 63           DEFB 63h    	; 99, 'c'
 
 
 ; Subroutine: Size=13, CC=2.
-; Called by: SUB353[E2A8h], SUB319[DED5h].
-; Calls: SUB345, SUB349.
-E212 SUB346:
-E212 CD B8 E1     CALL SUB345 	; E1B8h
-E215 20 FB        JR   NZ,SUB346 	; E212h
+; Called by: Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned[E2A8h], SUB319[DED5h].
+; Calls: Get_pressed_key_in_A_and_DE_Set_Z_iff_key_pressed, Play_sound_KeyAssigned.
+E212 Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned:
+E212 CD B8 E1     CALL Get_pressed_key_in_A_and_DE_Set_Z_iff_key_pressed 	; E1B8h
+E215 20 FB        JR   NZ,Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned 	; E212h
 E217 F5           PUSH AF     
 E218 D5           PUSH DE     
-E219 CD 44 E2     CALL SUB349 	; E244h
+E219 CD 44 E2     CALL Play_sound_KeyAssigned 	; E244h
 E21C D1           POP  DE     
 E21D F1           POP  AF     
 E21E C9           RET         
 
 
 ; Subroutine: Size=32, CC=2.
-; Called by: SUB320[DED8h], SUB349[E24Ch].
+; Called by: SUB320[DED8h], Play_sound_KeyAssigned[E24Ch].
 ; Calls: -
-E21F SUB347:
+E21F Play_configurable_sound_A:
 E21F 3E 0A        LD   A,0Ah  	; 10
 E221 32 2B E2     LD   (.sub347_loop1),A 	; E22Bh, WARNING: Instruction accesses code!
 E224 18 05        JR   .sub347_loop1 	; E22Bh
 
 
 ; Subroutine: Size=30, CC=2.
-; Called by: SUB354[E2C5h], SUB321[DEDBh].
+; Called by: Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL[E2C5h], SUB321[DEDBh].
 ; Calls: -
-E226 SUB348:
+E226 Play_configurable_sound_B:
 E226 3E AF        LD   A,AFh  	; 175,  -81
 E228 32 2B E2     LD   (.sub347_loop1),A 	; E22Bh, WARNING: Instruction accesses code!
 
@@ -49050,13 +49052,13 @@ E243 C9           RET
 
 
 ; Subroutine: Size=11, CC=1.
-; Called by: SUB346[E219h].
-; Calls: SUB347.
-E244 SUB349:
+; Called by: Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned[E219h].
+; Calls: Play_configurable_sound_A.
+E244 Play_sound_KeyAssigned:
 E244 11 FF 00     LD   DE,00FFh 	; 255
 E247 21 04 00     LD   HL,0004h 	; 4
 E24A 0E FF        LD   C,FFh  	; 255,   -1
-E24C C3 1F E2     JP   SUB347 	; E21Fh
+E24C C3 1F E2     JP   Play_configurable_sound_A 	; E21Fh
 
 
 E24F 02           DEFB 02h    	; 2
@@ -49113,35 +49115,35 @@ E280 00           DEFB 00h    	; 0
 
 ; Data accessed by:
 ; E2D1h(in SUB285), E28Bh(in SUB350)
-E281 DATA170:
+E281 KEY_LEFT:
 E281 10           DEFB 10h    	; 16
 E282 EF           DEFB EFh    	; 239,  -17
 
 
 ; Data accessed by:
 ; E2F5h(in SUB285), E299h(in SUB352)
-E283 DATA171:
+E283 KEY_UP:
 E283 02           DEFB 02h    	; 2
 E284 EF           DEFB EFh    	; 239,  -17
 
 
 ; Data accessed by:
 ; E2E9h(in SUB530)
-E285 DATA172:
+E285 KEY_DOWN:
 E285 04           DEFB 04h    	; 4
 E286 EF           DEFB EFh    	; 239,  -17
 
 
 ; Data accessed by:
 ; E2DDh(in SUB285), E294h(in SUB351)
-E287 DATA173:
+E287 KEY_RIGHT:
 E287 08           DEFB 08h    	; 8
 E288 EF           DEFB EFh    	; 239,  -17
 
 
 ; Data accessed by:
-; 8710h(in SUB284)
-E289 DATA174:
+; 8710h(in Finish_assigning_key_and_activate_cheat_if_KAREL)
+E289 KEY_FIRE:
 E289 01           DEFB 01h    	; 1
 E28A EF           DEFB EFh    	; 239,  -17
 
@@ -49150,7 +49152,7 @@ E28A EF           DEFB EFh    	; 239,  -17
 ; Called by: SUB322[DEDEh].
 ; Calls: -
 E28B SUB350:
-E28B 2A 81 E2     LD   HL,(DATA170) 	; E281h
+E28B 2A 81 E2     LD   HL,(KEY_LEFT) 	; E281h
 E28E .sub350_loop:
 E28E 7C           LD   A,H    
 E28F DB FE        IN   A,(00FEh) 	; 254
@@ -49163,7 +49165,7 @@ E293 C9           RET
 ; Called by: SUB323[DEE1h].
 ; Calls: -
 E294 SUB351:
-E294 2A 87 E2     LD   HL,(DATA173) 	; E287h
+E294 2A 87 E2     LD   HL,(KEY_RIGHT) 	; E287h
 E297 18 F5        JR   .sub350_loop 	; E28Eh
 
 
@@ -49171,7 +49173,7 @@ E297 18 F5        JR   .sub350_loop 	; E28Eh
 ; Called by: SUB324[DEE4h].
 ; Calls: -
 E299 SUB352:
-E299 2A 83 E2     LD   HL,(DATA171) 	; E283h
+E299 2A 83 E2     LD   HL,(KEY_UP) 	; E283h
 E29C 18 F0        JR   .sub350_loop 	; E28Eh
 
 
@@ -49189,9 +49191,9 @@ E2A7 E6           DEFB E6h    	; 230,  -26
 
 ; Subroutine: Size=21, CC=1.
 ; Called by: SUB285[E2CEh], SUB285[E2DAh], SUB285[E2E6h], SUB285[E2F2h], SUB285[E2FEh].
-; Calls: Set_text_print_mode_combine_with_screen_data, Set_text_print_mode_override_screen_data, Render_character_in_A_to_stored_video_addr_using_current_stored_attribute_Update_current_video_addr, SUB346.
-E2A8 SUB353:
-E2A8 CD 12 E2     CALL SUB346 	; E212h
+; Calls: Set_text_print_mode_combine_with_screen_data, Set_text_print_mode_override_screen_data, Render_character_in_A_to_stored_video_addr_using_current_stored_attribute_Update_current_video_addr, Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned.
+E2A8 Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned:
+E2A8 CD 12 E2     CALL Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned 	; E212h
 E2AB D5           PUSH DE     
 E2AC F5           PUSH AF     
 E2AD CD 75 E1     CALL Set_text_print_mode_override_screen_data 	; E175h
@@ -49200,56 +49202,40 @@ E2B1 CD 7A E1     CALL Render_character_in_A_to_stored_video_addr_using_current_
 E2B4 CD 6F E1     CALL Set_text_print_mode_combine_with_screen_data 	; E16Fh
 E2B7 D1           POP  DE     
 E2B8 7B           LD   A,E    
-E2B9 2F           CPL         
+E2B9 2F           CPL         ; store key as a bit, rather than a mask
 E2BA 5F           LD   E,A    
 E2BB EB           EX   DE,HL  
 E2BC C9           RET         
 
 
 ; Subroutine: Size=11, CC=1.
-; Called by: SUB325[DEEDh].
-; Calls: SUB348, SUB529.
-E2BD SUB354:
-E2BD 11 00 00     LD   DE,0000h 	; 0
+; Called by: Thunk_Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL[DEEDh].
+; Calls: Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen, Play_configurable_sound_B.
+E2BD Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL:
+E2BD 11 00 00     LD   DE,0000h 	; Play "RedefineKeys.ogg"
 E2C0 21 00 FF     LD   HL,FF00h 	; 65280,   -256
 E2C3 0E FF        LD   C,FFh  	; 255,   -1
-E2C5 CD 26 E2     CALL SUB348 	; E226h
-
-
-; Subroutine: Size=33, CC=1.
-; Called by: SUB285[91D1h], SUB354[E2C5h].
-; Calls: SUB343.
-E2C8 SUB529:
-E2C8 21 4F E2     LD   HL,E24Fh 	; 57935,  -7601
-E2CB CD 8B E1     CALL SUB343 	; E18Bh
-
-
-E2CE CD A8 E2     CALL SUB353 	; E2A8h
-E2D1 22 81 E2     LD   (DATA170),HL 	; E281h
-E2D4 21 59 E2     LD   HL,E259h 	; 57945,  -7591
-E2D7 CD 8B E1     CALL SUB343 	; E18Bh
-E2DA CD A8 E2     CALL SUB353 	; E2A8h
-E2DD 22 87 E2     LD   (DATA173),HL 	; E287h
-E2E0 21 63 E2     LD   HL,E263h 	; 57955,  -7581
-E2E3 CD 8B E1     CALL SUB343 	; E18Bh
-E2E6 CD A8 E2     CALL SUB353 	; E2A8h
-
-
-; Subroutine: Size=27, CC=1.
-; Called by: SUB285[91D7h], SUB285[E2E6h].
-; Calls: SUB343.
-E2E9 SUB530:
-E2E9 22 85 E2     LD   (DATA172),HL 	; E285h
-E2EC 21 6D E2     LD   HL,E26Dh 	; 57965,  -7571
-E2EF CD 8B E1     CALL SUB343 	; E18Bh
-
-
-E2F2 CD A8 E2     CALL SUB353 	; E2A8h
-E2F5 22 83 E2     LD   (DATA171),HL 	; E283h
-E2F8 21 77 E2     LD   HL,E277h 	; 57975,  -7561
-E2FB CD 8B E1     CALL SUB343 	; E18Bh
-E2FE CD A8 E2     CALL SUB353 	; E2A8h
-E301 C3 10 87     JP   SUB284 	; 8710h
+E2C5 CD 26 E2     CALL Play_configurable_sound_B 	; E226h
+E2C8 21 4F E2     LD   HL,E24Fh 	; "LEFT"
+E2CB CD 8B E1     CALL Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; E18Bh
+E2CE CD A8 E2     CALL Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned 	; E2A8h
+E2D1 22 81 E2     LD   (KEY_LEFT),HL 	; E281h
+E2D4 21 59 E2     LD   HL,E259h 	; "RIGHT"
+E2D7 CD 8B E1     CALL Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; E18Bh
+E2DA CD A8 E2     CALL Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned 	; E2A8h
+E2DD 22 87 E2     LD   (KEY_RIGHT),HL 	; E287h
+E2E0 21 63 E2     LD   HL,E263h 	; "DOWN"
+E2E3 CD 8B E1     CALL Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; E18Bh
+E2E6 CD A8 E2     CALL Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned 	; E2A8h
+E2E9 22 85 E2     LD   (KEY_DOWN),HL 	; E285h
+E2EC 21 6D E2     LD   HL,E26Dh 	; "UP"
+E2EF CD 8B E1     CALL Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; E18Bh
+E2F2 CD A8 E2     CALL Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned 	; E2A8h
+E2F5 22 83 E2     LD   (KEY_UP),HL 	; E283h
+E2F8 21 77 E2     LD   HL,E277h 	; "FIRE"
+E2FB CD 8B E1     CALL Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; E18Bh
+E2FE CD A8 E2     CALL Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned 	; E2A8h
+E301 C3 10 87     JP   Finish_assigning_key_and_activate_cheat_if_KAREL 	; 8710h
 
 
 E304 C9           DEFB C9h    	; 201,  -55
