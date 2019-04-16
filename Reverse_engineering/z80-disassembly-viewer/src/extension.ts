@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 
 function findDefinitionPosition(document: vscode.TextDocument, position: vscode.Position): vscode.Position | undefined {
 	let word: string = document.getText(document.getWordRangeAtPosition(position));
-	if (word === '') {
+	if ((word === '') || (word.length < 4)) {
 		return undefined;
 	}
 
