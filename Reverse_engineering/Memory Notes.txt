@@ -9,8 +9,8 @@ http://www.breakintoprogram.co.uk/computers/zx-spectrum/screen-memory-layout
 ZX Spectrum memory
 
 *	0000-3FFF	ROM
-*	22AA		Based on (x, y) in BC (y in B, x in C; y grows downwards), calculate address in screen memory (HL) and pixel position in the byte (C mod 8)
-*	22B1		See 22AA above.
+OK	22AA		Based on (x, y) in BC (y in B, x in C; y grows downwards), calculate address in screen memory (HL) and pixel position in the byte (C mod 8)
+OK	22B1		See 22AA above.
 *	4000-57FF	screen pixels (3 parts x 8 rows x32 columns x 8 pixels)
 *	5800-5AFF	attributes
 *	5DC0-6DBF	Initial map (128 x 8 x (y, x, 0, type)) of all game objects
@@ -31,7 +31,7 @@ OK	8F00-9EFF	32 (actually, 29) 32x32 labyrinth elements' pixels
 OK	9F00-A0FF	attributes for the above
 *	A100-A2FF	8 x 2 tables used to convert sprite byte to a pair of actual screen bytes based on sprite x (mod 8) coordinate
 *	A4FF, A6FF, A8FF, A9FF, AAFF, ACFF, AEFF - bytes correspoding to 1, 2, 3, 4, 5, 6 pixel columns of bar (fuel, ammo, shield)
-*	B100-...	16 x 16 sprites (no attributes)
+OK	B100-...	16 x 16 sprites (no attributes)
 
 *	C400-D3FF	Session-dependent (current) map (16 x 8 x (y, x, 0, type)) of all game objects
 
@@ -49,7 +49,7 @@ OK	DF74-DF82	Return (in HL) target address of the (after HL) pixel byte below th
 OK	DF83-DFEB	Copy block (128 bytes of pixels + 16 bytes of attributes) from block definition (block number in A) to the video memory (at the right spot, pointed to by HL).
 *	DFEC-DFF5	For each of the five maze block rows, get the screen address of the first block top left corner.
 
-*	E011-E026	Put the address of sprite number A in DE, address of screen memory where to draw it (B = y, C = x) in HL, pixel offset (a2a1a0) in B as 1010_a2_a1_a0_1 in B (see A100)
+OK	E011-E026	Put the address of sprite number A in DE, address of screen memory where to draw it (B = y, C = x) in HL, pixel offset (a2a1a0) in B as 1010_a2_a1_a0_1 in B (see A100)
 >>>	E027-E0A1	Draw a sprite???
 >>>	E0BE-E0DC	???
 *	E0DD-E0E8	Give address (in DE) of graphics for character in A.
@@ -96,7 +96,7 @@ OK	DF83-DFEB	Copy block (128 bytes of pixels + 16 bytes of attributes) from bloc
 OK	E51C-E537	Change current room, if necessary.
 *	E538-E548	Render blocks of current room, clearing screen first, if necessary.
 *	E549-E556	Clear screen, including the attributes (zero out using LDIR).
-*	E557-E59F	OR paper attributes at the object location (all 8x8 blocks).
+OK	E557-E59F	OR paper attributes at the object location (all 16x16 blocks).
 *	E5AE-E5BE	Add (IX+0C) ??? to A (horizontal speed), store A mod 16 back to (IX+0C). WHY????
 *	E5BF-
 *	E5CA-E5EC	Update horizontal/vertical speed (in A) based on horizontal/vertical velocity (in E) but keep |A| within 60.
@@ -105,9 +105,9 @@ OK	E51C-E537	Change current room, if necessary.
 *	E60A-E61B	Update (player's) vertical position, adding gravity.
 *	E61C-		Update enemy's vertical position.
 *	E696-E70B	Update collisions?
-*	E730-E73B	Carry = (enemy touched screen top, bottom, or right).
-*	E73C-E75D	Put in HL the address of top left attribute square, based on x (in C) and y (in B), in IX y and x mod 8 (i.e. inside the 8x8 block), make DE = 20.
-*	E762-E781	OR paper attributes at the object location (4 8x8 blocks).
+OK	E730-E73B	Carry = (enemy touched screen top, bottom, or right).
+OK	E73C-E75D	Put in HL the address of top left attribute square, based on x (in C) and y (in B), in IX y and x mod 8 (i.e. inside the 8x8 block), make DE = 20.
+OK	E762-E781	OR paper attributes at the object location (4-9 8x8 blocks).
 *	E79C-E7AD	OR attributes (2 or 3 bytes, depending on whether x is divisible by 8).
 *	E7BA-E7C0	Load B with y (IX+1), load C with x (IX+2).
 *	E7C1-E7C7	Store B as y (IX+1), store C as x (IX+2).
