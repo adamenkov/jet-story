@@ -52,9 +52,9 @@ OK	DF83-DFEB	Copy block (128 bytes of pixels + 16 bytes of attributes) from bloc
 OK	E011-E026	Put the address of sprite number A in DE, address of screen memory where to draw it (B = y, C = x) in HL, pixel offset (a2a1a0) in B as 1010_a2_a1_a0_1 in B (see A100)
 >>>	E027-E0A1	Draw a sprite???
 >>>	E0BE-E0DC	???
-*	E0DD-E0E8	Give address (in DE) of graphics for character in A.
+OK	E0DD-E0E8	Give address (in DE) of graphics for character in A.
 *	E139-E147	Calculate screen memory address (HL) based on row (0 <= H <= 17h) and column (0 <= L <= 1F).
-*	E152-E16E	Actually draw character (in A) on screen, given its destination in screen memory (in HL).  E15B is either NOP or XOR (HL) (opcode AE).
+OK	E152-E16E	Actually draw character (in A) on screen, given its destination in screen memory (in HL).  E15B is either NOP or XOR (HL) (opcode AE).
 *	E18B-		Draw a character.  Symbol 2 sets cursor at (row, column).  Symbol 1 sets attribute (puts the next symbol in (DEF2))
 *	E1B8-E1E9	get key (Z=1 iff pressed). D = 5-group query mask, E = pressed key mask, B = group element counter, C = 5-key group counter
 *	E1EA-E211	key table.  (element at 8 * key_number_1_to_5 + group_number_1_to_8 gives the pressed key)
