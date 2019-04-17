@@ -13249,7 +13249,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 ; Subroutine: Size=155, CC=12.
 ; Called by: SUB184[37D6h].
-; Calls: RST28, SUB176, SUB231, SUB295, SUB320.
+; Calls: RST28, SUB176, SUB231, SUB295, Thunk_Play_configurable_sound_A.
 3804 SUB185:
 3804 B2           OR   D      
 3805 13           INC  DE     
@@ -13287,7 +13287,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 3821 36 73        LD   (HL),73h 	; 115, 's'
 3823 1B           DEC  DE     
 3824 5D           LD   E,L    
-3825 EC D8 DE     CALL PE,SUB320 	; DED8h
+3825 EC D8 DE     CALL PE,Thunk_Play_configurable_sound_A 	; DED8h
 3828 63           LD   H,E    
 3829 BE           CP   (HL)   
 382A F0           RET  P      
@@ -20446,10 +20446,12 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 6DD0 C3 B4 6E     JP   LBL08  	; 6EB4h
 
 
+; (Copy of subroutine at DF74)
+; Returns (in HL) the address of the pixel byte below the current one (in HL).
 ; Subroutine: Size=15, CC=3.
-; Called by: SUB247[6F5Eh].
+; Called by: Shift_running_line_left_by_one_pixel[6F5Eh].
 ; Calls: -
-6DD3 SUB240:
+6DD3 Same_as_Pixel_address_below_current_in_HL:
 6DD3 24           INC  H      
 6DD4 7C           LD   A,H    
 6DD5 E6 07        AND  07h    	; 7
@@ -20465,29 +20467,29 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 
 ; Subroutine: Size=7, CC=1.
-; Called by: SUB248[71E2h], SUB242[6DE9h].
+; Called by: Run_the_running_line_until_any_key_is_pressed[71E2h], Wait_until_any_key_is_pressed[6DE9h].
 ; Calls: -
-6DE2 SUB241:
-6DE2 AF           XOR  A      
+6DE2 NZ_iff_any_key_is_pressed:
+6DE2 AF           XOR  A      ; Is any key at all pressed?
 6DE3 DB FE        IN   A,(00FEh) 	; 254
 6DE5 2F           CPL         
-6DE6 E6 1F        AND  1Fh    	; 31
+6DE6 E6 1F        AND  1Fh    	; NZ if yes
 6DE8 C9           RET         
 
 
 ; Subroutine: Size=6, CC=2.
-; Called by: LBL09[6EC5h], SUB253[7350h].
-; Calls: SUB241.
-6DE9 SUB242:
-6DE9 CD E2 6D     CALL SUB241 	; 6DE2h
-6DEC 28 FB        JR   Z,SUB242 	; 6DE9h
+; Called by: Main_menu_loop_start[6EC5h], SUB253[7350h].
+; Calls: NZ_iff_any_key_is_pressed.
+6DE9 Wait_until_any_key_is_pressed:
+6DE9 CD E2 6D     CALL NZ_iff_any_key_is_pressed 	; 6DE2h
+6DEC 28 FB        JR   Z,Wait_until_any_key_is_pressed 	; 6DE9h
 6DEE C9           RET         
 
 
 ; Subroutine: Size=25, CC=1.
-; Called by: LBL08[6EB4h], LBL10[6F00h], LBL10[6F0Ch], LBL13[7236h], LBL13[723Ch], SUB253[7353h].
+; Called by: LBL08[6EB4h], Pressed_1_to_redefine_keys[6F00h], Pressed_1_to_redefine_keys[6F0Ch], Pressed_4_to_start_game[7236h], Pressed_4_to_start_game[723Ch], SUB253[7353h].
 ; Calls: -
-6DEF SUB243:
+6DEF Clear_screen_Set_attributes_to_7_Clear_border:
 6DEF 21 00 40     LD   HL,4000h 	; 16384
 6DF2 11 01 40     LD   DE,4001h 	; 16385
 6DF5 01 00 18     LD   BC,1800h 	; 6144
@@ -20502,14 +20504,15 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 
 ; Subroutine: Size=9, CC=1.
-; Called by: LBL08[6EB7h], LBL09[6EC2h].
-; Calls: SUB245, SUB317.
-6E08 SUB244:
-6E08 CD FF 6E     CALL SUB245 	; 6EFFh
-6E0B 21 11 6E     LD   HL,6E11h 	; 28177
-6E0E C3 CC DE     JP   SUB317 	; DECCh
+; Called by: LBL08[6EB7h], Main_menu_loop_start[6EC2h].
+; Calls: Just_return, Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen.
+6E08 Print_main_menu_text:
+6E08 CD FF 6E     CALL Just_return 	; 6EFFh
+6E0B 21 11 6E     LD   HL,main_menu_text    ; 6E11h, 28177
+6E0E C3 CC DE     JP   Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; DECCh
 
 
+6E11 main_menu_text:
 6E11 01           DEFB 01h    	; 1
 6E12 47           DEFB 47h    	; 71, 'G'
 6E13 02           DEFB 02h    	; 2
@@ -20681,20 +20684,20 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 
 ; Label accessed by:
-; 6F0Fh(in LBL10), 7242h(in LBL13), 6DD0h(in LBL07)
+; 6F0Fh(in Pressed_1_to_redefine_keys), 7242h(in Pressed_4_to_start_game), 6DD0h(in LBL07)
 6EB4 LBL08:
-6EB4 CD EF 6D     CALL SUB243 	; 6DEFh
-6EB7 CD 08 6E     CALL SUB244 	; 6E08h
+6EB4 CD EF 6D     CALL Clear_screen_Set_attributes_to_7_Clear_border 	; 6DEFh
+6EB7 CD 08 6E     CALL Print_main_menu_text 	; 6E08h
 6EBA CD 41 7F     CALL SUB279 	; 7F41h
-6EBD CD C1 71     CALL SUB248 	; 71C1h
+6EBD CD C1 71     CALL Run_the_running_line_until_any_key_is_pressed 	; 71C1h
 6EC0 18 06        JR   .lbl08_l 	; 6EC8h
 
 
 ; Label accessed by:
-; 6EF1h(in LBL08), 6F2Fh(in LBL11), 6F48h(in LBL12), 6F3Ch(in LBL11)
-6EC2 LBL09:
-6EC2 CD 08 6E     CALL SUB244 	; 6E08h
-6EC5 CD E9 6D     CALL SUB242 	; 6DE9h
+; 6EF1h(in LBL08), 6F2Fh(in Pressed_2_to_toggle_48k_sound_effects), 6F48h(in Pressed_3_to_toggle_128k_music), 6F3Ch(in Pressed_2_to_toggle_48k_sound_effects)
+6EC2 Main_menu_loop_start:
+6EC2 CD 08 6E     CALL Print_main_menu_text 	; 6E08h
+6EC5 CD E9 6D     CALL Wait_until_any_key_is_pressed 	; 6DE9h
 
 
 6EC8 .lbl08_l:
@@ -20704,21 +20707,21 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 6ECD 11 40 40     LD   DE,4040h 	; 16448
 6ED0 21 FE 00     LD   HL,00FEh 	; 254
 6ED3 0E 64        LD   C,64h  	; 100, 'd'
-6ED5 CD D8 DE     CALL SUB320 	; DED8h
+6ED5 CD D8 DE     CALL Thunk_Play_configurable_sound_A 	; DED8h
 6ED8 F1           POP  AF     
 6ED9 CB 47        BIT  0,A    
-6EDB CA 00 6F     JP   Z,LBL10 	; 6F00h
+6EDB CA 00 6F     JP   Z,Pressed_1_to_redefine_keys 	; 6F00h
 6EDE CB 4F        BIT  1,A    
-6EE0 CA 18 6F     JP   Z,LBL11 	; 6F18h
+6EE0 CA 18 6F     JP   Z,Pressed_2_to_toggle_48k_sound_effects 	; 6F18h
 6EE3 CB 57        BIT  2,A    
-6EE5 CA 3F 6F     JP   Z,LBL12 	; 6F3Fh
+6EE5 CA 3F 6F     JP   Z,Pressed_3_to_toggle_128k_music 	; 6F3Fh
 6EE8 CB 5F        BIT  3,A    
-6EEA CA EF 71     JP   Z,LBL13 	; 71EFh
+6EEA CA EF 71     JP   Z,Pressed_4_to_start_game 	; 71EFh
 6EED 00           NOP         
 6EEE 00           NOP         
 6EEF 00           NOP         
 6EF0 00           NOP         
-6EF1 18 CF        JR   LBL09  	; 6EC2h
+6EF1 18 CF        JR   Main_menu_loop_start  	; 6EC2h
 
 
 6EF3 02           DEFB 02h    	; 2
@@ -20736,25 +20739,25 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 
 ; Subroutine: Size=1, CC=1.
-; Called by: SUB244[6E08h].
+; Called by: Print_main_menu_text[6E08h].
 ; Calls: -
-6EFF SUB245:
+6EFF Just_return:
 6EFF C9           RET         
 
 
 ; Label accessed by:
 ; 6EDBh(in LBL08)
-6F00 LBL10:
-6F00 CD EF 6D     CALL SUB243 	; 6DEFh
-6F03 21 B1 6E     LD   HL,6EB1h 	; 28337
-6F06 CD CC DE     CALL SUB317 	; DECCh
+6F00 Pressed_1_to_redefine_keys:
+6F00 CD EF 6D     CALL Clear_screen_Set_attributes_to_7_Clear_border 	; 6DEFh
+6F03 21 B1 6E     LD   HL,6EB1h 	; Set bright yellow ink on black
+6F06 CD CC DE     CALL Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; DECCh
 6F09 CD ED DE     CALL Thunk_Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL 	; DEEDh
-6F0C CD EF 6D     CALL SUB243 	; 6DEFh
+6F0C CD EF 6D     CALL Clear_screen_Set_attributes_to_7_Clear_border 	; 6DEFh
 6F0F C3 B4 6E     JP   LBL08  	; 6EB4h
 
 
 ; Subroutine: Size=6, CC=1.
-; Called by: LBL11[6F1Eh], LBL12[6F45h].
+; Called by: Pressed_2_to_toggle_48k_sound_effects[6F1Eh], Pressed_3_to_toggle_128k_music[6F45h].
 ; Calls: -
 6F12 SUB246:
 6F12 1A           LD   A,(DE) 
@@ -20767,7 +20770,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 ; Label accessed by:
 ; 6EE0h(in LBL08)
-6F18 LBL11:
+6F18 Pressed_2_to_toggle_48k_sound_effects:
 6F18 21 72 6E     LD   HL,6E72h 	; 28274
 6F1B 11 79 6E     LD   DE,6E79h 	; 28281
 6F1E CD 12 6F     CALL SUB246 	; 6F12h
@@ -20777,43 +20780,44 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 6F27 32 59 ED     LD   (SELF_MOD55),A 	; ED59h, WARNING: Instruction accesses code!
 6F2A 3E 3E        LD   A,3Eh  	; 62, '>'
 6F2C 32 2C E2     LD   (SELF_MOD54),A 	; E22Ch, WARNING: Instruction accesses code!
-6F2F C3 C2 6E     JP   LBL09  	; 6EC2h
+6F2F C3 C2 6E     JP   Main_menu_loop_start  	; 6EC2h
 6F32 .lbl11_l:
 6F32 3E BA        LD   A,BAh  	; 186,  -70
 6F34 32 59 ED     LD   (SELF_MOD55),A 	; ED59h, WARNING: Instruction accesses code!
 6F37 3E E6        LD   A,E6h  	; 230,  -26
 6F39 32 2C E2     LD   (SELF_MOD54),A 	; E22Ch, WARNING: Instruction accesses code!
-6F3C C3 C2 6E     JP   LBL09  	; 6EC2h
+6F3C C3 C2 6E     JP   Main_menu_loop_start  	; 6EC2h
 
 
 ; Label accessed by:
 ; 6EE5h(in LBL08)
-6F3F LBL12:
+6F3F Pressed_3_to_toggle_128k_music:
 6F3F 21 92 6E     LD   HL,6E92h 	; 28306
 6F42 11 99 6E     LD   DE,6E99h 	; 28313
 6F45 CD 12 6F     CALL SUB246 	; 6F12h
-6F48 C3 C2 6E     JP   LBL09  	; 6EC2h
+6F48 C3 C2 6E     JP   Main_menu_loop_start  	; 6EC2h
 
 
+; Shift the running line one pixel to the left.
 ; Subroutine: Size=25, CC=1.
-; Called by: SUB248[71D4h].
-; Calls: SUB240.
-6F4B SUB247:
-6F4B 21 FF 50     LD   HL,50FFh 	; 20735
-6F4E 06 08        LD   B,08h  	; 8
+; Called by: Run_the_running_line_until_any_key_is_pressed[71D4h].
+; Calls: Same_as_Pixel_address_below_current_in_HL.
+6F4B Shift_running_line_left_by_one_pixel:
+6F4B 21 FF 50     LD   HL,50FFh 	; top byte of the 8x8 pixel block of the bottom right-hand corner
+6F4E 06 08        LD   B,08h  	; 8 pixel lines
 6F50 .sub247_loop1:
 6F50 E5           PUSH HL     
 6F51 C5           PUSH BC     
 6F52 CB 06        RLC  (HL)   
-6F54 06 1E        LD   B,1Eh  	; 30
-6F56 2D           DEC  L      
+6F54 06 1E        LD   B,1Eh  	; 30 visible characters to shift left by 1 pixel at a time
+6F56 2D           DEC  L      ; move to the left neighbor 8x8 pixel block
 6F57 .sub247_loop2:
 6F57 CB 16        RL   (HL)   
 6F59 2D           DEC  L      
 6F5A 10 FB        DJNZ .sub247_loop2 	; 6F57h
 6F5C C1           POP  BC     
 6F5D E1           POP  HL     
-6F5E CD D3 6D     CALL SUB240 	; 6DD3h
+6F5E CD D3 6D     CALL Same_as_Pixel_address_below_current_in_HL 	; 6DD3h
 6F61 10 ED        DJNZ .sub247_loop1 	; 6F50h
 6F63 C9           RET         
 
@@ -21431,47 +21435,48 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 ; Subroutine: Size=39, CC=4.
 ; Called by: LBL08[6EBDh].
-; Calls: SUB241, SUB247, SUB317.
-71C1 SUB248:
-71C1 DD 21 64 6F  LD   IX,6F64h 	; 28516
+; Calls: NZ_iff_any_key_is_pressed, Shift_running_line_left_by_one_pixel, Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen.
+71C1 Run_the_running_line_until_any_key_is_pressed:
+71C1 DD 21 64 6F  LD   IX,6F64h 	; Text of the running line - "JET-STORY   (C) 1988 CYBEXLAB SOFTWARE ... $"
 71C5 .sub248_loop1:
 71C5 DD 7E 00     LD   A,(IX+0) 
-71C8 FE 24        CP   24h    	; 36, '$'
-71CA 28 F5        JR   Z,SUB248 	; 71C1h
-71CC 32 ED 71     LD   (DATA133),A 	; 71EDh
+71C8 FE 24        CP   24h    	; 36, '$' - end of text of the running line
+71CA 28 F5        JR   Z,Run_the_running_line_until_any_key_is_pressed 	; if reached the end of the text of the running line, start over
+71CC 32 ED 71     LD   (character_to_print_at_bottom_right_corner),A 	; 71EDh
 71CF DD 23        INC  IX     
-71D1 3E 08        LD   A,08h  	; 8
+71D1 3E 08        LD   A,08h  	; Shilt running line left by one pixel 8 times
 71D3 .sub248_loop2:
 71D3 F5           PUSH AF     
-71D4 CD 4B 6F     CALL SUB247 	; 6F4Bh
+71D4 CD 4B 6F     CALL Shift_running_line_left_by_one_pixel 	; 6F4Bh
 71D7 F1           POP  AF     
-71D8 76           HALT        
+71D8 76           HALT        ; Wait until next frame (1/50 of a second)
 71D9 3D           DEC  A      
 71DA 20 F7        JR   NZ,.sub248_loop2 	; 71D3h
-71DC 21 E8 71     LD   HL,71E8h 	; 29160
-71DF CD CC DE     CALL SUB317 	; DECCh
-71E2 CD E2 6D     CALL SUB241 	; 6DE2h
+71DC 21 E8 71     LD   HL,invisible_new_character_of_the_running_line;  71E8h, 29160
+71DF CD CC DE     CALL Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; DECCh
+71E2 CD E2 6D     CALL NZ_iff_any_key_is_pressed 	; 6DE2h
 71E5 C0           RET  NZ     
 71E6 18 DD        JR   .sub248_loop1 	; 71C5h
 
 
-71E8 02           DEFB 02h    	; 2
+invisible_new_character_of_the_running_line:
+71E8 02           DEFB 02h    	; at (31, 23)
 71E9 17           DEFB 17h    	; 23
 71EA 1F           DEFB 1Fh    	; 31
-71EB 01           DEFB 01h    	; 1
+71EB 01           DEFB 01h    	; print a character with bright black ink on black paper
 71EC 40           DEFB 40h    	; 64, '@'
 
 
 ; Data accessed by:
-; 71CCh(in SUB248)
-71ED DATA133:
+; 71CCh(in Run_the_running_line_until_any_key_is_pressed)
+71ED character_to_print_at_bottom_right_corner:
 71ED 43           DEFB 43h    	; 67, 'C'
 71EE 00           DEFB 00h    	; 0
 
 
 ; Label accessed by:
 ; 6EEAh(in LBL08)
-71EF LBL13:
+71EF Pressed_4_to_start_game:
 71EF 21 73 F8     LD   HL,F873h 	; 63603,  -1933
 71F2 AF           XOR  A      
 71F3 77           LD   (HL),A 
@@ -21511,9 +21516,9 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 722D CD 4D 72     CALL SUB249 	; 724Dh
 7230 3A 75 F8     LD   A,(DATA200) 	; F875h
 7233 CD 4D 72     CALL SUB249 	; 724Dh
-7236 CD EF 6D     CALL SUB243 	; 6DEFh
+7236 CD EF 6D     CALL Clear_screen_Set_attributes_to_7_Clear_border 	; 6DEFh
 7239 CD 71 73     CALL SUB257 	; 7371h
-723C CD EF 6D     CALL SUB243 	; 6DEFh
+723C CD EF 6D     CALL Clear_screen_Set_attributes_to_7_Clear_border 	; 6DEFh
 723F CD 2D 73     CALL SUB255 	; 732Dh
 7242 C3 B4 6E     JP   LBL08  	; 6EB4h
 
@@ -21529,7 +21534,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 
 ; Subroutine: Size=19, CC=1.
-; Called by: LBL13[7227h], LBL13[722Dh], LBL13[7233h].
+; Called by: Pressed_4_to_start_game[7227h], Pressed_4_to_start_game[722Dh], Pressed_4_to_start_game[7233h].
 ; Calls: -
 724D SUB249:
 724D 47           LD   B,A    
@@ -21551,14 +21556,14 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 ; Subroutine: Size=14, CC=1.
 ; Called by: SUB253[7342h].
-; Calls: SUB252, SUB317.
+; Calls: SUB252, Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen.
 7260 SUB250:
 7260 32 6E 72     LD   (DATA134),A 	; 726Eh
 7263 E5           PUSH HL     
 7264 D5           PUSH DE     
 7265 C5           PUSH BC     
 7266 21 6E 72     LD   HL,726Eh 	; 29294
-7269 CD CC DE     CALL SUB317 	; DECCh
+7269 CD CC DE     CALL Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; DECCh
 726C 18 0F        JR   SUB252 	; 727Dh
 
 
@@ -21571,14 +21576,14 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 ; Subroutine: Size=13, CC=1.
 ; Called by: SUB253[733Ch].
-; Calls: SUB252, SUB317.
+; Calls: SUB252, Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen.
 7270 SUB251:
 7270 ED 53 82 72  LD   (DATA135),DE 	; 7282h
 7274 E5           PUSH HL     
 7275 D5           PUSH DE     
 7276 C5           PUSH BC     
 7277 21 81 72     LD   HL,7281h 	; 29313
-727A CD CC DE     CALL SUB317 	; DECCh
+727A CD CC DE     CALL Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; DECCh
 
 
 ; Subroutine: Size=4, CC=1.
@@ -21609,7 +21614,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 ; Subroutine: Size=329, CC=58.
 ; Called by: SUB285[8F7Bh].
-; Calls: SUB242, SUB243, SUB250, SUB251, SUB252, SUB254, SUB255, SUB258, SUB317.
+; Calls: Wait_until_any_key_is_pressed, Clear_screen_Set_attributes_to_7_Clear_border, SUB250, SUB251, SUB252, SUB254, SUB255, SUB258, Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen.
 728A SUB253:
 728A 41           LD   B,C    
 728B 46           LD   B,(HL) 
@@ -21761,14 +21766,14 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 
 ; Subroutine: Size=41, CC=2.
-; Called by: LBL13[723Fh], SUB253[730Ch], SUB253[72D8h], SUB253[732Ah].
+; Called by: Pressed_4_to_start_game[723Fh], SUB253[730Ch], SUB253[72D8h], SUB253[732Ah].
 ; Calls: -
 732D SUB255:
 732D 21 15 73     LD   HL,7315h 	; 29461
 
 
 7330 .sub253_l22:
-7330 CD CC DE     CALL SUB317 	; DECCh
+7330 CD CC DE     CALL Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; DECCh
 7333 .sub253_l36:
 7333 21 95 72     LD   HL,7295h 	; 29333
 7336 .sub253_l37:
@@ -21791,8 +21796,8 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 734B 10 EF        DJNZ .sub253_loop1 	; 733Ch
 734D .sub253_l39:
 734D 21 DA 74     LD   HL,74DAh 	; 29914
-7350 CD E9 6D     CALL SUB242 	; 6DE9h
-7353 C3 EF 6D     JP   SUB243 	; 6DEFh
+7350 CD E9 6D     CALL Wait_until_any_key_is_pressed 	; 6DE9h
+7353 C3 EF 6D     JP   Clear_screen_Set_attributes_to_7_Clear_border 	; 6DEFh
 
 
 ; Subroutine: Size=27, CC=3.
@@ -21822,7 +21827,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 
 ; Subroutine: Size=92, CC=3.
-; Called by: LBL13[7239h].
+; Called by: Pressed_4_to_start_game[7239h].
 ; Calls: SUB256.
 7371 SUB257:
 7371 21 95 72     LD   HL,7295h 	; 29333
@@ -21905,7 +21910,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 73C1 E5           PUSH HL     
 73C2 C5           PUSH BC     
 73C3 21 82 73     LD   HL,7382h 	; 29570
-73C6 CD CC DE     CALL SUB317 	; DECCh
+73C6 CD CC DE     CALL Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; DECCh
 73C9 C1           POP  BC     
 73CA 11 14 73     LD   DE,7314h 	; 29460
 73CD 21 04 73     LD   HL,7304h 	; 29444
@@ -21954,14 +21959,14 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 ; Subroutine: Size=17, CC=1.
 ; Called by: SUB253[73DEh], SUB253[73E7h], SUB253[73ECh].
-; Calls: SUB317, SUB319.
+; Calls: Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen, Thunk_Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned.
 740C SUB258:
 740C E5           PUSH HL     
-740D CD D5 DE     CALL SUB319 	; DED5h
+740D CD D5 DE     CALL Thunk_Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned 	; DED5h
 7410 21 1D 74     LD   HL,741Dh 	; 29725
 7413 32 1D 74     LD   (DATA136),A 	; 741Dh
 7416 F5           PUSH AF     
-7417 CD CC DE     CALL SUB317 	; DECCh
+7417 CD CC DE     CALL Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; DECCh
 741A F1           POP  AF     
 741B E1           POP  HL     
 741C C9           RET         
@@ -24644,7 +24649,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 
 ; Subroutine: Size=27, CC=2.
-; Called by: SUB376[E4C2h].
+; Called by: Interrupt_handler[E4C2h].
 ; Calls: SUB260, SUB261, SUB262, SUB283.
 7F26 SUB278:
 7F26 C5           PUSH BC     
@@ -24676,8 +24681,8 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 7F4C CD 52 7F     CALL .sub279_l 	; 7F52h
 7F4F CD 60 EA     CALL SUB428 	; EA60h
 7F52 .sub279_l:
-7F52 21 6A 7F     LD   HL,7F6Ah 	; 32618
-7F55 11 60 EA     LD   DE,EA60h 	; 60000,  -5536
+7F52 21 6A 7F     LD   HL,7F6Ah 	; Swap memory intervals [7F6Ah, 8636h) and [EA60h, F12Ch)
+7F55 11 60 EA     LD   DE,EA60h 	; SUB428
 7F58 01 CC 06     LD   BC,06CCh 	; 1740
 7F5B .sub279_loop:
 7F5B 7E           LD   A,(HL) 
@@ -30918,7 +30923,7 @@ DATA063:     EQU  5A5Bh	; 23131. Data accessed by: D471h(in SUB309)
 
 ; Subroutine: Size=221, CC=11.
 ; Called by: SUB294[B49Bh].
-; Calls: ORG_0000, RST08, RST10, RST18, RST20, RST28, RST30, RST38, SUB019, SUB148, SUB150, SUB227, SUB235, SUB236, SUB237, SUB238, SUB276, SUB290, SUB302, SUB303, SUB304, SUB306, SUB308, SUB310, SUB312, SUB318, SUB320, SUB321, SUB395, SUB396, SUB397, SUB422, SUB438, SUB445, SUB457, SUB479, SUB483, SUB491, SUB497, SUB505, SUB508, SUB514, SUB523, SUB524, SUB531, SUB538.
+; Calls: ORG_0000, RST08, RST10, RST18, RST20, RST28, RST30, RST38, SUB019, SUB148, SUB150, SUB227, SUB235, SUB236, SUB237, SUB238, SUB276, SUB290, SUB302, SUB303, SUB304, SUB306, SUB308, SUB310, SUB312, SUB318, Thunk_Play_configurable_sound_A, Thunk_Play_configurable_sound_B, SUB395, SUB396, SUB397, SUB422, SUB438, SUB445, SUB457, SUB479, SUB483, SUB491, SUB497, SUB505, SUB508, SUB514, SUB523, SUB524, SUB531, SUB538.
 981D SUB286:
 981D 89           ADC  A,C    
 981E 98           SBC  A,B    
@@ -36835,7 +36840,7 @@ B065 CA CC CE     JP   Z,SUB306 	; CECCh
 B068 D0           RET  NC     
 B069 D2 D4 D6     JP   NC,SUB310 	; D6D4h
 B06C D8           RET  C      
-B06D DA DC DE     JP   C,SUB321+1 	; DEDCh, WARNING: Branches into the middle of an opcode!
+B06D DA DC DE     JP   C,Thunk_Play_configurable_sound_B+1 	; DEDCh, WARNING: Branches into the middle of an opcode!
 B070 E0           RET  PO     
 B071 E2 E4 E6     JP   PO,SUB531+1 	; E6E4h, WARNING: Branches into the middle of an opcode!
 B074 E8           RET  PE     
@@ -36937,7 +36942,7 @@ B0E5 CA CC CE     JP   Z,SUB306 	; CECCh
 B0E8 D0           RET  NC     
 B0E9 D2 D4 D6     JP   NC,SUB310 	; D6D4h
 B0EC D8           RET  C      
-B0ED DA DC DE     JP   C,SUB321+1 	; DEDCh, WARNING: Branches into the middle of an opcode!
+B0ED DA DC DE     JP   C,Thunk_Play_configurable_sound_B+1 	; DEDCh, WARNING: Branches into the middle of an opcode!
 B0F0 E0           RET  PO     
 B0F1 E2 E4 E6     JP   PO,SUB531+1 	; E6E4h, WARNING: Branches into the middle of an opcode!
 B0F4 E8           RET  PE     
@@ -48080,9 +48085,9 @@ DECB E1           DEFB E1h    	; 225,  -31
 
 
 ; Subroutine: Size=3, CC=1.
-; Called by: SUB244[6E0Eh], SUB248[71DFh], LBL10[6F06h], SUB253[7330h], SUB253[73C6h], SUB251[727Ah], SUB250[7269h], SUB258[7417h], SUB490[FB1Ah].
+; Called by: Print_main_menu_text[6E0Eh], Run_the_running_line_until_any_key_is_pressed[71DFh], Pressed_1_to_redefine_keys[6F06h], SUB253[7330h], SUB253[73C6h], SUB251[727Ah], SUB250[7269h], SUB258[7417h], SUB490[FB1Ah].
 ; Calls: Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen.
-DECC SUB317:
+DECC Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen:
 DECC C3 8B E1     JP   Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; E18Bh
 
 
@@ -48101,21 +48106,21 @@ DED4 E1           DEFB E1h    	; 225,  -31
 ; Subroutine: Size=3, CC=1.
 ; Called by: SUB258[740Dh], SUB421[E970h].
 ; Calls: Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned.
-DED5 SUB319:
+DED5 Thunk_Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned:
 DED5 C3 12 E2     JP   Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned 	; E212h
 
 
 ; Subroutine: Size=3, CC=1.
 ; Called by: LBL08[6ED5h], SUB487[FA83h], SUB513[FED7h], SUB286[FF28h], SUB498[FD01h], SUB503[FD65h], SUB185[3825h].
 ; Calls: Play_configurable_sound_A.
-DED8 SUB320:
+DED8 Thunk_Play_configurable_sound_A:
 DED8 C3 1F E2     JP   Play_configurable_sound_A 	; E21Fh
 
 
 ; Subroutine: Size=3, CC=1.
 ; Called by: SUB486[FA41h], SUB487[FA72h], SUB487[FA75h], SUB487[FA78h], SUB286[FF14h], SUB496[FCF5h], SUB286[B06Dh], SUB286[B0EDh].
 ; Calls: Play_configurable_sound_B.
-DEDB SUB321:
+DEDB Thunk_Play_configurable_sound_B:
 DEDB C3 26 E2     JP   Play_configurable_sound_B 	; E226h
 
 
@@ -48149,7 +48154,7 @@ DEEC E2           DEFB E2h    	; 226,  -30
 
 
 ; Subroutine: Size=3, CC=1.
-; Called by: LBL10[6F09h].
+; Called by: Pressed_1_to_redefine_keys[6F09h].
 ; Calls: Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL.
 DEED Thunk_Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL:
 DEED C3 BD E2     JP   Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL 	; E2BDh
@@ -48863,7 +48868,7 @@ E18A C9           RET
 
 
 ; Subroutine: Size=3, CC=1.
-; Called by: SUB317[DECCh], SUB529[E2CBh], SUB285[E2D7h], SUB285[E2E3h], SUB530[E2EFh], SUB285[E2FBh].
+; Called by: Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen[DECCh], SUB529[E2CBh], SUB285[E2D7h], SUB285[E2E3h], SUB530[E2EFh], SUB285[E2FBh].
 ; Calls: Set_text_print_mode_override_screen_data, Print_text_at_HL_on_screen.
 E18B Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen:
 E18B CD 75 E1     CALL Set_text_print_mode_override_screen_data 	; E175h
@@ -48993,7 +48998,7 @@ E211 63           DEFB 63h    	; 99, 'c'
 
 
 ; Subroutine: Size=13, CC=2.
-; Called by: Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned[E2A8h], SUB319[DED5h].
+; Called by: Wait_for_pressed_key_Put_it_in_HL_Print_its_symbol_Play_sound_KeyAssigned[E2A8h], Thunk_Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned[DED5h].
 ; Calls: Get_pressed_key_in_A_and_DE_Set_Z_iff_key_pressed, Play_sound_KeyAssigned.
 E212 Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned:
 E212 CD B8 E1     CALL Get_pressed_key_in_A_and_DE_Set_Z_iff_key_pressed 	; E1B8h
@@ -49007,7 +49012,7 @@ E21E C9           RET
 
 
 ; Subroutine: Size=32, CC=2.
-; Called by: SUB320[DED8h], Play_sound_KeyAssigned[E24Ch].
+; Called by: Thunk_Play_configurable_sound_A[DED8h], Play_sound_KeyAssigned[E24Ch].
 ; Calls: -
 E21F Play_configurable_sound_A:
 E21F 3E 0A        LD   A,0Ah  	; 10
@@ -49016,7 +49021,7 @@ E224 18 05        JR   .sub347_loop1 	; E22Bh
 
 
 ; Subroutine: Size=30, CC=2.
-; Called by: Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL[E2C5h], SUB321[DEDBh].
+; Called by: Play_RedefineKeys_Assign_keys_Activate_cheat_if_KAREL[E2C5h], Thunk_Play_configurable_sound_B[DEDBh].
 ; Calls: -
 E226 Play_configurable_sound_B:
 E226 3E AF        LD   A,AFh  	; 175,  -81
@@ -49028,7 +49033,7 @@ E22B 0A           LD   A,(BC)
 
 
 ; Data accessed by:
-; 6F2Ch(in LBL11), 6F39h(in LBL11)
+; 6F2Ch(in Pressed_2_to_toggle_48k_sound_effects), 6F39h(in Pressed_2_to_toggle_48k_sound_effects)
 E22C SELF_MOD54:
 E22C E6 F8        AND  F8h    	; 248,   -8
 E22E D3 FE        OUT  (00FEh),A 	; 254
@@ -49868,9 +49873,9 @@ E49A SUB375:
 E49A 3E 88        LD   A,88h  	; 136, -120
 E49C ED 47        LD   I,A    
 E49E 21 B2 E4     LD   HL,E4B2h 	; 58546,  -6990
-E4A1 22 F5 FF     LD   (.sub516_loop+1),HL 	; FFF5h, WARNING: Instruction accesses code!
+E4A1 22 F5 FF     LD   (Thunk_Interrupt_handler+1),HL 	; FFF5h, WARNING: Instruction accesses code!
 E4A4 3E C3        LD   A,C3h  	; 195,  -61
-E4A6 32 F4 FF     LD   (.sub516_loop),A 	; FFF4h, WARNING: Instruction accesses code!
+E4A6 32 F4 FF     LD   (Thunk_Interrupt_handler),A 	; FFF4h, WARNING: Instruction accesses code!
 E4A9 3E 18        LD   A,18h  	; 24
 E4AB 32 FF FF     LD   (SELF_MOD58),A 	; FFFFh, WARNING: Instruction accesses code!
 E4AE ED 5E        IM   2      
@@ -49881,7 +49886,7 @@ E4B1 C9           RET
 ; Subroutine: Size=23, CC=1.
 ; Called by: SUB516[FFF4h].
 ; Calls: SUB278.
-E4B2 SUB376:
+E4B2 Interrupt_handler:
 E4B2 F5           PUSH AF     
 E4B3 E5           PUSH HL     
 E4B4 3E 7F        LD   A,7Fh  	; 127
@@ -49939,7 +49944,7 @@ E4EC C9           RET
 
 
 ; Subroutine: Size=15, CC=1.
-; Called by: LBL13[7200h].
+; Called by: Pressed_4_to_start_game[7200h].
 ; Calls: -
 E4ED SUB379:
 E4ED 3E 77        LD   A,77h  	; 119, 'w'
@@ -50820,9 +50825,9 @@ E96E 18 E8        JR   .sub418_loop 	; E958h
 
 ; Subroutine: Size=63, CC=1.
 ; Called by: SUB366[E39Dh].
-; Calls: SUB319, Clear_screen_and_render_blocks_of_room_A, SUB411, SUB422, SUB424.
+; Calls: Thunk_Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned, Clear_screen_and_render_blocks_of_room_A, SUB411, SUB422, SUB424.
 E970 SUB421:
-E970 CD D5 DE     CALL SUB319 	; DED5h
+E970 CD D5 DE     CALL Thunk_Wait_for_pressed_key_Put_it_in_A_and_DE_Play_sound_KeyAssigned 	; DED5h
 E973 3E 00        LD   A,00h  	; 0
 E975 CD 38 E5     CALL Clear_screen_and_render_blocks_of_room_A 	; E538h
 E978 DD 21 D6 E3  LD   IX,E3D6h 	; 58326,  -7210
@@ -51718,7 +51723,7 @@ ED56 DD 77 13     LD   (IX+19),A
 
 
 ; Data accessed by:
-; 6F27h(in LBL11), 6F34h(in LBL11)
+; 6F27h(in Pressed_2_to_toggle_48k_sound_effects), 6F34h(in Pressed_2_to_toggle_48k_sound_effects)
 ED59 SELF_MOD55:
 ED59 C9           RET         
 
@@ -54162,26 +54167,26 @@ F86F 00           DEFB 00h    	; 0
 
 
 ; Subroutine: Size=3, CC=1.
-; Called by: LBL13[721Eh].
+; Called by: Pressed_4_to_start_game[721Eh].
 ; Calls: SUB486.
 F870 SUB485:
 F870 C3 BE F9     JP   SUB486 	; F9BEh
 
 
 ; Data accessed by:
-; 7224h(in LBL13), FD41h(in SUB502)
+; 7224h(in Pressed_4_to_start_game), FD41h(in SUB502)
 F873 DATA198:
 F873 00           DEFB 00h    	; 0
 
 
 ; Data accessed by:
-; 722Ah(in LBL13), FD4Ah(in SUB502)
+; 722Ah(in Pressed_4_to_start_game), FD4Ah(in SUB502)
 F874 DATA199:
 F874 44           DEFB 44h    	; 68, 'D'
 
 
 ; Data accessed by:
-; 7230h(in LBL13), FD53h(in SUB502)
+; 7230h(in Pressed_4_to_start_game), FD53h(in SUB502)
 F875 DATA200:
 F875 50           DEFB 50h    	; 80, 'P'
 
@@ -54541,7 +54546,7 @@ F9BD 3F           DEFB 3Fh    	; 63, '?'
 
 ; Subroutine: Size=172, CC=8.
 ; Called by: SUB485[F870h].
-; Calls: SUB321, SUB356, SUB372, SUB459, SUB460, SUB462, SUB487, SUB488, SUB489, SUB492, SUB504, SUB512.
+; Calls: Thunk_Play_configurable_sound_B, SUB356, SUB372, SUB459, SUB460, SUB462, SUB487, SUB488, SUB489, SUB492, SUB504, SUB512.
 F9BE SUB486:
 F9BE 21 58 EE     LD   HL,EE58h 	; 61016,  -4520
 F9C1 06 78        LD   B,78h  	; 120, 'x'
@@ -54567,7 +54572,7 @@ F9EB CD CE FA     CALL SUB489 	; FACEh
 
 
 ; Data accessed by:
-; 7205h(in LBL13)
+; 7205h(in Pressed_4_to_start_game)
 F9EE SELF_MOD88:
 F9EE 3E 47        LD   A,47h  	; 71, 'G'
 F9F0 32 76 F8     LD   (DATA201),A 	; F876h
@@ -54608,7 +54613,7 @@ FA38 C5           PUSH BC
 FA39 11 00 00     LD   DE,0000h 	; 0
 FA3C 21 08 08     LD   HL,0808h 	; 2056
 FA3F 0E 1E        LD   C,1Eh  	; 30
-FA41 CD DB DE     CALL SUB321 	; DEDBh
+FA41 CD DB DE     CALL Thunk_Play_configurable_sound_B 	; DEDBh
 FA44 C1           POP  BC     
 FA45 0D           DEC  C      
 FA46 20 E7        JR   NZ,.sub486_loop3 	; FA2Fh
@@ -54640,20 +54645,20 @@ FA69 C9           RET
 
 ; Subroutine: Size=28, CC=2.
 ; Called by: SUB486[FA1Dh].
-; Calls: SUB320, SUB321.
+; Calls: Thunk_Play_configurable_sound_A, Thunk_Play_configurable_sound_B.
 FA6A SUB487:
 FA6A 11 00 00     LD   DE,0000h 	; 0
 FA6D 21 00 00     LD   HL,0000h 	; 0
 FA70 0E 00        LD   C,00h  	; 0
-FA72 CD DB DE     CALL SUB321 	; DEDBh
-FA75 CD DB DE     CALL SUB321 	; DEDBh
-FA78 CD DB DE     CALL SUB321 	; DEDBh
+FA72 CD DB DE     CALL Thunk_Play_configurable_sound_B 	; DEDBh
+FA75 CD DB DE     CALL Thunk_Play_configurable_sound_B 	; DEDBh
+FA78 CD DB DE     CALL Thunk_Play_configurable_sound_B 	; DEDBh
 FA7B .sub487_loop:
 FA7B 3E FE        LD   A,FEh  	; 254,   -2
 FA7D DB FE        IN   A,(00FEh) 	; 254
 FA7F CB 47        BIT  0,A    
 FA81 20 F8        JR   NZ,.sub487_loop 	; FA7Bh
-FA83 C3 D8 DE     JP   SUB320 	; DED8h
+FA83 C3 D8 DE     JP   Thunk_Play_configurable_sound_A 	; DED8h
 
 
 ; Subroutine: Size=59, CC=5.
@@ -54721,7 +54726,7 @@ FAD4 C9           RET
 
 ; Subroutine: Size=115, CC=3.
 ; Called by: SUB503[FD68h].
-; Calls: SUB314, SUB317, SUB371, SUB439, SUB493, SUB502.
+; Calls: SUB314, Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen, SUB371, SUB439, SUB493, SUB502.
 FAD5 SUB490:
 FAD5 16 04        LD   D,04h  	; 4
 FAD7 21 00 40     LD   HL,4000h 	; 16384
@@ -54773,7 +54778,7 @@ FB10 7E           LD   A,(HL)
 FB11 32 89 FB     LD   (DATA206),A 	; FB89h
 FB14 32 8A FB     LD   (DATA207),A 	; FB8Ah
 FB17 21 5A FB     LD   HL,FB5Ah 	; 64346,  -1190
-FB1A CD CC DE     CALL SUB317 	; DECCh
+FB1A CD CC DE     CALL Thunk_Set_text_print_mode_override_screen_data_Print_text_at_HL_on_screen 	; DECCh
 FB1D 3A CF E3     LD   A,(DATA180) 	; E3CFh
 FB20 21 26 41     LD   HL,4126h 	; 16678
 FB23 CD B2 E3     CALL SUB371 	; E3B2h
@@ -55357,13 +55362,13 @@ FCED 11           DEFB 11h    	; 17
 
 ; Subroutine: Size=10, CC=1.
 ; Called by: SUB299[C211h].
-; Calls: SUB321, SUB497.
+; Calls: Thunk_Play_configurable_sound_B, SUB497.
 FCEE SUB496:
 FCEE 00           NOP         
 FCEF 00           NOP         
 FCF0 21 02 01     LD   HL,0102h 	; 258
 FCF3 0E C8        LD   C,C8h  	; 200,  -56
-FCF5 CD DB DE     CALL SUB321 	; DEDBh
+FCF5 CD DB DE     CALL Thunk_Play_configurable_sound_B 	; DEDBh
 
 
 ; Subroutine: Size=4, CC=1.
@@ -55377,12 +55382,12 @@ FCFA 16 F0        LD   D,F0h  	; 240,  -16
 
 ; Subroutine: Size=36, CC=1.
 ; Called by: SUB274[7E76h], SUB497[FCFAh].
-; Calls: SUB320, SUB499.
+; Calls: Thunk_Play_configurable_sound_A, SUB499.
 FCFC SUB498:
 FCFC CD 0E FD     CALL SUB499 	; FD0Eh
 FCFF E1           POP  HL     
 FD00 D1           POP  DE     
-FD01 CD D8 DE     CALL SUB320 	; DED8h
+FD01 CD D8 DE     CALL Thunk_Play_configurable_sound_A 	; DED8h
 FD04 16 47        LD   D,47h  	; 71, 'G'
 FD06 CD 0E FD     CALL SUB499 	; FD0Eh
 FD09 11 00 40     LD   DE,4000h 	; 16384
@@ -55464,13 +55469,13 @@ FD59 C9           RET
 
 ; Subroutine: Size=17, CC=1.
 ; Called by: SUB473[F2E8h].
-; Calls: SUB320, SUB463, SUB490.
+; Calls: Thunk_Play_configurable_sound_A, SUB463, SUB490.
 FD5A SUB503:
 FD5A CD C5 F0     CALL SUB463 	; F0C5h
 FD5D 21 01 01     LD   HL,0101h 	; 257
 FD60 11 01 00     LD   DE,0001h 	; 1
 FD63 0E 8C        LD   C,8Ch  	; 140, -116
-FD65 CD D8 DE     CALL SUB320 	; DED8h
+FD65 CD D8 DE     CALL Thunk_Play_configurable_sound_A 	; DED8h
 FD68 C3 D5 FA     JP   SUB490 	; FAD5h
 
 
@@ -55798,7 +55803,7 @@ FECA 3E 01        LD   A,01h  	; 1
 
 ; Subroutine: Size=47, CC=3.
 ; Called by: SUB299[C1A3h], SUB512[FECAh].
-; Calls: SUB320, SUB508, SUB511, SUB538.
+; Calls: Thunk_Play_configurable_sound_A, SUB508, SUB511, SUB538.
 FECC SUB513:
 FECC CD B7 FE     CALL SUB511 	; FEB7h
 FECF F5           PUSH AF     
@@ -55806,7 +55811,7 @@ FED0 57           LD   D,A
 FED1 5F           LD   E,A    
 FED2 0E 32        LD   C,32h  	; 50, '2'
 FED4 21 02 01     LD   HL,0102h 	; 258
-FED7 CD D8 DE     CALL SUB320 	; DED8h
+FED7 CD D8 DE     CALL Thunk_Play_configurable_sound_A 	; DED8h
 FEDA F1           POP  AF     
 FEDB 3C           INC  A      
 FEDC FE 47        CP   47h    	; 71, 'G'
@@ -55849,14 +55854,14 @@ FF09 CD 57 FF     CALL SUB514 	; FF57h
 FF0C 11 00 00     LD   DE,0000h 	; 0
 FF0F 21 FC FE     LD   HL,FEFCh 	; 65276,   -260
 FF12 0E 64        LD   C,64h  	; 100, 'd'
-FF14 CD DB DE     CALL SUB321 	; DEDBh
+FF14 CD DB DE     CALL Thunk_Play_configurable_sound_B 	; DEDBh
 FF17 21 3A FF     LD   HL,FF3Ah 	; 65338,   -198
 FF1A CD CF DE     CALL SUB318 	; DECFh
 FF1D CD 57 FF     CALL SUB514 	; FF57h
 FF20 11 00 00     LD   DE,0000h 	; 0
 FF23 21 02 01     LD   HL,0102h 	; 258
 FF26 0E 00        LD   C,00h  	; 0
-FF28 CD D8 DE     CALL SUB320 	; DED8h
+FF28 CD D8 DE     CALL Thunk_Play_configurable_sound_A 	; DED8h
 FF2B 21 47 FF     LD   HL,FF47h 	; 65351,   -185
 FF2E CD CF DE     CALL SUB318 	; DECFh
 FF31 CD 57 FF     CALL SUB514 	; FF57h
@@ -56047,8 +56052,8 @@ FFF2 10           DEFB 10h    	; 16
 FFF3 10           DEFB 10h    	; 16
 
 
-FFF4 .sub516_loop:
-FFF4 C3 B2 E4     JP   SUB376 	; E4B2h
+FFF4 Thunk_Interrupt_handler:
+FFF4 C3 B2 E4     JP   Interrupt_handler 	; E4B2h
 
 
 FFF7 00           DEFB 00h    	; 0
@@ -56066,7 +56071,7 @@ FFFD 42           DEFB 42h    	; 66, 'B'
 
 ; Subroutine: Size=6, CC=1.
 ; Called by: SUB299[C3B1h], SUB299[C3B9h], SUB299[C3C1h].
-; Calls: SUB376.
+; Calls: Interrupt_handler.
 FFFE SUB516:
 FFFE 3C           INC  A      
 
@@ -56074,4 +56079,4 @@ FFFE 3C           INC  A
 ; Data accessed by:
 ; E4ABh(in SUB375)
 FFFF SELF_MOD58:
-FFFF 18 F3        JR   .sub516_loop 	; FFF4h
+FFFF 18 F3        JR   Thunk_Interrupt_handler 	; FFF4h
