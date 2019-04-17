@@ -2,6 +2,8 @@ This is becoming unmanageable.  I want to try z80dismblr-win.exe instead.  So I 
 
 z80dismblr-win.exe --addbytes --uppercase --bin 0 ROM.bin --bin 0x5B00 Jet-Story_5B00-FFFF.bin --codelabel 0x6EB4 --out Jet-Story.asm
 
+//z80dismblr-win.exe --addbytes --uppercase --bin 0 ROM.bin --bin 0x5B00 Jet-Story_5B00-FFFF_2.bin --codelabel 0x6EB4 --subprefix ALT_SUB --out Jet-Story2.asm
+
 Screen memory layout:
 
 http://www.breakintoprogram.co.uk/computers/zx-spectrum/screen-memory-layout
