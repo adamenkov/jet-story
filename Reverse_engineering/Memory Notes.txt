@@ -21,7 +21,7 @@ OK	22B1		See 22AA above.
 *	6DE9-6DEE	Wait until key is pressed.
 *	6DEF-6E07	Clear the screen and border.
 *	6EB4		Main menu?
-*	6F4B-6F63	Shift the running line one pixel to the left.
+OK	6F4B-6F63	Shift the running line one pixel to the left.
 *	6F64-7139	Text of running line and the trailing '$'.
 *	713A-71C0	Spaces (' ')
 *	71C1-71E7	The code that outputs the running line.
