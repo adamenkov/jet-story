@@ -1,6 +1,6 @@
 # Jet-Story
 
-This is strictly my hobby and playground - no obligations, no timeframes.
+This is strictly my hobby - no obligations, no timeframes.  I use it to practice technologies like the latest C++, GitHub, VS Code and whatnot.
 
 ---
 
